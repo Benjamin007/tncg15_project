@@ -1,17 +1,17 @@
 #ifndef RAY_H
 #define RAY_H
-
-#include "./common/VectorUtils3.h"
+#include <glm/glm/vec3.hpp>
 
 class Ray
 {
     public:
         Ray();
+        Ray(glm::vec3 o, glm::vec3 dir);
         virtual ~Ray();
     protected:
 
-    vec3 origin;
-    vec3 direction;
+    glm::vec3 origin;
+    glm::vec3 direction;
 
     private:
 };
