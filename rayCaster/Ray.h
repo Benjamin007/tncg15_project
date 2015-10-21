@@ -1,7 +1,7 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "./common/VectorUtils3.h"
+#include <glm/vec3.hpp>
 
 class Ray
 {

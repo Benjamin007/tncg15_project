@@ -3,11 +3,11 @@
 Ray::Ray()
 {
     //ctor
-    origin = vec3(0.0f, 0.0f, 0.0f);
-    direction = vec3(0.0f, 0.0f, 0.0f);
+    origin = glm::vec3(0.0, 0.0, 0.0);
+    direction = glm::vec3(0.0, 0.0, 0.0);
 }
 
-Ray::Ray(vec3 o, vec3 dir){
+Ray::Ray(glm::vec3 o, glm::vec3 dir){
     origin = o;
     direction = dir;
 }
