@@ -41,8 +41,6 @@ int main()
 
     Screen* screen = new Screen();
 
-    //screen->myPrint();
-
     RayTracer* tracer = new RayTracer(screen, room);
 
     std::cout << "Created the Raytracer with screen and room!\n";

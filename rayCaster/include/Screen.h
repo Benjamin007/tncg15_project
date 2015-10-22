@@ -2,8 +2,8 @@
 #include "Pixel.h"
 #define SCREEN_H
 
-#define HEIGHT 50
-#define WIDTH 50
+#define HEIGHT 6
+#define WIDTH 10
 
 
 

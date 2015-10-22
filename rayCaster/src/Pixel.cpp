@@ -3,6 +3,8 @@
 using namespace std;
 Pixel::Pixel()
 {
+    cout << "CREATING PIXEL!!!\n";
+
     this->red = 255;
     this->blue = 0;
     this->green = 0;
@@ -17,12 +19,5 @@ Pixel::~Pixel()
 
 void Pixel::myPrint()
 {
-    char pixelValue = '.';
-
-    if(this->red > 250) {
-        pixelValue = '*';
-    }
-
-    //std::cout << pixelValue;
-    std::cout << this->red << " " << this->green << " "<< this->blue << std::endl;
+    std::cout << "[ " << this->red << " " << this->green << " " << this->blue << "]";
 }
