@@ -9,7 +9,6 @@ Ray::Ray()
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir){
-    o = o * o;
     origin = o;
     direction = dir;
 }
@@ -17,4 +16,12 @@ Ray::Ray(glm::vec3 o, glm::vec3 dir){
 Ray::~Ray()
 {
     //dtor
+}
+
+glm::vec3 Ray::getOrigin() const{
+    return origin;
+}
+
+glm::vec3 Ray::getDirection() const{
+    return direction;
 }

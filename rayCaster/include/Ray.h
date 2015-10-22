@@ -8,11 +8,14 @@ class Ray
     public:
         Ray();
         Ray(glm::vec3 o, glm::vec3 dir);
-        virtual ~Ray();
+        ~Ray();
+
+        glm::vec3 getOrigin() const;
+        glm::vec3 getDirection() const;
     protected:
 
-    glm::vec3 origin;
-    glm::vec3 direction;
+        glm::vec3 origin;
+        glm::vec3 direction;
 
     private:
 };

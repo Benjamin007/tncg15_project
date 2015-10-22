@@ -36,18 +36,30 @@ int main()
 
     Screen* screen = new Screen();
 
-    screen->myPrint();
+    //screen->myPrint();
 
     RayTracer* tracer = new RayTracer(screen, room);
 
     std::cout << "Created the Raytracer with screen and room!\n";
 
-
-
-    vec3 merde = glm::vec3(1,1,1);
-
     cout << "Hello world!" << endl;
-    Ray* ray = new Ray();
+    Ray* ray1 = new Ray();
+
+    // test a ray plan intersection
+    vec3 origin = glm::vec3(0.0, 0.0, 0.0);
+    vec3 direction = glm::vec3(1,0,0);
+    Ray* rayIntersectionWall = new Ray(origin, direction);
+    vec3 positionIntersectionWall = glm::vec3(2.0, 0.0, 0.0);
+    vec3 normalIntersectionWall = glm::vec3(-1.0, 0.0, 0.0);
+    float heightIntersectionWall = 5;
+    float widthIntersectionWall = 5;
+    Wall* intersectionWall = new Wall(positionIntersectionWall, normalIntersectionWall, heightIntersectionWall, widthIntersectionWall);
+    vec3 intersectionPoint = vec3(0.0, 0.0, 0.0);
+    if(intersectionWall->isIntersecting(rayIntersectionWall)){
+        intersectionPoint = intersectionWall->getIntersection(rayIntersectionWall);
+    }
+
+    cout << "Here we have the coordinates of an intersectPoint:" << intersectionPoint.x << " " << intersectionPoint.y << " " << intersectionPoint.z << endl;
 
     //# collide with room.
 

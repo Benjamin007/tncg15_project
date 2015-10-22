@@ -8,8 +8,8 @@ class Object
 {
     public:
         Object();
-        virtual bool isIntersecting(Ray ray) = 0;
-        virtual glm::vec3 getIntersection(Ray ray) = 0;
+        virtual bool isIntersecting(Ray* ray) const = 0;
+        virtual glm::vec3 getIntersection(Ray* ray) const = 0;
         virtual ~Object();
     protected:
     private:

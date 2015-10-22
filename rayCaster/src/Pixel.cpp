@@ -23,5 +23,6 @@ void Pixel::myPrint()
         pixelValue = '*';
     }
 
-    std::cout << pixelValue;
+    //std::cout << pixelValue;
+    std::cout << this->red << " " << this->green << " "<< this->blue << std::endl;
 }
