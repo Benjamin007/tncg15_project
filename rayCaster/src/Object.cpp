@@ -2,9 +2,12 @@
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 
-Object::Object()
-{
-    //ctor
+Object::Object(){
+
+}
+
+Object::Object(int* id){
+    this->id = id;
 }
 
 Object::~Object()

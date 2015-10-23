@@ -2,7 +2,7 @@
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 
-Wall::Wall()
+Wall::Wall(int* id):Object(id)
 {
     //ctor
     glm::vec3 pos = glm::vec3(0.0, 0.0, 0.0);
@@ -13,7 +13,7 @@ Wall::Wall()
     width = 0;
 }
 
-Wall::Wall(glm::vec3 pos, glm::vec3 norm, float h, float w){
+Wall::Wall(int* id, glm::vec3 pos, glm::vec3 norm, float h, float w):Object(id){
     position = pos;
     normal = norm;
     height = h;
@@ -34,22 +34,37 @@ bool Wall::isIntersecting(Ray* ray) const{
 }
 
 
-glm::vec3 Wall::getIntersection(Ray* ray) const{
-    // we find the implicit equation of the plan: ax + by + cz + d = 0
+Intersection* Wall::getIntersection(Ray* ray) const{
+
+    Intersection* inter = new Intersection();
+    inter->setIsIntersecting(this->isIntersecting(ray));
+
+    if(inter->getIsIntersecting() == false){
+        inter->setIdObject(NULL);
+        inter->set_t(0);
+        return inter;
+    }
+    inter->setIdObject(this->id);
+
+    // we find the implicit equation of the plane: ax + by + cz + d = 0
     // a, b and c are given to us by the normal, we calculate d by using position
     float d = -normal.x * position.x - normal.y * position.y - normal.z * position.z;
 
-    // we inject the parametric equation of the ray into the implicit equation of the plan and we solve t
-    float t;
+    // we inject the parametric equation of the ray into the implicit equation of the plane and we solve t
+    float t = 0;
     glm::vec3 o = ray->getOrigin();
     glm::vec3 dir = ray->getDirection();
     t = (-d - normal.x * o.x - normal.y * o.y - normal.z * o.z ) / (normal.x * dir.x + normal.y * dir.y + normal.z * dir.z);
 
-    // if the value is negative, the ray will intersect with a plan behind its origin, so we put t = 0 and we will not use this value
+    // if the value is negative, the ray will intersect with a plane behind its origin, so we put t = 0 and we will not use this value
     if (t < 0){
     t = 0;
     }
 
-    glm::vec3 intersection = o + t * dir;
-    return intersection;
+    inter->set_t(t);
+
+    return inter;
+
+    //glm::vec3 intersection = o + t * dir;
+    //return intersection;
 }
