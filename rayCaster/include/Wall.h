@@ -6,6 +6,7 @@
 #include "glm/glm/glm.hpp"
 #include "Ray.h"
 #include <stddef.h>
+#include "math.h"
 
 class Wall : public Object
 {
@@ -16,6 +17,10 @@ class Wall : public Object
 
          // check if the direction of the ray is parallel to the plan
         bool isIntersecting(Ray* ray) const;
+
+        float getBRDF() const;
+
+//        void setBrdf(float brdf);
 
         // return the intersection point between a ray and a plane. If there is not, the field isIntersecting is false
         Intersection* getIntersection(Ray* ray) const;
@@ -35,6 +40,9 @@ class Wall : public Object
         float y2;
         float z1;
         float z2;
+
+        float rho;
+        float BRDF;
 
     private:
 };

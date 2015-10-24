@@ -12,6 +12,7 @@
 #include "Screen.h"
 #include "glm/glm/vec3.hpp"
 #include "Intersection.h"
+#include "SurfaceIntegrator.h"
 
 #define NEAR 20
 
@@ -96,7 +97,7 @@ int main()
     room->addObject(intersectionWall);
     room->addObject(intersectionWall2);
 
-    Intersection* intersectionRayWallNorth2 = new Intersection(false, 0.0, NULL);
+    Intersection* intersectionRayWallNorth2 = new Intersection(false, 0.0, NULL, 0.0);
     intersectionRayWallNorth2 = room->findIntersection(rayIntersectionWall);
 
     glm::vec3 intersectionPoint2 = origin + intersectionRayWallNorth2->get_t() * direction;

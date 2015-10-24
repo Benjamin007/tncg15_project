@@ -23,9 +23,9 @@ void Room::addObject(Object* object){
 }
 
 Intersection* Room::findIntersection(Ray* ray){
-    Intersection* intersection = new Intersection(false, 0, NULL);
+    Intersection* intersection = new Intersection(false, 0, NULL, 0);
     std::vector<Object*>::iterator itObject;
-    Intersection* tmpInter = new Intersection(false, 0, NULL);
+    Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
     // we consider every object in the scene
 
     //for(int i = 0; i < object_container.size(); i++){
