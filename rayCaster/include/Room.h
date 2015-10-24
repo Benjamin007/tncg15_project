@@ -16,6 +16,8 @@ class Room
 
         std::vector<Object*> getObjectContainer() const;
 
+        std::vector<LightSource*> getLightContainer() const;
+
         void addObject(Object* object);
 
         // return the intersection of the ray with the first object the rayon will meet in the room

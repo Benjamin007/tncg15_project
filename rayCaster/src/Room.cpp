@@ -14,6 +14,10 @@ Room::~Room()
     //dtor
 }
 
+std::vector<LightSource*> Room::getLightContainer() const{
+    return this->light_container;
+}
+
 std::vector<Object*> Room::getObjectContainer() const{
     return this->object_container;
 }
