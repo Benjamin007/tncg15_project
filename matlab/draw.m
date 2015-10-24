@@ -21,9 +21,9 @@ screen = zeros(screenDimension(1), screenDimension(2),3);
 % more like computer screen.
 for x = 1:screenDimension(1)
     for y = 1:screenDimension(2)
-        screen(x,y,1) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+1)/255;
-        screen(x,y,2) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+2)/255;
-        screen(x,y,3) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+3)/255;
+        screen(x,y,1) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+1);
+        screen(x,y,2) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+2);
+        screen(x,y,3) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+3);
         
         
     end

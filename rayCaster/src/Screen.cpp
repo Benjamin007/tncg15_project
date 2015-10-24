@@ -3,6 +3,8 @@
 #include <fstream>
 #include <stdlib.h>
 
+#include "Ray.h"
+
 Screen::Screen()
 {
 
@@ -53,6 +55,26 @@ int Screen::getWidth() const {
 }
 int Screen::getNear() const {
     return this->near;
+}
+
+void Screen::assignRay(int x, int y, Ray *ray) {
+    this->screen[x][y]->setRay(ray);
+}
+
+Ray* Screen::getRay(int x, int y) {
+    this->screen[x][y]->getRay();
+}
+
+
+void Screen::assignColor(int x, int y, glm::vec3 color) {
+    this->screen[x][y]->setRed(color.x);
+    this->screen[x][y]->setGreen(color.y);
+    this->screen[x][y]->setBlue(color.z);
+}
+
+
+glm::vec3 Screen::getPixelPos(int x, int y) {
+    return this->screen[x][y]->getPos();
 }
 
 void Screen::myPrint()

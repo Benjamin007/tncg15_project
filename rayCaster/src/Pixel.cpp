@@ -10,6 +10,13 @@ Pixel::Pixel()
     this->blue = 0;
     this->green = 0;
     this->alpha = 1.0f;
+
+    //pos and size;
+    this->pos = glm::vec3(0,0,0);
+    this->width = 1;
+    this->height = 1;
+
+    this->ray = NULL;
     //ctor
 }
 
@@ -27,6 +34,8 @@ Pixel::Pixel(glm::vec3 pos, float height, float width)
     this->blue = 0;
     this->green = 0;
     this->alpha = 1.0f;
+
+    this->ray = NULL;
     //ctor
 }
 
@@ -91,6 +100,14 @@ float Pixel::getBlue()
 void Pixel::setBlue(float blue)
 {
     this->blue = blue;
+}
+
+Ray* Pixel::getRay() {
+    return this->ray;
+}
+
+void Pixel::setRay(Ray *ray) {
+    this->ray = ray;
 }
 
 

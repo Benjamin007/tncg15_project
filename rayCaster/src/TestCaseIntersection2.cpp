@@ -3,7 +3,7 @@
 
 TestCaseIntersection2::TestCaseIntersection2()
 {
-    TestCase::init();
+    //TestCase::init();
 }
 
 TestCaseIntersection2::~TestCaseIntersection2()
@@ -20,6 +20,7 @@ TestCaseIntersection2::init() {
 
 void TestCaseIntersection2::run() {
 
+    TestCase::run();
     std::cout << "starting test case Intersection 2!\n";
 
     //glm::vec3 origin, direction;

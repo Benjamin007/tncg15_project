@@ -1,7 +1,10 @@
 #ifndef PIXEL_H
 #define PIXEL_H
+
 #include <string>
+
 #include "glm/glm/glm.hpp"
+#include "Ray.h"
 
 class Pixel
 {
@@ -28,6 +31,11 @@ class Pixel
         void setGreen(float color);
         void setBlue(float color);
 
+        // ray
+
+        Ray* getRay();
+        void setRay(Ray* ray);
+
         // functions
         void myPrint();
         std::string toString();
@@ -40,6 +48,9 @@ class Pixel
         float green;
         float blue;
         float alpha;
+
+        Ray *ray;
+
     private:
 };
 

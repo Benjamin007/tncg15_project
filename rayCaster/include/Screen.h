@@ -7,11 +7,11 @@
 #define WIDTH 10
 
 // frustum variables:
-#define NEAR 20
-#define LEFT -200
-#define RIGHT 200
-#define TOP 200
-#define BOTTOM -200
+#define NEAR -100
+#define LEFT -100
+#define RIGHT 100
+#define TOP 100
+#define BOTTOM -100
 
 
 
@@ -19,14 +19,26 @@
 class Screen
 {
     public:
+        Screen();
+        virtual ~Screen();
+
+        // getters
         int getWidth() const;
         int getHeight() const;
         int getNear() const;
-        Screen();
+
+        // setters getters
+        void assignRay(int x, int y, Ray* ray);
+        Ray* getRay(int x, int y);
+
+        void assignColor(int x, int y, glm::vec3 color);
+
+        glm::vec3 getPixelPos(int x, int y);
+
         void myPrint();
         void printToFile(std::string matrixFileName,std::string dimFileName);
         void printToTGA();
-        virtual ~Screen();
+
     protected:
         int width;
         int height;
