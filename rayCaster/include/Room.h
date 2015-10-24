@@ -12,6 +12,7 @@ class Room
 {
     public:
         Room(std::vector<LightSource*> light_container, std::vector<Object*> object_container);
+        Room(); // default constructer that creates 5 walls and a light.
         virtual ~Room();
 
         std::vector<Object*> getObjectContainer() const;

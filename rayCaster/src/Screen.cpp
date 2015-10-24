@@ -1,10 +1,6 @@
 #include "Screen.h"
 #include <iostream>
 #include <fstream>
-//#define NOGDI
-//#include <windows.h>
-#include "TGAWriter.h"
-#include "common/LoadTGA.h"
 
 Screen::Screen()
 {
@@ -55,11 +51,14 @@ void Screen::myPrint()
     }
 }
 
-void Screen::printToFile(std::string fileName) {
-    std::ofstream myFile;
-    myFile.open(fileName.c_str());
-    myFile << WIDTH << " " << HEIGHT << "\n";
-    //myFile << "[ \n";
+void Screen::printToFile(std::string matrixFileName, std::string dimFileName) {
+    std::ofstream myFile, myDimFile;
+
+    myDimFile.open(dimFileName.c_str());
+    myDimFile << WIDTH << " " << HEIGHT << "\n";
+
+
+    myFile.open(matrixFileName.c_str());
     for (int x = 0; x < WIDTH; x++) {
         for (int y = 0; y < HEIGHT; y++) {
             std::string pixelString = screen[x][y]->toString();
@@ -75,6 +74,9 @@ void Screen::printToFile(std::string fileName) {
 // prints to out.tga
 void Screen::printToTGA() {
 
+    // currently not working at all
+
+    /*
     std::cout << "Started printToTGA\n";
 
     TGAWriter *writer = new TGAWriter();
@@ -164,6 +166,9 @@ void Screen::printToTGA() {
 
 
     std::cout << "Finished filling pixel data!\n";
+
+*/
+
 
 }
 

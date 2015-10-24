@@ -16,7 +16,7 @@ class Screen
         int getNear() const;
         Screen();
         void myPrint();
-        void printToFile(std::string fileName);
+        void printToFile(std::string matrixFileName,std::string dimFileName);
         void printToTGA();
         virtual ~Screen();
     protected:

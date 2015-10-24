@@ -10,6 +10,17 @@ RayTracer::RayTracer(Screen* screen, Room* room)
     //ctor
 }
 
+RayTracer::RayTracer()
+{
+
+    this->screen = new Screen();
+    this->room = new Room;
+    this->rays = std::vector<Ray*>(screen->getWidth()*screen->getHeight());
+
+    this->calculateScreen();
+    //ctor
+}
+
 RayTracer::~RayTracer()
 {
     //dtor

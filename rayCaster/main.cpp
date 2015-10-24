@@ -1,9 +1,9 @@
-
+#include "TestCase.h"
+#include "TestCaseIntersection.h"
+#include "TestCaseIntersection2.h"
 
 #define NEAR 20
 
-using namespace std;
-using namespace glm;
 
 
 
@@ -11,8 +11,10 @@ int main()
 {
 
     TestCase *intersectionTest = new TestCaseIntersection();
+    TestCase *intersectionTest2 = new TestCaseIntersection2();
 
-    intersectionTest.run();
+    //intersectionTest->run();
+    intersectionTest2->run();
     return 0;
 
 }

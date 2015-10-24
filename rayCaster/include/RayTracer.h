@@ -10,6 +10,7 @@ class RayTracer
 {
     public:
         RayTracer(Screen* screen, Room* room);
+        RayTracer();
         void calculateScreen();
         virtual ~RayTracer();
     protected:
