@@ -55,34 +55,50 @@ int main()
     vec3 normalIntersectionWall = glm::vec3(-1.0, 0.0, 0.0);
     float heightIntersectionWall = 5;
     float widthIntersectionWall = 5;
+    float x1IntersectionWall = 2;
+    float x2IntersectionWall = 2;
+    float y1IntersectionWall = -2.5; // half of heightIntersectionWall
+    float y2IntersectionWall = 2.5;
+    float z1IntersectionWall = -2.5; // half of width
+    float z2IntersectionWall = 2.5;
     int* idIntersectionWall = new int(5);
-    Wall* intersectionWall = new Wall(idIntersectionWall, positionIntersectionWall, normalIntersectionWall, heightIntersectionWall, widthIntersectionWall);
-    vec3 intersectionPoint = vec3(0.0, 0.0, 0.0);
-    Intersection* intersectionRayWallNorth = new Intersection();
-    if(intersectionWall->isIntersecting(rayIntersectionWall)){
-        intersectionRayWallNorth = intersectionWall->getIntersection(rayIntersectionWall);
-    }
-    intersectionPoint = origin + intersectionRayWallNorth->get_t() * direction;
+    Wall* intersectionWall = new Wall(idIntersectionWall, positionIntersectionWall, normalIntersectionWall, heightIntersectionWall, widthIntersectionWall,
+        x1IntersectionWall, x2IntersectionWall, y1IntersectionWall, y2IntersectionWall, z1IntersectionWall, z2IntersectionWall);
+//    vec3 intersectionPoint = vec3(0.0, 0.0, 0.0);
+//    Intersection* intersectionRayWallNorth = new Intersection();
+//    if(intersectionWall->isIntersecting(rayIntersectionWall)){
+//        intersectionRayWallNorth = intersectionWall->getIntersection(rayIntersectionWall);
+//    }
+//    intersectionPoint = origin + intersectionRayWallNorth->get_t() * direction;
     //cout << "Here we have the coordinates of an intersectPoint:" << intersectionPoint.x << " " << intersectionPoint.y << " " << intersectionPoint.z << endl;
 
     //# collide with room.
 
     // test collide with room: two walls are in the room, one just behind the other. The ray should collide the two walls in Room:findIntersection and
     // then only return the intersection with the first wall encountered
-    vec3 positionIntersectionWall2 = glm::vec3(1.0, 15.0, 0.0);
+    vec3 positionIntersectionWall2 = glm::vec3(1.0, 150.0, 0.0);
     vec3 normalIntersectionWall2 = glm::vec3(-1.0, 0.0, 0.0);
     float heightIntersectionWall2 = 5;
     float widthIntersectionWall2 = 5;
+    float x1IntersectionWall2 = 1;
+    float x2IntersectionWall2 = 1;
+    float y1IntersectionWall2 = 147.5; // half of heightIntersectionWall
+    float y2IntersectionWall2 = 152.5;
+    float z1IntersectionWall2 = -2.5; // half of width
+    float z2IntersectionWall2 = 2.5;
     int* idIntersectionWall2 = new int(6);
-    Wall* intersectionWall2 = new Wall(idIntersectionWall2, positionIntersectionWall2, normalIntersectionWall2, heightIntersectionWall2, widthIntersectionWall2);
-
+    Wall* intersectionWall2 = new Wall(idIntersectionWall2, positionIntersectionWall2, normalIntersectionWall2, heightIntersectionWall2, widthIntersectionWall2,
+        x1IntersectionWall2, x2IntersectionWall2, y1IntersectionWall2, y2IntersectionWall2, z1IntersectionWall2, z2IntersectionWall2);
     room->addObject(intersectionWall);
     room->addObject(intersectionWall2);
 
     Intersection* intersectionRayWallNorth2 = new Intersection(false, 0.0, NULL);
     intersectionRayWallNorth2 = room->findIntersection(rayIntersectionWall);
 
-    cout << "Here we have the coordinates of an intersectPoint:" << intersectionRayWallNorth2->get_t() << endl;
+    glm::vec3 intersectionPoint2 = origin + intersectionRayWallNorth2->get_t() * direction;
+
+    cout << "Here we have the coordinates of an intersectPoint t x y z:" << intersectionRayWallNorth2->get_t() << " " << intersectionPoint2.x <<
+    " " << intersectionPoint2.y << " " << intersectionPoint2.z << endl;
     return 0;
 
 }
