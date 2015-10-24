@@ -18,6 +18,8 @@
 using namespace std;
 using namespace glm;
 
+
+
 int main()
 {
 
@@ -49,7 +51,8 @@ int main()
 
     // test a ray plan intersection
     vec3 origin = glm::vec3(0.0, 0.0, 0.0);
-    vec3 direction = glm::vec3(1,0,0);
+    vec3 direction = glm::vec3(0.5,0,0);
+    direction = normalize(direction); // so in the renderer, to find the intersection point we need to normalise the direction!!!
     Ray* rayIntersectionWall = new Ray(origin, direction);
     vec3 positionIntersectionWall = glm::vec3(2.0, 0.0, 0.0);
     vec3 normalIntersectionWall = glm::vec3(-1.0, 0.0, 0.0);
@@ -76,16 +79,17 @@ int main()
 
     // test collide with room: two walls are in the room, one just behind the other. The ray should collide the two walls in Room:findIntersection and
     // then only return the intersection with the first wall encountered
-    vec3 positionIntersectionWall2 = glm::vec3(1.0, 150.0, 0.0);
+    vec3 positionIntersectionWall2 = glm::vec3(6.0, 150.0, 0.0);
     vec3 normalIntersectionWall2 = glm::vec3(-1.0, 0.0, 0.0);
     float heightIntersectionWall2 = 5;
     float widthIntersectionWall2 = 5;
-    float x1IntersectionWall2 = 1;
-    float x2IntersectionWall2 = 1;
-    float y1IntersectionWall2 = 147.5; // half of heightIntersectionWall
-    float y2IntersectionWall2 = 152.5;
-    float z1IntersectionWall2 = -2.5; // half of width
-    float z2IntersectionWall2 = 2.5;
+    // this kind of formule workd only in a particular case
+    float x1IntersectionWall2 = positionIntersectionWall2.x;
+    float x2IntersectionWall2 = positionIntersectionWall2.x;
+    float y1IntersectionWall2 = positionIntersectionWall2.y - heightIntersectionWall2/2; // half of heightIntersectionWall
+    float y2IntersectionWall2 = positionIntersectionWall2.y + heightIntersectionWall2/2;
+    float z1IntersectionWall2 = positionIntersectionWall2.z - widthIntersectionWall2/2; // half of width
+    float z2IntersectionWall2 = positionIntersectionWall2.z + widthIntersectionWall2/2;
     int* idIntersectionWall2 = new int(6);
     Wall* intersectionWall2 = new Wall(idIntersectionWall2, positionIntersectionWall2, normalIntersectionWall2, heightIntersectionWall2, widthIntersectionWall2,
         x1IntersectionWall2, x2IntersectionWall2, y1IntersectionWall2, y2IntersectionWall2, z1IntersectionWall2, z2IntersectionWall2);

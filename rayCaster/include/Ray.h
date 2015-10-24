@@ -21,7 +21,7 @@ class Ray
     protected:
 
         glm::vec3 origin;
-        glm::vec3 direction;
+        glm::vec3 direction; // must be normalized
         Intersection* intersection;
 
 

@@ -11,13 +11,13 @@ Ray::Ray()
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir){
     origin = o;
-    direction = dir;
+    direction = normalize(dir);
     intersection  = new Intersection();
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir, Intersection* inter){
     origin = o;
-    direction = dir;
+    direction = normalize(dir);
     intersection  = inter;
 }
 
