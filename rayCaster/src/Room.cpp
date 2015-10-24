@@ -39,9 +39,9 @@ Room::Room() {
     roomYMin = -100;
     roomYMid = 0;
     roomYMax = 100;
-    roomZMin = -500;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -300;
-    roomZMax = -100;
+    roomZMin = -400;       //, defined as closest to screen NEAR plane defined as z = -20;
+    roomZMid = -200;
+    roomZMax = 0;
 
     // wall positions
 
@@ -71,7 +71,7 @@ Room::Room() {
     floor   = new Wall(2, floorPos, floorNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMin,roomZMin, roomZMax);
     north   = new Wall(3, northPos, northNorm,
-                       NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMax,roomZMax, roomZMax);
+                       NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMax,roomZMin, roomZMin);
     west    = new Wall(4, westPos, westNorm,
                        NULL, NULL, roomXMin, roomXMin, roomYMin, roomYMax,roomZMin, roomZMax);
     east    = new Wall(5, eastPos, eastNorm,
