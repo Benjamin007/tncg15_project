@@ -6,8 +6,13 @@ class LightSource
 {
     public:
         LightSource();
+        LightSource(float Le);
         virtual ~LightSource();
+
+        float getLe() const;
     protected:
+
+    float Le;
     private:
 };
 

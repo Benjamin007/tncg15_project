@@ -19,6 +19,8 @@ class Intersection
         void setIdObject(int* id);
         float getBRDF() const;
         void setBRDF(float brdf);
+        float getLe() const;
+        void setLe(float Le);
 
 
         Intersection& operator = (const Intersection& inter);
@@ -32,6 +34,9 @@ class Intersection
         int* idObject;
 
         float BRDF; // just lambertian reflector for the moment
+
+        // if the point of intersection is on a light source, we store the power of the light
+        float Le;
 
     private:
 };

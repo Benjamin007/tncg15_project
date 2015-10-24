@@ -17,7 +17,7 @@ void TestCaseIntersection2::run() {
 
     glm::vec3 origin, direction;
     origin = glm::vec3(0.0,0.0,0.0);
-    direction = glm::vec3(-3.0,1.0,0.0);
+    direction = glm::vec3(0.0,0.0,-1.0);
     Ray *testRay = new Ray(origin, direction);
     Intersection *result;
     result = TestCase::room->findIntersection(testRay);

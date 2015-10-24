@@ -89,6 +89,7 @@ Intersection* Wall::getIntersection(Ray* ray) const{
     glm::vec3 newPoint = o + t * dir;
     if((newPoint.x < x1 || newPoint.x > x2) || (newPoint.y < y1 || newPoint.y > y2) || (newPoint.z < z1 || newPoint.z > z2)){
         t = 0;
+        inter->setIsIntersecting(false);
     }
 
     inter->set_t(t);

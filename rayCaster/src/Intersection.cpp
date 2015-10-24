@@ -62,6 +62,14 @@ void Intersection::setBRDF(float brdf){
     this->BRDF = brdf;
 }
 
+float Intersection::getLe() const{
+    return this->Le;
+}
+
+void Intersection::setLe(float Le){
+    this->Le = Le;
+}
+
 Intersection& Intersection::operator = (const Intersection& inter){
     *(this->idObject) = *(inter.idObject);
     this->isIntersecting = inter.getIsIntersecting();
