@@ -10,12 +10,15 @@ class Pixel
         std::string toString();
         int getTGAData();
         virtual ~Pixel();
+        float getRed();
+        float getGreen();
+        float getBlue();
     protected:
 
-        int red;
-        int green;
-        int blue;
-        int alpha;
+        float red;
+        float green;
+        float blue;
+        float alpha;
     private:
 };
 

@@ -6,15 +6,31 @@ Pixel::Pixel()
 {
     //cout << "CREATING PIXEL!!!\n";
 
-    this->red = 255;
+    this->red = 1.0f;
     this->blue = 0;
     this->green = 0;
-    this->alpha = 255;
+    this->alpha = 1.0f;
     //ctor
 }
 
 Pixel::~Pixel()
 {
+    //dtor
+}
+
+float Pixel::getRed()
+{
+    return this->red;
+    //dtor
+}
+float Pixel::getGreen()
+{
+    return this->green;
+    //dtor
+}
+float Pixel::getBlue()
+{
+    return this->blue;
     //dtor
 }
 
