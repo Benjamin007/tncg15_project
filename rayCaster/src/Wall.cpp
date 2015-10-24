@@ -42,11 +42,11 @@ Wall::~Wall()
 }
 
 
-bool Wall::isIntersecting(Ray* ray) const{
+bool Wall::isParallel(Ray* ray) const{
     if (dot(ray->getDirection(), normal) == 0){
-    return false;
-    }
     return true;
+    }
+    return false;
 }
 
 float Wall::getBRDF() const{
@@ -61,7 +61,7 @@ float Wall::getBRDF() const{
 Intersection* Wall::getIntersection(Ray* ray) const{
 
     Intersection* inter = new Intersection();
-    inter->setIsIntersecting(this->isIntersecting(ray));
+    inter->setIsIntersecting(!(this->isParallel(ray)));
 
     if(inter->getIsIntersecting() == false){
         inter->setIdObject(NULL);

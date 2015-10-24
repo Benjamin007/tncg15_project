@@ -16,7 +16,7 @@ class Wall : public Object
          ~Wall();
 
          // check if the direction of the ray is parallel to the plan
-        bool isIntersecting(Ray* ray) const;
+        bool isParallel(Ray* ray) const;
 
         float getBRDF() const;
 
