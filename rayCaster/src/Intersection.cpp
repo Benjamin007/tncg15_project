@@ -5,12 +5,12 @@ Intersection::Intersection()
     //ctor
     isIntersecting = false;
     t = 0.0;
-    idObject = new int(0);
+    idObject = 0;
     BRDF = 0.0;
 }
 
 
-Intersection::Intersection(bool isInter, float _t, int* id, float brdf){
+Intersection::Intersection(bool isInter, float _t, int id, float brdf){
     this->isIntersecting = isInter;
     this->t = _t;
     this->idObject = id;
@@ -20,8 +20,8 @@ Intersection::Intersection(bool isInter, float _t, int* id, float brdf){
 Intersection::Intersection(const Intersection& inter){
     this->isIntersecting = inter.isIntersecting;
     this->t = inter.t;
-    idObject = new int;
-    *idObject = *(inter.idObject);
+    //idObject = new int;
+    this->idObject = inter.idObject;
     this->BRDF = inter.BRDF;
 }
 
@@ -46,11 +46,11 @@ void Intersection::set_t(float _t){
     this->t = _t;
 }
 
-int* Intersection::getIdObject() const{
+int Intersection::getIdObject() const{
     return idObject;
 }
 
-void Intersection::setIdObject(int* id){
+void Intersection::setIdObject(int id){
     this->idObject = id;
 }
 
@@ -71,7 +71,7 @@ void Intersection::setLe(float Le){
 }
 
 Intersection& Intersection::operator = (const Intersection& inter){
-    *(this->idObject) = *(inter.idObject);
+    this->idObject = inter.idObject;
     this->isIntersecting = inter.getIsIntersecting();
     this->t = inter.get_t();
 

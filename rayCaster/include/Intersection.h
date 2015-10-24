@@ -7,7 +7,7 @@ class Intersection
 {
     public:
         Intersection();
-        Intersection(bool isInter, float _t, int* id, float brdf);
+        Intersection(bool isInter, float _t, int id, float brdf);
         Intersection(const Intersection& inter);
         virtual ~Intersection();
 
@@ -15,8 +15,8 @@ class Intersection
         void setIsIntersecting(bool boolInter);
         float get_t() const;
         void set_t(float _t);
-        int* getIdObject() const;
-        void setIdObject(int* id);
+        int getIdObject() const;
+        void setIdObject(int id);
         float getBRDF() const;
         void setBRDF(float brdf);
         float getLe() const;
@@ -31,7 +31,7 @@ class Intersection
         // parametric distance between the origin of the ray and the intersectionPoint
         float t;
         // id of the object the ray collides with
-        int* idObject;
+        int idObject;
 
         float BRDF; // just lambertian reflector for the moment
 

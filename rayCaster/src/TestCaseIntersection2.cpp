@@ -19,11 +19,18 @@ void TestCaseIntersection2::run() {
     origin = glm::vec3(0.0,0.0,0.0);
     direction = glm::vec3(0.0,0.0,-1.0);
     Ray *testRay = new Ray(origin, direction);
-    Intersection *result;
+    Intersection *result = new Intersection();
     result = TestCase::room->findIntersection(testRay);
 
     if(result->getIsIntersecting()){
-        std::cout << "found intersecting point! It should be on NORTH Wall!";
+        std::cout << "found intersecting point! It should be on NORTH Wall! checking...";
+        std::cout << "\n idObject is: " << (result->getIdObject()) << "\n";
+        if(result->getIdObject() == 3) {
+            std::cout << "SUCCESS!\n";
+        } else {
+            std::cout << "FAIL!\n";
+        }
+
     } else {
         std::cout << "ERROR: didn't find ANY wall!\n";
         return;
