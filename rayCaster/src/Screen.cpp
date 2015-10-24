@@ -1,26 +1,40 @@
 #include "Screen.h"
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 
 Screen::Screen()
 {
 
 
+    // SCREEN IS HARD CODED TO BE AXIS PARALLELL WITH XZ-PLANE.
     std::cout << "CREATING SCREEN!\n";
 
     this->width = WIDTH;
     this->height = HEIGHT;
     this->near = NEAR;
 
+    float pixelWidth, pixelHeight;
+    // the amount of coordinates a pixel will have.
+    pixelWidth = (float) abs(LEFT - RIGHT) / ((float) WIDTH);
+    pixelHeight =(float) abs(BOTTOM - TOP) / ((float) HEIGHT);
 
     int counter = 0;
     for(int x = 0; x < width; x++) {
         for(int y = 0; y < height; y++) {
+            glm::vec3 pos = glm::vec3(
+                                        (float) pixelWidth/2 + LEFT    + ((float)x)*pixelWidth,
+                                        (float) pixelHeight/2 + BOTTOM  + ((float)y)*pixelHeight,
+                                        (float) NEAR);
 
-            this->screen[x][y] = new Pixel();
+            this->screen[x][y] = new Pixel(pos, pixelWidth, pixelHeight);
             counter++;
         }
     }
+
+    //glm::vec3 testPixelPos = this->screen[4][4]->getPos();
+
+    //std::cout << "TEST: pixel 5,5 has position: (" << testPixelPos.x << "," << testPixelPos.y << "," << testPixelPos.z << ")\n";
 
     std::cout << "we created " << counter << " pixels!\n";
     //ctor
