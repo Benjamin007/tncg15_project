@@ -12,6 +12,7 @@ screenDimension = fscanf(dimensionFileID, formatSpec, sizeDim)
 
 A = textscan(fileID, '%f')
 
+
 screen = zeros(screenDimension(1), screenDimension(2),3);
 
 %screen = zeros(2,2,3);
@@ -21,29 +22,28 @@ screen = zeros(screenDimension(1), screenDimension(2),3);
 % more like computer screen.
 for x = 1:screenDimension(1)
     for y = 1:screenDimension(2)
-        screen(x,y,1) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+1);
-        screen(x,y,2) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+2);
-        screen(x,y,3) = A{1}(((y-1) + (x-1)*screenDimension(2))*3+3);
+        screen(x,y,1) = A{1}(((x-1) + (y-1)*screenDimension(2))*3+1);
+        screen(x,y,2) = A{1}(((x-1) + (y-1)*screenDimension(2))*3+2);
+        screen(x,y,3) = A{1}(((x-1) + (y-1)*screenDimension(2))*3+3);
         
         
     end
 end
 
-screen
 
 x = 2;
 y = 1;
 
 index = ((x-1) + (y-1)*screenDimension(2))*3+1
-A{1}(index)
+A{1}(index);
 
 
 index = ((x-1) + (y-1)*screenDimension(2))*3+2
-A{1}(index)
+A{1}(index);
 
 
 index = ((x-1) + (y-1)*screenDimension(2))*3+3
-A{1}(index)
+A{1}(index);
 
 
 image(screen)

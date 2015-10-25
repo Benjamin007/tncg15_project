@@ -7,7 +7,7 @@
 #define WIDTH 10
 
 // frustum variables:
-#define NEAR -100
+#define NEAR -200
 #define LEFT -100
 #define RIGHT 100
 #define TOP 100

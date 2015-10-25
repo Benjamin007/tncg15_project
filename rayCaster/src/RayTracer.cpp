@@ -82,7 +82,13 @@ void RayTracer::calculateScreen() {
                 glm::vec3 color = calculateLight(result, ray);
                 this->screen->assignColor(x,y,color);
 
+            } else {
+                std::cout << "WE DIDN'T GET A HIT! WERID AF!\n"
+                std::cout << "We need to debug this part!\n"
+
             }
+
+
         }
     }
 
