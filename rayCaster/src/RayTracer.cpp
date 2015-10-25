@@ -1,5 +1,6 @@
 #include "RayTracer.h"
 #include <iostream>
+#include <iomanip> // for set precision
 #include <stdlib.h>
 
 #include "Intersection.h"
@@ -63,6 +64,12 @@ void RayTracer::calculateScreen() {
 
     int* wallCounter = new int[5];
 
+    for (int i = 0; i < 5;i++){
+        wallCounter[i] = 0;
+    }
+
+    int counter = 0;
+
     // for each pixel in screen
     for(int x = 0; x < width;x++) {
         for (int y = 0; y < height;y++) {
@@ -85,6 +92,19 @@ void RayTracer::calculateScreen() {
             } else {
                 std::cout << "WE DIDN'T GET A HIT! WERID AF!\n";
                 std::cout << "We need to debug this part!\n";
+                std::cout << "The ray is: (" << dir.x << "," << dir.y << "," << dir.z << ")!\n";
+                std::cout << "pixel pos of " << x << "," << y <<  "is: (";
+                pixel_pos = this->screen->getPixelPos(x,y);
+                std::cout << pixel_pos.x << "," << pixel_pos.y << "," << pixel_pos.z << ")\n";
+                result = this->room->findIntersection(ray);
+
+                glm::vec3 intersectionPoint = ray->getOrigin() + ray->getDirection() * result->get_t();
+
+
+                std::cout << "Intersection Point: (" << std::fixed << std::setprecision(30) << pixel_pos.x << "," << pixel_pos.y << "," << pixel_pos.z << ")\n";
+
+
+
 
             }
 
