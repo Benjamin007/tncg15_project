@@ -6,8 +6,9 @@ LightSource::LightSource()
     Le = 0;
 }
 
-LightSource::LightSource(float Le){
+LightSource::LightSource(float Le, glm::vec3 pos){
     this->Le = Le;
+    this->pos = pos;
 }
 
 LightSource::~LightSource()
@@ -17,4 +18,8 @@ LightSource::~LightSource()
 
 float LightSource::getLe() const{
     return Le;
+}
+
+glm::vec3 LightSource::getPosition(){
+    return this->pos;
 }

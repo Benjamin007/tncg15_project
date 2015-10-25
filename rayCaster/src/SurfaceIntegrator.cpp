@@ -27,7 +27,7 @@ float SurfaceIntegrator::Li(const Room* room, const RayTracer* raytracer, const 
         float Li = (*itLightSource)->getLe(); // not  correct, only a proportion of the light emitted by the lightsource will reach our point
 
         // we have lambertian reflector, so some of the incident light will always leave into the direction w0
-        L += brdf * Li;
+        L += brdf * Li;// * dot(wi, n);
     }
 
     // will launch ray for specular reflection and refraction...

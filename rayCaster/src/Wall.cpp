@@ -94,7 +94,7 @@ Intersection* Wall::getIntersection(const Ray* const ray) const{
 
     inter->set_t(t);
     inter->setBRDF(this->getBRDF());
-
+    inter->setPoint(newPoint);
     return inter;
 
     //glm::vec3 intersection = o + t * dir;

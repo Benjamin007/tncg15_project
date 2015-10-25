@@ -15,6 +15,7 @@ int main()
     TestCase *intersectionTest2 = new TestCaseIntersection2();
     TestCase *raytracerTest = new TestCaseRayTracer();
     //intersectionTest->run();
+    //intersectionTest2->run();
     raytracerTest->run();
     return 0;
 

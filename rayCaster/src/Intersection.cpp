@@ -78,3 +78,12 @@ Intersection& Intersection::operator = (const Intersection& inter){
     return *this;
 }
 
+glm::vec3 Intersection::getPoint(){
+    return point;
+}
+
+void Intersection::setPoint(glm::vec3 newPoint){
+    this->point = newPoint;
+}
+
+

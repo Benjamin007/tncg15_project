@@ -22,6 +22,8 @@ class Intersection
         float getLe() const;
         void setLe(float Le);
 
+        glm::vec3 getPoint();
+        void setPoint(glm::vec3 newPoint);
 
         Intersection& operator = (const Intersection& inter);
 
@@ -37,6 +39,8 @@ class Intersection
 
         // if the point of intersection is on a light source, we store the power of the light
         float Le;
+
+        glm::vec3 point;
 
     private:
 };

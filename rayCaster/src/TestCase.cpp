@@ -19,3 +19,7 @@ void TestCase::init() {
     this->tracer = new RayTracer(this->screen, this->room);
 
 }
+
+void TestCase::run(){
+
+}

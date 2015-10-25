@@ -131,3 +131,11 @@ Intersection* Room::findIntersection(const Ray* ray){
     }
     return intersection;
 }
+
+glm::vec3 Room::calculateLight(glm::vec3 pos){
+    std::vector<LightSource*>::iterator itLight;
+    for(itLight = light_container.begin(); itLight != light_container.end(); ++itLight){
+
+        //Ray* shadowRay = new Ray(position, )
+    }
+}
