@@ -2,7 +2,8 @@
 #define AREALIGHT_H
 
 #include <LightSource.h>
-
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 class AreaLight : public LightSource
 {
@@ -14,6 +15,8 @@ class AreaLight : public LightSource
         float const x1, x2;
         float const y1, y2;
         float const z1, z2;
+
+        glm::vec3 getRandomPoint();
 
     protected:
 

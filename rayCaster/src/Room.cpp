@@ -3,7 +3,8 @@
 #include "glm/glm/glm.hpp"
 #include "AreaLight.h"
 
-
+#define NBSHADOWRAY 3
+#define EPSILON2 0.01
 
 Room::Room(std::vector<LightSource*> light_container, std::vector<Object*> object_container)
 {
@@ -84,8 +85,15 @@ Room::Room() {
     this->object_container.push_back(east);
     this->object_container.push_back(west);
 
+//      AreaLight(glm::vec3 pos, float Le, glm::vec3 normal,
+//                        float x1, float x2, float y1, float y2, float z1, float z2);
+//        virtual ~AreaLight();
+//        float const x1, x2;
+//        float const y1, y2;
+//        float const z1, z2;
 
-    AreaLight *light = new AreaLight();
+    AreaLight *light = new AreaLight(roofPos,1.0f, roofNorm,
+                        -50,50,-50,50,-250,-150);
     //AreaLight light = new AreaLight();
 
     this->light_container.push_back(light);
@@ -133,10 +141,26 @@ Intersection* Room::findIntersection(const Ray* ray){
     return intersection;
 }
 
+bool comparePoints(glm::vec3 v1, glm::vec3 v2){
+    float diff = glm::distance(v2, v1);
+    return (diff < EPSILON2);
+}
+
 glm::vec3 Room::calculateLight(glm::vec3 pos){
+    glm::vec3 radiance;
     std::vector<LightSource*>::iterator itLight;
     for(itLight = light_container.begin(); itLight != light_container.end(); ++itLight){
-
-        //Ray* shadowRay = new Ray(position, )
+        AreaLight* tmpLight = (AreaLight*)(*itLight);
+        glm::vec3 samplingLightPoint = tmpLight->getRandomPoint();
+        for(int i = 0; i < NBSHADOWRAY; i++){
+            Ray* shadowRay = new Ray(samplingLightPoint, samplingLightPoint - pos);
+            Intersection* inter = this->findIntersection(shadowRay);
+            if(comparePoints(inter->getPoint(), samplingLightPoint)){
+                radiance += tmpLight->getLe()/NBSHADOWRAY;
+            }
+        }
     }
+    return radiance;
 }
+
+

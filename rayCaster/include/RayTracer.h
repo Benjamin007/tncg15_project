@@ -13,6 +13,7 @@ class RayTracer
         RayTracer();
         void calculateScreen();
         virtual ~RayTracer();
+
     protected:
         Screen* screen;
         Room* room;
