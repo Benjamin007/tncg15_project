@@ -26,7 +26,11 @@ Room::Room() {
     float roomYMin, roomYMid, roomYMax;
     float roomZMin, roomZMid, roomZMax;
 
-    int* roomID = new int(5);
+    int* roomID1 = new int(1);
+    int* roomID2 = new int(2);
+    int* roomID3 = new int(3);
+    int* roomID4 = new int(4);
+    int* roomID5 = new int(5);
 
     // global room coordinates
     roomXMin = -200;
@@ -35,9 +39,9 @@ Room::Room() {
     roomYMin = -100;
     roomYMid = 0;
     roomYMax = 100;
-    roomZMin = -10;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -7.5;
-    roomZMax = -5;
+    roomZMin = -400;       //, defined as closest to screen NEAR plane defined as z = -20;
+    roomZMid = -200;
+    roomZMax = 0;
 
     // wall positions
 
@@ -62,11 +66,16 @@ Room::Room() {
 //Wall::Wall(int* id, glm::vec3 pos, glm::vec3 norm, float h, float w, float x1, float x2, float y1, float y2, float z1, float z2):Object(id){
 
 
-    roof = new Wall(roomID, roofPos, roofNorm, NULL, NULL, roomXMin, roomXMax, roomYMax, roomYMax,roomZMin, roomZMax);
-    floor = new Wall(roomID++, roofPos, roofNorm, NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMin,roomZMin, roomZMax);
-    north = new Wall(roomID++, roofPos, roofNorm, NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMax,roomZMax, roomZMax);
-    west = new Wall(roomID++, roofPos, roofNorm, NULL, NULL, roomXMin, roomXMin, roomYMin, roomYMax,roomZMin, roomZMax);
-    east = new Wall(roomID++, roofPos, roofNorm, NULL, NULL, roomXMax, roomXMax, roomYMin, roomYMax,roomZMin, roomZMax);
+    roof    = new Wall(1, roofPos, roofNorm,
+                       NULL, NULL, roomXMin, roomXMax, roomYMax, roomYMax,roomZMin, roomZMax);
+    floor   = new Wall(2, floorPos, floorNorm,
+                       NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMin,roomZMin, roomZMax);
+    north   = new Wall(3, northPos, northNorm,
+                       NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMax,roomZMin, roomZMin);
+    west    = new Wall(4, westPos, westNorm,
+                       NULL, NULL, roomXMin, roomXMin, roomYMin, roomYMax,roomZMin, roomZMax);
+    east    = new Wall(5, eastPos, eastNorm,
+                       NULL, NULL, roomXMax, roomXMax, roomYMin, roomYMax,roomZMin, roomZMax);
 
 
     this->object_container.push_back(roof);

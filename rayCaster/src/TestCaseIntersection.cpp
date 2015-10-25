@@ -42,7 +42,7 @@ void TestCaseIntersection::run() {
     vector<LightSource*> light_container(0);
 
     int* idNorthWall = new int(4);
-    Wall* northWall = new Wall(idNorthWall);
+    Wall* northWall = new Wall(4);
     //object_container.push_back(northWall);
 
     AreaLight* light1 = new AreaLight();
@@ -77,7 +77,7 @@ void TestCaseIntersection::run() {
     float z1IntersectionWall = -2.5; // half of width
     float z2IntersectionWall = 2.5;
     int* idIntersectionWall = new int(5);
-    Wall* intersectionWall = new Wall(idIntersectionWall, positionIntersectionWall, normalIntersectionWall, heightIntersectionWall, widthIntersectionWall,
+    Wall* intersectionWall = new Wall(5, positionIntersectionWall, normalIntersectionWall, heightIntersectionWall, widthIntersectionWall,
         x1IntersectionWall, x2IntersectionWall, y1IntersectionWall, y2IntersectionWall, z1IntersectionWall, z2IntersectionWall);
 //    vec3 intersectionPoint = vec3(0.0, 0.0, 0.0);
 //    Intersection* intersectionRayWallNorth = new Intersection();
@@ -103,7 +103,7 @@ void TestCaseIntersection::run() {
     float z1IntersectionWall2 = positionIntersectionWall2.z - widthIntersectionWall2/2; // half of width
     float z2IntersectionWall2 = positionIntersectionWall2.z + widthIntersectionWall2/2;
     int* idIntersectionWall2 = new int(6);
-    Wall* intersectionWall2 = new Wall(idIntersectionWall2, positionIntersectionWall2, normalIntersectionWall2, heightIntersectionWall2, widthIntersectionWall2,
+    Wall* intersectionWall2 = new Wall(6, positionIntersectionWall2, normalIntersectionWall2, heightIntersectionWall2, widthIntersectionWall2,
         x1IntersectionWall2, x2IntersectionWall2, y1IntersectionWall2, y2IntersectionWall2, z1IntersectionWall2, z2IntersectionWall2);
     room->addObject(intersectionWall);
     room->addObject(intersectionWall2);

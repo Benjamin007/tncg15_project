@@ -6,7 +6,7 @@ Object::Object(){
 
 }
 
-Object::Object(int* id){
+Object::Object(int id){
     this->id = id;
 }
 

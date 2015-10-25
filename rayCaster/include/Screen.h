@@ -2,23 +2,43 @@
 #include "Pixel.h"
 #define SCREEN_H
 
+// pixels in screen:
 #define HEIGHT 10
 #define WIDTH 10
-#define NEAR 20
+
+// frustum variables:
+#define NEAR -200
+#define LEFT -100
+#define RIGHT 100
+#define TOP 100
+#define BOTTOM -100
+
 
 
 
 class Screen
 {
     public:
+        Screen();
+        virtual ~Screen();
+
+        // getters
         int getWidth() const;
         int getHeight() const;
         int getNear() const;
-        Screen();
+
+        // setters getters
+        void assignRay(int x, int y, Ray* ray);
+        Ray* getRay(int x, int y);
+
+        void assignColor(int x, int y, glm::vec3 color);
+
+        glm::vec3 getPixelPos(int x, int y);
+
         void myPrint();
         void printToFile(std::string matrixFileName,std::string dimFileName);
         void printToTGA();
-        virtual ~Screen();
+
     protected:
         int width;
         int height;

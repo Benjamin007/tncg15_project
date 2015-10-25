@@ -9,11 +9,11 @@ class Object
 {
     public:
         Object();
-        Object(int* id);
+        Object(int id);
         virtual  Intersection* getIntersection(Ray* ray) const = 0;
         virtual ~Object();
     protected:
-        int* id;
+        int id;
     private:
 };
 

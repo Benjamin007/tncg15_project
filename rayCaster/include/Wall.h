@@ -11,8 +11,8 @@
 class Wall : public Object
 {
     public:
-        Wall(int* id);
-        Wall(int* id, glm::vec3 pos, glm::vec3 norm, float h, float w, float x1, float x2, float y1, float y2, float z1, float z2);
+        Wall(int id);
+        Wall(int id, glm::vec3 pos, glm::vec3 norm, float h, float w, float x1, float x2, float y1, float y2, float z1, float z2);
          ~Wall();
 
          // check if the direction of the ray is parallel to the plan
