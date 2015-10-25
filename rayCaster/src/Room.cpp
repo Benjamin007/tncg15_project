@@ -47,7 +47,7 @@ Room::Room() {
 
     roofPos = glm::vec3(roomXMid, roomYMax, roomZMid);
     floorPos = glm::vec3(roomXMid, roomYMin, roomZMid);
-    northPos = glm::vec3(roomXMid, roomYMid, roomZMax);
+    northPos = glm::vec3(roomXMid, roomYMid, roomZMin);
     //southPos = vec3(roomXMid, roomYMid, roomZMax);
     eastPos = glm::vec3(roomXMax, roomYMid, roomZMid);
     westPos = glm::vec3(roomXMin, roomYMid, roomZMid);
@@ -119,6 +119,7 @@ Intersection* Room::findIntersection(const Ray* ray){
 
     //for(int i = 0; i < object_container.size(); i++){
     for(itObject = object_container.begin(); itObject != object_container.end(); ++itObject){
+        //std::cerr << "Wall is:" << (*itObject)->getObjectID();
         tmpInter = (*itObject)->getIntersection(ray);
         //tmpInter = object_container.at(i)->getIntersection(ray);
         if (tmpInter->getIsIntersecting()){

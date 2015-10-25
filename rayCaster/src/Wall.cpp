@@ -2,6 +2,8 @@
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 
+#define EPSILON 0.1
+
 Wall::Wall(int id):Object(id)
 {
     //ctor
@@ -87,7 +89,9 @@ Intersection* Wall::getIntersection(const Ray* const ray) const{
     }
     // if the point we get is not inside the wall
     glm::vec3 newPoint = o + t * dir;
-    if((newPoint.x < x1 || newPoint.x > x2) || (newPoint.y < y1 || newPoint.y > y2) || (newPoint.z < z1 || newPoint.z > z2)){
+    if((newPoint.x < (x1 -EPSILON) || newPoint.x > (x2 + EPSILON))
+       || (newPoint.y < (y1 - EPSILON) || newPoint.y > (y2 + EPSILON))
+       || (newPoint.z < (z1-EPSILON) || newPoint.z > (z2 +EPSILON))) {
         t = 0;
         inter->setIsIntersecting(false);
     }

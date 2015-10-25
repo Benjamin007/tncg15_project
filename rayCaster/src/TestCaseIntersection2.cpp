@@ -20,7 +20,7 @@ TestCaseIntersection2::init() {
 
 void TestCaseIntersection2::run() {
 
-    TestCase::run();
+    TestCase::init();
     std::cout << "starting test case Intersection 2!\n";
 
     //glm::vec3 origin, direction;
@@ -35,7 +35,7 @@ void TestCaseIntersection2::run() {
 
             glm::vec3 origin = glm::vec3(0.0,0.0,0.0);
             //glm::vec3 direction = glm::vec3(((2-x),(2-y),-1.0);
-            glm::vec3 direction = glm::vec3(2,0,-1.0);
+            glm::vec3 direction = glm::vec3(0.0,0.0,-1.0);
             testRay = new Ray(origin, direction);
             result = new Intersection();
             result = TestCase::room->findIntersection(testRay);
