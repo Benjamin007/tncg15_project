@@ -22,7 +22,7 @@ class Room
         void addObject(Object* object);
 
         // return the intersection of the ray with the first object the rayon will meet in the room
-        Intersection* findIntersection(Ray* ray);
+        Intersection* findIntersection(const Ray* ray);
     protected:
         std::vector<LightSource*> light_container;
         std::vector<Object*> object_container;

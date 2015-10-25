@@ -10,7 +10,7 @@ class Object
     public:
         Object();
         Object(int id);
-        virtual  Intersection* getIntersection(Ray* ray) const = 0;
+        virtual  Intersection* getIntersection(const Ray* const ray) const = 0;
         virtual ~Object();
     protected:
         int id;

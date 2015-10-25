@@ -16,14 +16,14 @@ class Wall : public Object
          ~Wall();
 
          // check if the direction of the ray is parallel to the plan
-        bool isParallel(Ray* ray) const;
+        bool isParallel(const Ray* ray) const;
 
         float getBRDF() const;
 
 //        void setBrdf(float brdf);
 
         // return the intersection point between a ray and a plane. If there is not, the field isIntersecting is false
-        Intersection* getIntersection(Ray* ray) const;
+        Intersection* getIntersection(const Ray* const ray) const;
 
     protected:
         // position of the point in the middle of the wall

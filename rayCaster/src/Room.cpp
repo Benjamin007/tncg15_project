@@ -111,7 +111,7 @@ void Room::addObject(Object* object){
     object_container.push_back(object);
 }
 
-Intersection* Room::findIntersection(Ray* ray){
+Intersection* Room::findIntersection(const Ray* ray){
     Intersection* intersection = new Intersection(false, 0, NULL, 0);
     std::vector<Object*>::iterator itObject;
     Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
@@ -124,7 +124,7 @@ Intersection* Room::findIntersection(Ray* ray){
         if (tmpInter->getIsIntersecting()){
             // the ray collides with this object
             if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
-                // the object we are colliding is nearer that the others one, or it is the first
+                // the object we are colliding with is nearer that the others one, or it is the first
                 intersection = tmpInter;
             }
         }
