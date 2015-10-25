@@ -35,9 +35,9 @@ Room::Room() {
     roomYMin = -100;
     roomYMid = 0;
     roomYMax = 100;
-    roomZMin = -500;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -300;
-    roomZMax = -100;
+    roomZMin = -10;       //, defined as closest to screen NEAR plane defined as z = -20;
+    roomZMid = -7.5;
+    roomZMax = -5;
 
     // wall positions
 
