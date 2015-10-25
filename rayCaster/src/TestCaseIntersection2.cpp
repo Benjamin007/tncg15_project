@@ -23,20 +23,11 @@ void TestCaseIntersection2::run() {
     TestCase::run();
     std::cout << "starting test case Intersection 2!\n";
 
-<<<<<<< HEAD
-    glm::vec3 origin, direction;
-    origin = glm::vec3(0.0,0.0,0.0);
-    direction = glm::vec3(0.0,0.0,-1.0);
-    Ray *testRay = new Ray(origin, direction);
-    Intersection *result = new Intersection(false, 0.0, NULL, 0.0);
-    result = TestCase::room->findIntersection(testRay);
-=======
     //glm::vec3 origin, direction;
 
     Ray *testRay;
 
     Intersection *result;
->>>>>>> origin/grade3
 
     for(int x = 0; x < 1; x++) {
         for (int y = 0;y < 1;y++) {
