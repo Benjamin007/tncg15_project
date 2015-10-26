@@ -17,12 +17,12 @@ int main()
     TestCase *intersectionTest2 = new TestCaseIntersection2();
     TestCase *raytracerTest = new TestCaseRayTracer();
     TestCase* shadowRayTest = new TestCaseRayShadowRay();
-    TestCase* printTest = new TestCasePrintToFile();
+    //TestCase* printTest = new TestCasePrintToFile();
     //intersectionTest->run();
     //intersectionTest2->run();
-    //raytracerTest->run();
+    raytracerTest->run();
     //shadowRayTest->run();
-    printTest.run();
+    //printTest.run();
     return 0;
 
 }

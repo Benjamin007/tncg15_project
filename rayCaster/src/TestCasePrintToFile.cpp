@@ -10,8 +10,8 @@ TestCasePrintToFile::~TestCasePrintToFile()
     //dtor
 }
 
+/*
 void TestCase::run() {
     TestCase::init();
-
-
 }
+*/
