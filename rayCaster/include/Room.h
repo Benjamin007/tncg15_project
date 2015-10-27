@@ -24,7 +24,7 @@ class Room
         // return the intersection of the ray with the first object the rayon will meet in the room
         Intersection* findIntersection(const Ray* ray);
 
-        glm::vec3 calculateLight(glm::vec3 pos);
+        glm::vec3 calculateLight(Intersection* intersection);
     protected:
         std::vector<Object*> light_container;
         std::vector<Object*> object_container;

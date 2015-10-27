@@ -86,8 +86,8 @@ void RayTracer::calculateScreen() {
                 //std::cout << "RayTracer::calculateScreen got its first hit!\n";
                 //TODO: THIS IS A DUMMY FUNCTION!!!
                 wallCounter[result->getIdObject()-1]++;
-                //glm::vec3 color = calculateLight(result, ray);
-                glm::vec3 color = this->room->calculateLight(result->getPoint());
+                glm::vec3 color = calculateLight(result, ray);
+                //glm::vec3 color = this->room->calculateLight(result);
                 this->screen->assignColor(x,y,color);
 
             } else {

@@ -60,10 +60,15 @@ void TestCaseRayShadowRay::testCase2() {
     // we want to test what color we get from a random point in the room!
 
     this->init();
-    glm::vec3 point;
+    AreaLight* lightObject = dynamic_cast<AreaLight*>(this->room->getLightContainer().at(0));
+    glm::vec3 lightPoint = lightObject->getRandomPoint();
+    glm::vec3 origin = glm::vec3(0,0,0);
+    Ray* ray = new Ray(origin, lightPoint-origin);
+
+    Intersection* lightIntersect = this->room->findIntersection(ray);
     //point = new glm::vec3(0,0,0);
 
-    glm::vec3 light = this->room->calculateLight(point);
+    glm::vec3 light = this->room->calculateLight(lightIntersect);
 
     std::cout << "Light vector is: (" << light.x << "," << light.y << "," << light.z << ")\n";
 

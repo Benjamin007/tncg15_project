@@ -1,5 +1,6 @@
 #include "Room.h"
 #include "Wall.h"
+#include <iostream>
 #include "glm/glm/glm.hpp"
 #include "AreaLight.h"
 
@@ -40,9 +41,9 @@ Room::Room() {
     roomYMin = -100;
     roomYMid = 0;
     roomYMax = 100;
-    roomZMin = -400;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -200;
-    roomZMax = 0;
+    roomZMin = -500;       //, defined as closest to screen NEAR plane defined as z = -20;
+    roomZMid = -300;
+    roomZMax = -100;
 
     // wall positions
 
@@ -93,7 +94,7 @@ Room::Room() {
 //        float const z1, z2;
 
     AreaLight *light = new AreaLight(1,roofPos,1.0f, roofNorm,100,100,
-                        -50,50,-50,50,-250,-150);
+                        -50,50,-50,50,roomZMin/3,roomZMax/3);
     //AreaLight light = new AreaLight();
 
     this->light_container.push_back(light);
@@ -126,14 +127,24 @@ Intersection* Room::findIntersection(const Ray* ray){
     // Later, check for cubes first.
 
     // first check for lights.
+
+    //std::cout << "finding intersection...";
+
+    //std::cout << "looking through light sources...\n";
     intersection = findIntersection(ray, light_container);
     // if we found light, return the point (it can't intersect with a wall in front of the light)
+    intersection->setIsLightsource(true);
     if(intersection->getIsIntersecting()) {
+        std::cout << "findIntersection: FOUND A LIGHT SOURCE!!!!!111!!!11!!!one!!!\n";
         return intersection;
     } // else, check for intersection with walls.
 
-    intersection = findIntersection(ray, object_container);
 
+    //std::cout << "FAIL!\n looking through walls...";
+    intersection = findIntersection(ray, object_container);
+    intersection->setIsLightsource(false);
+
+    std::cout << "returning function...\n";
     // return this regardless!
     return intersection;
 }
@@ -169,8 +180,18 @@ bool comparePoints(glm::vec3 v1, glm::vec3 v2){
     return (diff < EPSILON2);
 }
 
-glm::vec3 Room::calculateLight(glm::vec3 pos){
+glm::vec3 Room::calculateLight(Intersection* intersection){
+    glm::vec3 pos = intersection->getPoint();
     glm::vec3 radiance;
+
+    if(intersection->getIsLightsource()) {
+        radiance = radiance * intersection->getLe();
+        std::cout << "calculateLight: we found a lightsource! returning the Le of ";
+        std::cout << intersection->getLe() << "\n";
+    }
+
+
+    /*
     std::vector<Object*>::iterator itLight;
     for(itLight = light_container.begin(); itLight != light_container.end(); ++itLight){
         AreaLight* tmpLight = (AreaLight*)(*itLight);
@@ -183,6 +204,7 @@ glm::vec3 Room::calculateLight(glm::vec3 pos){
             }
         }
     }
+    */
     return radiance;
 }
 

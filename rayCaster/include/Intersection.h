@@ -13,6 +13,9 @@ class Intersection
 
         bool getIsIntersecting() const;
         void setIsIntersecting(bool boolInter);
+
+        bool getIsLightsource() const;
+        void setIsLightsource(bool isLightSource) ;
         float get_t() const;
         void set_t(float _t);
         int getIdObject() const;
@@ -41,6 +44,8 @@ class Intersection
         float Le;
 
         glm::vec3 point;
+
+        bool isLightSource;
 
     private:
 };

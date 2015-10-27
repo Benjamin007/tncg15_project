@@ -38,6 +38,14 @@ void Intersection::setIsIntersecting(bool boolInter){
     this->isIntersecting = boolInter;
 }
 
+bool Intersection::getIsLightsource() const{
+    return this->isLightSource;
+}
+
+void Intersection::setIsLightsource(bool isLightSource){
+    this->isLightSource = isLightSource;
+}
+
 float Intersection::get_t() const{
     return t;
 }
