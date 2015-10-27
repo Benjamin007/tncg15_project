@@ -94,7 +94,7 @@ Room::Room() {
 //        float const z1, z2;
 
     AreaLight *light = new AreaLight(1,roofPos,1.0f, roofNorm,100,100,
-                        -50,50,-50,50,roomZMin/3,roomZMax/3);
+                        -50,50,roomYMax,roomYMax,-400,-200);
     //AreaLight light = new AreaLight();
 
     this->light_container.push_back(light);
@@ -133,8 +133,8 @@ Intersection* Room::findIntersection(const Ray* ray){
     //std::cout << "looking through light sources...\n";
     intersection = findIntersection(ray, light_container);
     // if we found light, return the point (it can't intersect with a wall in front of the light)
-    intersection->setIsLightsource(true);
     if(intersection->getIsIntersecting()) {
+        intersection->setIsLightsource(true);
         std::cout << "findIntersection: FOUND A LIGHT SOURCE!!!!!111!!!11!!!one!!!\n";
         return intersection;
     } // else, check for intersection with walls.
@@ -142,7 +142,6 @@ Intersection* Room::findIntersection(const Ray* ray){
 
     //std::cout << "FAIL!\n looking through walls...";
     intersection = findIntersection(ray, object_container);
-    intersection->setIsLightsource(false);
 
     std::cout << "returning function...\n";
     // return this regardless!

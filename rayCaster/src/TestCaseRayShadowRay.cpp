@@ -63,9 +63,11 @@ void TestCaseRayShadowRay::testCase2() {
     AreaLight* lightObject = dynamic_cast<AreaLight*>(this->room->getLightContainer().at(0));
     glm::vec3 lightPoint = lightObject->getRandomPoint();
     glm::vec3 origin = glm::vec3(0,0,0);
-    Ray* ray = new Ray(origin, lightPoint-origin);
-
-    Intersection* lightIntersect = this->room->findIntersection(ray);
+    glm::vec3 direction = normalize(lightPoint-origin);
+    std::cout << "the direction of the shadow ray is " << direction.x << " " << direction.y << " " << direction.z << std::endl;
+    Ray* ray = new Ray(origin, direction);
+    Intersection* lightIntersect = new Intersection();
+    lightIntersect = this->room->findIntersection(ray);
     //point = new glm::vec3(0,0,0);
 
     glm::vec3 light = this->room->calculateLight(lightIntersect);

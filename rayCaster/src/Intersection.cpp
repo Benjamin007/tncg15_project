@@ -4,6 +4,7 @@ Intersection::Intersection()
 {
     //ctor
     isIntersecting = false;
+    isLightSource = false;
     t = 0.0;
     idObject = 0;
     BRDF = 0.0;
@@ -12,6 +13,7 @@ Intersection::Intersection()
 
 Intersection::Intersection(bool isInter, float _t, int id, float brdf){
     this->isIntersecting = isInter;
+    this->isLightSource = false;
     this->t = _t;
     this->idObject = id;
     this->BRDF = brdf;
