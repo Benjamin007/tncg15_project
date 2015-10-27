@@ -29,6 +29,7 @@ class Room
         std::vector<Object*> light_container;
         std::vector<Object*> object_container;
     private:
+        Intersection* findIntersection(const Ray* ray, std::vector<Object*> container);
 };
 
 #endif // ROOM_H

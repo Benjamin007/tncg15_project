@@ -18,8 +18,8 @@ int main()
     TestCase *raytracerTest = new TestCaseRayTracer();
     TestCase* shadowRayTest = new TestCaseRayShadowRay();
 //    TestCase* printTest = new TestCasePrintToFile();
-    //intersectionTest->run();
-    //intersectionTest2->run();
+    intersectionTest->run();
+    intersectionTest2->run();
     //raytracerTest->run();
     shadowRayTest->run();
     //printTest.run();

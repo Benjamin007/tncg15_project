@@ -30,7 +30,7 @@ void TestCaseRayShadowRay::testCase1() {
     for(int i = 0; i < 4; i++){
         glm::vec3 randomPos = light->getRandomPoint();
         std::cout << "checking if x is proper...";
-        if(light->x1 < randomPos.x < light->x2) {
+        if((light->x1 < randomPos.x) && (randomPos.x < light->x2)) {
             std::cout << "true\n";
         }
         else {
@@ -38,19 +38,20 @@ void TestCaseRayShadowRay::testCase1() {
         }
 
         std::cout << "checking if y is proper...";
-        if(light->y1 < randomPos.y < light->y2) {
+        if((light->y1 < randomPos.y) && (randomPos.y < light->y2)) {
             std::cout << "true\n";
         }
         else {
             std::cout << "false\n";
         }
 
-        std::cout << "checking if x is proper...";
-        if(light->z1 < randomPos.z < light->z2) {
+        std::cout << "checking if z is proper...";
+        if((light->z1 < randomPos.z) && (randomPos.z < light->z2)) {
             std::cout << "true\n";
         }
         else {
             std::cout << "false\n";
+            std::cout << "z1 < zvalue < z2? " << light->z1 << "<" << randomPos.z << "<" << light->z2 << std::endl << std::endl;
         }
     }
 }
@@ -63,6 +64,8 @@ void TestCaseRayShadowRay::testCase2() {
     //point = new glm::vec3(0,0,0);
 
     glm::vec3 light = this->room->calculateLight(point);
+
+    std::cout << "Light vector is: (" << light.x << "," << light.y << "," << light.z << ")\n";
 
     int div = 5;
 

@@ -121,28 +121,25 @@ void Room::addObject(Object* object){
 
 Intersection* Room::findIntersection(const Ray* ray){
     Intersection* intersection = new Intersection(false, 0, NULL, 0);
-    std::vector<Object*>::iterator itObject;
-    Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
     // we consider every object in the scene
 
-    //for(int i = 0; i < object_container.size(); i++){
-    for(itObject = object_container.begin(); itObject != object_container.end(); ++itObject){
-        //std::cerr << "Wall is:" << (*itObject)->getObjectID();
-        tmpInter = (*itObject)->getIntersection(ray);
-        //tmpInter = object_container.at(i)->getIntersection(ray);
-        if (tmpInter->getIsIntersecting()){
-            // the ray collides with this object
-            if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
-                // the object we are colliding with is nearer that the others one, or it is the first
-                intersection = tmpInter;
-            }
-        }
-    }
+    // Later, check for cubes first.
+
+    // first check for lights.
+    intersection = findIntersection(ray, light_container);
+    // if we found light, return the point (it can't intersect with a wall in front of the light)
+    if(intersection->getIsIntersecting()) {
+        return intersection;
+    } // else, check for intersection with walls.
+
+    intersection = findIntersection(ray, object_container);
+
+    // return this regardless!
     return intersection;
 }
 
-/*
-Intersection Room::findIntersection(const Ray* ray, std::vector<Object*> container) {
+
+Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> container) {
 
     Intersection* intersection = new Intersection(false, 0, NULL, 0);
     std::vector<Object*>::iterator itObject;
@@ -165,8 +162,6 @@ Intersection Room::findIntersection(const Ray* ray, std::vector<Object*> contain
     return intersection;
 
 }
-
-*/
 
 
 bool comparePoints(glm::vec3 v1, glm::vec3 v2){
