@@ -39,7 +39,7 @@ void TestCaseIntersection::run() {
 
     // init containers
     vector<Object*> object_container(0);
-    vector<LightSource*> light_container(0);
+    vector<Object*> light_container(0);
 
     int* idNorthWall = new int(4);
     Wall* northWall = new Wall(4);

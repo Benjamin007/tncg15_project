@@ -11,13 +11,13 @@
 class Room
 {
     public:
-        Room(std::vector<LightSource*> light_container, std::vector<Object*> object_container);
+        Room(std::vector<Object*> light_container, std::vector<Object*> object_container);
         Room(); // default constructer that creates 5 walls and a light.
         virtual ~Room();
 
         std::vector<Object*> getObjectContainer() const;
 
-        std::vector<LightSource*> getLightContainer() const;
+        std::vector<Object*> getLightContainer() const;
 
         void addObject(Object* object);
 
@@ -26,7 +26,7 @@ class Room
 
         glm::vec3 calculateLight(glm::vec3 pos);
     protected:
-        std::vector<LightSource*> light_container;
+        std::vector<Object*> light_container;
         std::vector<Object*> object_container;
     private:
 };

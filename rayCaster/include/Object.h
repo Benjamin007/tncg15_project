@@ -9,11 +9,16 @@ class Object
 {
     public:
         Object();
-        Object(int id);
+        Object(int id, glm::vec3 pos);
         virtual  Intersection* getIntersection(const Ray* const ray) const = 0;
         virtual ~Object();
+
+        const float getBRDF();
+
     protected:
         int id;
+        glm::vec3 pos;
+        const float BRDF;
     private:
 };
 

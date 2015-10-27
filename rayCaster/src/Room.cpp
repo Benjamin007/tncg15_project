@@ -6,7 +6,7 @@
 #define NBSHADOWRAY 3
 #define EPSILON2 0.01
 
-Room::Room(std::vector<LightSource*> light_container, std::vector<Object*> object_container)
+Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container)
 {
     this->light_container = light_container;
     this->object_container = object_container;
@@ -16,7 +16,7 @@ Room::Room(std::vector<LightSource*> light_container, std::vector<Object*> objec
 Room::Room() {
     // init containers
     std::vector<Object*> object_container(0);
-    std::vector<LightSource*> light_container(0);
+    std::vector<Object*> light_container(0);
 
     Wall *roof, *floor, *north, *south, *east, *west;
 
@@ -92,7 +92,7 @@ Room::Room() {
 //        float const y1, y2;
 //        float const z1, z2;
 
-    AreaLight *light = new AreaLight(roofPos,1.0f, roofNorm,
+    AreaLight *light = new AreaLight(1,roofPos,1.0f, roofNorm,100,100,
                         -50,50,-50,50,-250,-150);
     //AreaLight light = new AreaLight();
 
@@ -107,7 +107,7 @@ Room::~Room()
     //dtor
 }
 
-std::vector<LightSource*> Room::getLightContainer() const{
+std::vector<Object*> Room::getLightContainer() const{
     return this->light_container;
 }
 
@@ -141,6 +141,34 @@ Intersection* Room::findIntersection(const Ray* ray){
     return intersection;
 }
 
+/*
+Intersection Room::findIntersection(const Ray* ray, std::vector<Object*> container) {
+
+    Intersection* intersection = new Intersection(false, 0, NULL, 0);
+    std::vector<Object*>::iterator itObject;
+    Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
+    // we consider every object in the scene
+
+    //for(int i = 0; i < object_container.size(); i++){
+    for(itObject = container.begin(); itObject != container.end(); ++itObject){
+        //std::cerr << "Wall is:" << (*itObject)->getObjectID();
+        tmpInter = (*itObject)->getIntersection(ray);
+        //tmpInter = object_container.at(i)->getIntersection(ray);
+        if (tmpInter->getIsIntersecting()){
+            // the ray collides with this object
+            if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
+                // the object we are colliding with is nearer that the others one, or it is the first
+                intersection = tmpInter;
+            }
+        }
+    }
+    return intersection;
+
+}
+
+*/
+
+
 bool comparePoints(glm::vec3 v1, glm::vec3 v2){
     float diff = glm::distance(v2, v1);
     return (diff < EPSILON2);
@@ -148,12 +176,12 @@ bool comparePoints(glm::vec3 v1, glm::vec3 v2){
 
 glm::vec3 Room::calculateLight(glm::vec3 pos){
     glm::vec3 radiance;
-    std::vector<LightSource*>::iterator itLight;
+    std::vector<Object*>::iterator itLight;
     for(itLight = light_container.begin(); itLight != light_container.end(); ++itLight){
         AreaLight* tmpLight = (AreaLight*)(*itLight);
         glm::vec3 samplingLightPoint = tmpLight->getRandomPoint();
         for(int i = 0; i < NBSHADOWRAY; i++){
-            Ray* shadowRay = new Ray(samplingLightPoint, samplingLightPoint - pos);
+            Ray* shadowRay = new Ray(pos, samplingLightPoint - pos);
             Intersection* inter = this->findIntersection(shadowRay);
             if(comparePoints(inter->getPoint(), samplingLightPoint)){
                 radiance += tmpLight->getLe()/NBSHADOWRAY;

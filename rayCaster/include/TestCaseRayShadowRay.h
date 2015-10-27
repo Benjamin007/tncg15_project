@@ -9,6 +9,9 @@ class TestCaseRayShadowRay: public TestCase
         TestCaseRayShadowRay();
         virtual ~TestCaseRayShadowRay();
         void run();
+        void testCase1();
+        void testCase2();
+
     protected:
     private:
 };
