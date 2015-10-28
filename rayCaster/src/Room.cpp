@@ -1,14 +1,16 @@
 #include "Room.h"
 #include <iostream>
 #include <limits.h>
+#include <math.h>
 
 #define NBSHADOWRAY 1
 #define EPSILON2 0.1
 
-Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container)
+Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container, std::vector<Object*> cube_container)
 {
     this->light_container = light_container;
     this->object_container = object_container;
+    this->cube_container = cube_container;
     //ctor
 }
 
@@ -16,6 +18,7 @@ Room::Room() {
     // init containers
     std::vector<Object*> object_container(0);
     std::vector<Object*> light_container(0);
+    std::vector<Object*> cube_container(0);
 
     Wall *roof, *floor, *north, *south, *east, *west;
 
@@ -103,6 +106,8 @@ Room::Room() {
                         -50,50,roomYMax,roomYMax,roomZMid-50,roomZMid+50);
     //AreaLight light = new AreaLight();
 
+
+
     this->light_container.push_back(light);
 
 
@@ -126,7 +131,7 @@ void Room::addObject(Object* object){
     object_container.push_back(object);
 }
 
-Intersection* Room::findIntersection(const Ray* ray){
+Intersection* Room::findIntersection(Ray* ray){
     Intersection* intersection = new Intersection(false, 0, NULL, 0);
     // we consider every object in the scene
 
@@ -143,6 +148,7 @@ Intersection* Room::findIntersection(const Ray* ray){
         AreaLight* lightObj = dynamic_cast<AreaLight*>(light_container.at(intersection->getIdObject()));
         intersection->setIsLightsource(true);
         intersection->setLe(lightObj->getLe());
+        ray->setIntersection(intersection);
         //std::cout << "findIntersection: FOUND A LIGHT SOURCE!!!!!111!!!11!!!one!!!\n";
         return intersection;
     } // else, check for intersection with walls.
@@ -150,6 +156,8 @@ Intersection* Room::findIntersection(const Ray* ray){
 
     //std::cout << "FAIL!\n looking through walls...";
     intersection = findIntersection(ray, object_container);
+    ray->setIntersection(intersection);
+
     if(!intersection->getIsIntersecting()) {
         //std::cout << "We have a wall which we can't see... buggy indeed!\n";
 
@@ -193,6 +201,15 @@ bool comparePoints(glm::vec3 v1, glm::vec3 v2){
     return (diff < EPSILON2);
 }
 
+float calcGeometry(Intersection* pointInter, Intersection* shadowInter, Ray* shadowRay) {
+    float cosPoint, cosShadow, distance, result;
+    cosPoint = glm::dot(pointInter->getNormal(), shadowRay->getDirection());
+    cosShadow = glm::dot(shadowInter->getNormal(), -(shadowRay->getDirection()));
+    distance = glm::distance(pointInter->getPoint(), shadowInter->getPoint());
+    result = (cosPoint * cosShadow) / (distance * distance);
+    return result;
+}
+
 glm::vec3 Room::calculateColor(Intersection* intersection){
     glm::vec3 pos = intersection->getPoint();
     glm::vec3 radiance = glm::vec3(0,0,0);
@@ -231,7 +248,12 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
                     if(intersection->getIdObject() == 0) {
                         //std::cout << "BUG CASE! we got roof, but still found a light!\n";
                     }
-                    radiance += glm::vec3(1,1,1) * (tmpLight->getLe() / ((float) NBSHADOWRAY));
+                    float geometry = calcGeometry(intersection, shadowInter, shadowRay);
+                    glm::vec3 rayRadiance = glm::vec3(1,1,1);
+                    rayRadiance *= (tmpLight->getLe() / ((float) NBSHADOWRAY));
+                    rayRadiance *= geometry;
+                    radiance += rayRadiance;
+                    //radiance += glm::vec3(1,1,1) * (tmpLight->getLe() / ((float) NBSHADOWRAY));
                     counter++;
                 } else {
                     // this should be objects parallel to the light source :) problem is when we
@@ -263,12 +285,13 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
         }
     }
     */
-
-
     glm::vec3 color = intersection->getColor();
-    color.x = color.x * radiance.x;
-    color.y = color.y * radiance.y;
-    color.z = color.z * radiance.z;
+    // sqrt to get colors to shape
+    color.x = sqrt(color.x * radiance.x);
+    color.y = sqrt(color.y * radiance.y);
+    color.z = sqrt(color.z * radiance.z);
+
+    color *= 100.0f;
 
     return color;
 }

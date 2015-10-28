@@ -8,6 +8,7 @@ Intersection::Intersection()
     t = 0.0;
     idObject = 0;
     BRDF = 0.0;
+    this->normal = glm::vec3(0,0,0);
 }
 
 
@@ -18,6 +19,7 @@ Intersection::Intersection(bool isInter, float _t, int id, float brdf){ // shoul
     this->idObject = id;
     this->BRDF = brdf;
     this->color = glm::vec3(0,0,0); // default color...
+    this->normal = glm::vec3(0,0,0);
 }
 
 Intersection::Intersection(const Intersection& inter){
@@ -79,6 +81,14 @@ glm::vec3 Intersection::getColor() const{
 
 void Intersection::setColor(glm::vec3 color){
     this->color = color;
+}
+
+// normal
+glm::vec3 Intersection::getNormal() {
+    return normal;
+}
+void Intersection::setNormal(glm::vec3 normal){
+    this->normal = normal;
 }
 
 float Intersection::getLe() const{

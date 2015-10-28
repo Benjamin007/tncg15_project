@@ -87,6 +87,7 @@ Intersection* SurfaceObject::getIntersection(const Ray* const ray) const{
     inter->setBRDF(this->BRDF);
     inter->setColor(this->color);
     inter->setPoint(newPoint);
+    inter->setNormal(this->normal);
     return inter;
 
     //glm::vec3 intersection = o + t * dir;

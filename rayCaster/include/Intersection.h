@@ -25,6 +25,9 @@ class Intersection
 
         glm::vec3 getColor() const;
         void setColor(glm::vec3 color);
+        // normal
+        glm::vec3 getNormal();
+        void setNormal(glm::vec3 normal);
 
         float getLe() const;
         void setLe(float Le);
@@ -49,6 +52,7 @@ class Intersection
 
         glm::vec3 point;
         glm::vec3 color;
+        glm::vec3 normal;
 
         bool isLightSource;
 
