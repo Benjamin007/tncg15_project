@@ -14,10 +14,13 @@ class Object
         virtual ~Object();
 
         const float getBRDF();
+        glm::vec3 const getColor();
+        void setColor(glm::vec3 color);
 
     protected:
         int id;
         glm::vec3 pos;
+        glm::vec3 color;
         const float BRDF;
     private:
 };

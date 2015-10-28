@@ -38,12 +38,12 @@ Room::Room() {
     roomXMin = -200;
     roomXMid = 0;
     roomXMax = 200;
-    roomYMin = -100;
+    roomYMin = -200;
     roomYMid = 0;
-    roomYMax = 100;
+    roomYMax = 200;
     roomZMin = -500;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -300;
-    roomZMax = -100;
+    roomZMid = -250;
+    roomZMax = 0;
 
     // wall positions
 
@@ -68,17 +68,22 @@ Room::Room() {
 //Wall::Wall(int* id, glm::vec3 pos, glm::vec3 norm, float h, float w, float x1, float x2, float y1, float y2, float z1, float z2):Object(id){
 
 
-    roof    = new Wall(1, roofPos, roofNorm,
+    roof    = new Wall(0, roofPos, roofNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMax, roomYMax,roomZMin, roomZMax);
-    floor   = new Wall(2, floorPos, floorNorm,
+    roof->setColor(glm::vec3(0.0,0.6,0.0));
+    floor   = new Wall(1, floorPos, floorNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMin,roomZMin, roomZMax);
-    north   = new Wall(3, northPos, northNorm,
+    floor->setColor(glm::vec3(0.6,0.6,0.6));
+    north   = new Wall(2, northPos, northNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMax,roomZMin, roomZMin);
-    west    = new Wall(4, westPos, westNorm,
-                       NULL, NULL, roomXMin, roomXMin, roomYMin, roomYMax,roomZMin, roomZMax);
-    east    = new Wall(5, eastPos, eastNorm,
-                       NULL, NULL, roomXMax, roomXMax, roomYMin, roomYMax,roomZMin, roomZMax);
 
+    north->setColor(glm::vec3(0.4,0.4,0.4));
+    west    = new Wall(3, westPos, westNorm,
+                       NULL, NULL, roomXMin, roomXMin, roomYMin, roomYMax,roomZMin, roomZMax);
+    west->setColor(glm::vec3(0.6,0,0));
+    east    = new Wall(4, eastPos, eastNorm,
+                       NULL, NULL, roomXMax, roomXMax, roomYMin, roomYMax,roomZMin, roomZMax);
+    east->setColor(glm::vec3(0,0,0.6));
 
     this->object_container.push_back(roof);
     this->object_container.push_back(floor);
@@ -93,8 +98,8 @@ Room::Room() {
 //        float const y1, y2;
 //        float const z1, z2;
 
-    AreaLight *light = new AreaLight(1,roofPos,1.0f, roofNorm,100,100,
-                        -50,50,roomYMax,roomYMax,-400,-200);
+    AreaLight *light = new AreaLight(0,roofPos,1.0f, roofNorm,100,100,
+                        -50,50,roomYMax,roomYMax,roomZMid-50,roomZMid+50);
     //AreaLight light = new AreaLight();
 
     this->light_container.push_back(light);
@@ -134,8 +139,10 @@ Intersection* Room::findIntersection(const Ray* ray){
     intersection = findIntersection(ray, light_container);
     // if we found light, return the point (it can't intersect with a wall in front of the light)
     if(intersection->getIsIntersecting()) {
+        AreaLight* lightObj = dynamic_cast<AreaLight*>(light_container.at(intersection->getIdObject()));
         intersection->setIsLightsource(true);
-        std::cout << "findIntersection: FOUND A LIGHT SOURCE!!!!!111!!!11!!!one!!!\n";
+        intersection->setLe(lightObj->getLe());
+        //std::cout << "findIntersection: FOUND A LIGHT SOURCE!!!!!111!!!11!!!one!!!\n";
         return intersection;
     } // else, check for intersection with walls.
 
@@ -143,7 +150,7 @@ Intersection* Room::findIntersection(const Ray* ray){
     //std::cout << "FAIL!\n looking through walls...";
     intersection = findIntersection(ray, object_container);
 
-    std::cout << "returning function...\n";
+    //std::cout << "returning function...\n";
     // return this regardless!
     return intersection;
 }
@@ -179,16 +186,46 @@ bool comparePoints(glm::vec3 v1, glm::vec3 v2){
     return (diff < EPSILON2);
 }
 
-glm::vec3 Room::calculateLight(Intersection* intersection){
+glm::vec3 Room::calculateColor(Intersection* intersection){
     glm::vec3 pos = intersection->getPoint();
-    glm::vec3 radiance;
+    glm::vec3 radiance = glm::vec3(0,0,0);
 
+    // if the point light is a light, return the light!
     if(intersection->getIsLightsource()) {
-        radiance = radiance * intersection->getLe();
+        radiance = glm::vec3(1,1,1) * intersection->getLe();
         std::cout << "calculateLight: we found a lightsource! returning the Le of ";
         std::cout << intersection->getLe() << "\n";
-    }
+        return radiance;
+    } else {
+        // else, send shadow rays to all light sources and check for light contributions!
 
+
+        std::vector<Object*>::iterator itLight;
+        //std::cout << "The point was not a light source! sending shadow ray...";
+        for(itLight = light_container.begin(); itLight != light_container.end();++itLight) {
+            AreaLight* tmpLight = dynamic_cast<AreaLight*>(*itLight);
+            int counter = 0;
+            for(int i = 0; i < NBSHADOWRAY; i++ ) {
+                glm::vec3 samplingLightPoint = tmpLight->getRandomPoint();
+                Ray* shadowRay = new Ray(intersection->getPoint(), // origin
+                                        samplingLightPoint - intersection->getPoint()); // direction
+                Intersection* shadowInter = this->findIntersection(shadowRay);
+                if(comparePoints(shadowInter->getPoint(), samplingLightPoint)) {
+                    radiance += glm::vec3(1,1,1) * (tmpLight->getLe() / ((float) NBSHADOWRAY));
+                    counter++;
+                } else {
+                    //std::cout << "We sent a shadow ray, but it couldn't find anything :/\n";
+                }
+            }
+            //std::cout << "radiance is: (" << radiance.x << "," << radiance.y << "," << radiance.z << ")\n";
+            //radiance = radiance * (float) ((float)NBSHADOWRAY / ((float) counter)) * tmpLight->getLe();
+        }
+
+
+        //radiance = radiance * 0.0f;
+
+
+    }
 
     /*
     std::vector<Object*>::iterator itLight;
@@ -204,7 +241,14 @@ glm::vec3 Room::calculateLight(Intersection* intersection){
         }
     }
     */
-    return radiance;
+
+
+    glm::vec3 color = intersection->getColor();
+    color.x = color.x * radiance.x;
+    color.y = color.y * radiance.y;
+    color.z = color.z * radiance.z;
+
+    return color;
 }
 
 

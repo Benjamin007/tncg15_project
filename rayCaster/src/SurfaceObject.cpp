@@ -85,6 +85,7 @@ Intersection* SurfaceObject::getIntersection(const Ray* const ray) const{
 
     inter->set_t(t);
     inter->setBRDF(this->BRDF);
+    inter->setColor(this->color);
     inter->setPoint(newPoint);
     return inter;
 

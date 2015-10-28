@@ -22,6 +22,10 @@ class Intersection
         void setIdObject(int id);
         float getBRDF() const;
         void setBRDF(float brdf);
+
+        glm::vec3 getColor();
+        void setColor(glm::vec3 color);
+
         float getLe() const;
         void setLe(float Le);
 
@@ -44,6 +48,7 @@ class Intersection
         float Le;
 
         glm::vec3 point;
+        glm::vec3 color;
 
         bool isLightSource;
 

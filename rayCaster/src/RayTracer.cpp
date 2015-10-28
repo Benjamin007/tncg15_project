@@ -86,8 +86,17 @@ void RayTracer::calculateScreen() {
                 //std::cout << "RayTracer::calculateScreen got its first hit!\n";
                 //TODO: THIS IS A DUMMY FUNCTION!!!
                 wallCounter[result->getIdObject()-1]++;
-                glm::vec3 color = calculateLight(result, ray);
-                //glm::vec3 color = this->room->calculateLight(result);
+                //glm::vec3 color = calculateLight(result, ray);
+                glm::vec3 color = this->room->calculateColor(result);
+                // ugly hacks, if we can't find the light source, give us the fake room!
+                //std::cout << color. << " is length of color! \n\n\n";
+                float length = glm::distance(glm::vec3(0,0,0),color);
+
+                if(length < 0.0005) {
+                    //std::cout << "applying fake color!\n";
+                    //color = calculateLight(result, ray);
+                }
+
                 this->screen->assignColor(x,y,color);
 
             } else {
@@ -130,7 +139,7 @@ glm::vec3 calculateLight(Intersection* result, Ray* ray) {
     float z_coeff, y_coeff = 0.5f;
 
     z_coeff = 0.5f-0.5f*((abs(200.0f+interPoint.z)/200.0f));
-    y_coeff = 0.5f-0.5f*((abs(interPoint.y)/200.0f));
+    y_coeff = 0.5f-0.5f*((abs(interPoint.y)/400.0f));
 
     float light = 0.5f * z_coeff + 0.5f * y_coeff;
 

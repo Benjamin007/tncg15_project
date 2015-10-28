@@ -11,12 +11,13 @@ Intersection::Intersection()
 }
 
 
-Intersection::Intersection(bool isInter, float _t, int id, float brdf){
+Intersection::Intersection(bool isInter, float _t, int id, float brdf){ // should we add Color?
     this->isIntersecting = isInter;
     this->isLightSource = false;
     this->t = _t;
     this->idObject = id;
     this->BRDF = brdf;
+    this->color = glm::vec3(0,0,0); // default color...
 }
 
 Intersection::Intersection(const Intersection& inter){
@@ -70,6 +71,14 @@ float Intersection::getBRDF() const{
 
 void Intersection::setBRDF(float brdf){
     this->BRDF = brdf;
+}
+
+glm::vec3 Intersection::getColor() {
+    return color;
+}
+
+void Intersection::setColor(glm::vec3 color){
+    this->color = color;
 }
 
 float Intersection::getLe() const{

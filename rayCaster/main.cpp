@@ -20,8 +20,8 @@ int main()
 //    TestCase* printTest = new TestCasePrintToFile();
     //intersectionTest->run();
     //intersectionTest2->run();
-    //raytracerTest->run();
-    shadowRayTest->run();
+    raytracerTest->run();
+    //shadowRayTest->run();
     //printTest.run();
     return 0;
 
