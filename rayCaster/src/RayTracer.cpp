@@ -3,7 +3,6 @@
 #include <iomanip> // for set precision
 #include <stdlib.h>
 
-#include "Intersection.h"
 
 RayTracer::RayTracer(Screen* screen, Room* room)
 {

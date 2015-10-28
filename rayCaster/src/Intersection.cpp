@@ -73,7 +73,7 @@ void Intersection::setBRDF(float brdf){
     this->BRDF = brdf;
 }
 
-glm::vec3 Intersection::getColor() {
+glm::vec3 Intersection::getColor() const{
     return color;
 }
 
@@ -93,11 +93,16 @@ Intersection& Intersection::operator = (const Intersection& inter){
     this->idObject = inter.idObject;
     this->isIntersecting = inter.getIsIntersecting();
     this->t = inter.get_t();
+    this->BRDF = inter.BRDF;
+    this->Le = inter.Le;
+    this->isLightSource = inter.isLightSource;
+    this->point = inter.getPoint();
+    this->color = inter.getColor();
 
     return *this;
 }
 
-glm::vec3 Intersection::getPoint(){
+glm::vec3 Intersection::getPoint() const{
     return point;
 }
 

@@ -2,9 +2,9 @@
 #define SURFACEINTEGRATOR_H
 
 #include "Room.h"
-#include "Ray.h"
 #include "RayTracer.h"
 #include "Intersection.h"
+#include "math.h"
 
 class SurfaceIntegrator
 {

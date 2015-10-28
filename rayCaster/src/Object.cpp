@@ -1,6 +1,4 @@
 #include "Object.h"
-#include "Ray.h"
-#include "glm/glm/glm.hpp"
 
 Object::Object(): BRDF(1.0){
     this->id = 0;

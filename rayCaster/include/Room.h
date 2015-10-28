@@ -1,7 +1,8 @@
 #ifndef ROOM_H
 #include <vector>
-#include "LightSource.h"
-#include "Object.h"
+#include "glm/glm/glm.hpp"
+#include "AreaLight.h"
+#include "Wall.h"
 #define ROOM_H
 
 #include "Ray.h"

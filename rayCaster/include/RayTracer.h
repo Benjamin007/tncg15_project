@@ -3,6 +3,7 @@
 #include "Screen.h"
 #include "Room.h"
 #include "Ray.h"
+#include "Intersection.h"
 
 #define RAYTRACER_H
 

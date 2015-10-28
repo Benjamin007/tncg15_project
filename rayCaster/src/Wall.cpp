@@ -1,5 +1,4 @@
 #include "Wall.h"
-#include "SurfaceObject.h"
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 

@@ -1,8 +1,5 @@
 #include "Room.h"
-#include "Wall.h"
 #include <iostream>
-#include "glm/glm/glm.hpp"
-#include "AreaLight.h"
 #include <limits.h>
 
 #define NBSHADOWRAY 1
@@ -180,7 +177,7 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
             // the ray collides with this object
             if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
                 // the object we are colliding with is nearer that the others one, or it is the first
-                intersection = tmpInter;
+                *intersection = *tmpInter;  // or *intersection = *tmpInter?
             }
         }
     }

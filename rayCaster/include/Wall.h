@@ -3,11 +3,8 @@
 
 //#include "Object.h"
 #include "SurfaceObject.h"
-
 #include "glm/glm/glm.hpp"
-#include "Ray.h"
 #include <stddef.h>
-#include "math.h"
 
 class Wall : public SurfaceObject
 {
