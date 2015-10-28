@@ -7,6 +7,7 @@
 
 #include "Object.h"
 #include "Wall.h"
+#include "Cube.h"
 #include "LightSource.h"
 #include "AreaLight.h"
 
@@ -40,6 +41,7 @@ void TestCaseIntersection::run() {
     // init containers
     vector<Object*> object_container(0);
     vector<Object*> light_container(0);
+    vector<Object*> cube_container(0);
 
     int* idNorthWall = new int(4);
     Wall* northWall = new Wall(4);
@@ -48,7 +50,11 @@ void TestCaseIntersection::run() {
     AreaLight* light1 = new AreaLight();
     light_container.push_back(light1);
 
-    Room* room = new Room(light_container, object_container);
+    //Cube* cube = new Cube(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+    //cube_container.push_back(cube);
+
+
+    Room* room = new Room(light_container, object_container, cube_container);
 
     std::cout << "Created THE Room!\n";
 

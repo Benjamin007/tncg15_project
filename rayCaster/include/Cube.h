@@ -15,7 +15,8 @@ class Cube : public Object
         // just one z because our floorWall should be in a z plan!
         Cube(int id, glm::vec3 pos, float h, float w, float x1, float x2, float y1, float y2, float z);
         virtual ~Cube();
-        Intersection* getIntersection(const Ray* const ray) const;
+
+        //Intersection* getIntersection(const Ray* const ray) const;
     protected:
 
 
