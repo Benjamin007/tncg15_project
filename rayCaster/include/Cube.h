@@ -16,7 +16,7 @@ class Cube : public Object
         Cube(int id, glm::vec3 pos, float h, float w, float x1, float x2, float y, float z1, float z2);
         virtual ~Cube();
 
-        //Intersection* getIntersection(const Ray* const ray) const;
+        Intersection* getIntersection(const Ray* const ray) const;
     protected:
 
 
