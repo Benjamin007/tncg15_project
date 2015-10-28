@@ -33,6 +33,10 @@ glm::vec3 AreaLight::getRandomPoint(){
     return vec;
 }
 
+glm::vec3 AreaLight::getCenterPoint() {
+    return this->pos;
+}
+
 float AreaLight::getLe() const {
     return this->Le;
 }

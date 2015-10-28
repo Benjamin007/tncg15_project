@@ -3,6 +3,7 @@
 #include <iostream>
 #include "glm/glm/glm.hpp"
 #include "AreaLight.h"
+#include <limits.h>
 
 #define NBSHADOWRAY 1
 #define EPSILON2 0.1
@@ -98,7 +99,10 @@ Room::Room() {
 //        float const y1, y2;
 //        float const z1, z2;
 
-    AreaLight *light = new AreaLight(0,roofPos,1.0f, roofNorm,100,100,
+    glm::vec3 lightPos = glm::vec3(roofPos.x,roofPos.y-0.003,roofPos.z);
+    lightPos = roofPos;
+
+    AreaLight *light = new AreaLight(0,lightPos,1.0f, roofNorm,100,100,
                         -50,50,roomYMax,roomYMax,roomZMid-50,roomZMid+50);
     //AreaLight light = new AreaLight();
 
@@ -150,7 +154,7 @@ Intersection* Room::findIntersection(const Ray* ray){
     //std::cout << "FAIL!\n looking through walls...";
     intersection = findIntersection(ray, object_container);
     if(!intersection->getIsIntersecting()) {
-        std::cout << "We have a wall which we can't see... buggy indeed!\n";
+        //std::cout << "We have a wall which we can't see... buggy indeed!\n";
 
     }
 
@@ -186,9 +190,9 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
 
 
 bool comparePoints(glm::vec3 v1, glm::vec3 v2){
-    std::cout << "comparePoints: checking the diff..: ";
+    //std::cout << "comparePoints: checking the diff..: ";
     float diff = glm::distance(v2, v1);
-    std::cout << diff << "\n";
+    //std::cout << diff << "\n";
     return (diff < EPSILON2);
 }
 
@@ -199,8 +203,8 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
     // if the point light is a light, return the light!
     if(intersection->getIsLightsource()) {
         radiance = glm::vec3(1,1,1) * intersection->getLe();
-        std::cout << "calculateLight: we found a lightsource! returning the Le of ";
-        std::cout << intersection->getLe() << "\n";
+        //std::cout << "calculateLight: we found a lightsource! returning the Le of ";
+        //std::cout << intersection->getLe() << "\n";
         return radiance;
     } else {
         // else, send shadow rays to all light sources and check for light contributions!
@@ -214,10 +218,11 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
 
             if(intersection->getIdObject() == 0) {
                     // Here, we got a roof! We should debug all of these, because they should all be zero!
-                    std::cout << "Found a roof!";
+                    //std::cout << "Found a roof! " << FLT_MAX << " " << FLT_MIN;
             }
 
             for(int i = 0; i < NBSHADOWRAY; i++ ) {
+                //glm::vec3 samplingLightPoint = tmpLight->getCenterPoint();
                 glm::vec3 samplingLightPoint = tmpLight->getRandomPoint();
                 Ray* shadowRay = new Ray(intersection->getPoint(), // origin
                                         samplingLightPoint - intersection->getPoint()); // direction
@@ -227,7 +232,7 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
 
                 if(comparePoints(shadowInter->getPoint(), samplingLightPoint) && shadowInter->getIsIntersecting()) {
                     if(intersection->getIdObject() == 0) {
-                        std::cout << "BUG CASE! we got roof, but still found a light!\n";
+                        //std::cout << "BUG CASE! we got roof, but still found a light!\n";
                     }
                     radiance += glm::vec3(1,1,1) * (tmpLight->getLe() / ((float) NBSHADOWRAY));
                     counter++;

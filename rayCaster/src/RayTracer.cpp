@@ -79,8 +79,8 @@ void RayTracer::calculateScreen() {
             Intersection* result = this->room->findIntersection(ray);
             glm::vec3 dir = ray->getDirection();
             glm::vec3 rayPos = ray->getOrigin();
-            std::cout << "RayTracer::calculateScreen checked ray has direction:\n";
-            std::cout << "(" << dir.x << "," << dir.y << "," << dir.z << ")\n";
+            //std::cout << "RayTracer::calculateScreen checked ray has direction:\n";
+            //std::cout << "(" << dir.x << "," << dir.y << "," << dir.z << ")\n";
 
 
             if(result->getIsIntersecting()) {

@@ -17,6 +17,7 @@ class AreaLight : public SurfaceObject
         //float const z1, z2;
 
         glm::vec3 getRandomPoint();
+        glm::vec3 getCenterPoint();
         float getLe() const;
 
     protected:
