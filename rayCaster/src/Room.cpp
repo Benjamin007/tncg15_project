@@ -5,7 +5,7 @@
 #include "AreaLight.h"
 
 #define NBSHADOWRAY 3
-#define EPSILON2 0.01
+#define EPSILON2 0.1
 
 Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container)
 {
@@ -149,6 +149,10 @@ Intersection* Room::findIntersection(const Ray* ray){
 
     //std::cout << "FAIL!\n looking through walls...";
     intersection = findIntersection(ray, object_container);
+    if(!intersection->getIsIntersecting()) {
+        std::cout << "We have a wall which we can't see... buggy indeed!\n";
+
+    }
 
     //std::cout << "returning function...\n";
     // return this regardless!
@@ -182,7 +186,9 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
 
 
 bool comparePoints(glm::vec3 v1, glm::vec3 v2){
+    std::cout << "comparePoints: checking the diff..: ";
     float diff = glm::distance(v2, v1);
+    std::cout << diff << "\n";
     return (diff < EPSILON2);
 }
 
@@ -205,15 +211,29 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
         for(itLight = light_container.begin(); itLight != light_container.end();++itLight) {
             AreaLight* tmpLight = dynamic_cast<AreaLight*>(*itLight);
             int counter = 0;
+
+            if(intersection->getIdObject() == 0) {
+                    // Here, we got a roof! We should debug all of these, because they should all be zero!
+                    std::cout << "Found a roof!";
+            }
+
             for(int i = 0; i < NBSHADOWRAY; i++ ) {
                 glm::vec3 samplingLightPoint = tmpLight->getRandomPoint();
                 Ray* shadowRay = new Ray(intersection->getPoint(), // origin
                                         samplingLightPoint - intersection->getPoint()); // direction
                 Intersection* shadowInter = this->findIntersection(shadowRay);
-                if(comparePoints(shadowInter->getPoint(), samplingLightPoint)) {
+
+                bool isComparePoints = comparePoints(shadowInter->getPoint(), samplingLightPoint);
+
+                if(comparePoints(shadowInter->getPoint(), samplingLightPoint) && shadowInter->getIsIntersecting()) {
+                    if(intersection->getIdObject() == 0) {
+                        std::cout << "BUG CASE! we got roof, but still found a light!\n";
+                    }
                     radiance += glm::vec3(1,1,1) * (tmpLight->getLe() / ((float) NBSHADOWRAY));
                     counter++;
                 } else {
+                    // this should be objects parallel to the light source :) problem is when we
+                    // don't get here for object parallel to the light source :(
                     //std::cout << "We sent a shadow ray, but it couldn't find anything :/\n";
                 }
             }

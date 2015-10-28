@@ -3,8 +3,8 @@
 #define SCREEN_H
 
 // pixels in screen:
-#define HEIGHT 100
-#define WIDTH 100
+#define HEIGHT 10
+#define WIDTH 10
 
 // frustum variables:
 #define NEAR -100
