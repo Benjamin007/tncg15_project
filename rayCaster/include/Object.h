@@ -4,6 +4,7 @@
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 #include "Intersection.h"
+#include "math.h"
 
 class Object
 {

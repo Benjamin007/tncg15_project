@@ -4,7 +4,7 @@
 #include "glm/glm/glm.hpp"
 #include "AreaLight.h"
 
-#define NBSHADOWRAY 3
+#define NBSHADOWRAY 1
 #define EPSILON2 0.1
 
 Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container)

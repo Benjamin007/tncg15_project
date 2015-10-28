@@ -3,6 +3,10 @@
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 
+//Wall::Wall(){
+//
+//}
+
 Wall::Wall(int id):SurfaceObject(id,glm::vec3(0.0, 0.0, 0.0),glm::vec3(0.0, 0.0, 0.0),0,0,0,0,0,0,0,0)
 {
     //ctor

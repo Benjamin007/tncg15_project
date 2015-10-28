@@ -1,6 +1,7 @@
 #include "SurfaceObject.h"
 
 #define EPSILON 0.1
+#define EPSILONPARALLEL pow(10,-7)
 
 
 SurfaceObject::SurfaceObject() : SurfaceObject(0, glm::vec3(0,0,0),glm::vec3(0,0,0),0,0,0,0,0,0,0,0)
@@ -40,7 +41,7 @@ const float SurfaceObject::getBRDF() {
 
 
 bool SurfaceObject::isParallel(const Ray* ray) const{
-    if (dot(ray->getDirection(), normal) == 0){
+    if (abs(dot(ray->getDirection(), normal)) == 0){
     return true;
     }
     return false;
