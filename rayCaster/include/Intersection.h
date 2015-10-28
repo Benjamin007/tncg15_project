@@ -23,13 +23,13 @@ class Intersection
         float getBRDF() const;
         void setBRDF(float brdf);
 
-        glm::vec3 getColor();
+        glm::vec3 getColor() const;
         void setColor(glm::vec3 color);
 
         float getLe() const;
         void setLe(float Le);
 
-        glm::vec3 getPoint();
+        glm::vec3 getPoint() const;
         void setPoint(glm::vec3 newPoint);
 
         Intersection& operator = (const Intersection& inter);

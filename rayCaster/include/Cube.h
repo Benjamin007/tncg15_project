@@ -12,14 +12,15 @@ class Cube : public Object
         // be careful with the id...
         // normal given in argument directed toward the outside of the cube!
         // the cube is created in the aligment of the world frame
-        // just one z because our floorWall should be in a z plan!
-        Cube(int id, glm::vec3 pos, float h, float w, float x1, float x2, float y1, float y2, float z);
+        // just one y because our floorWall should be in a y plan!
+        Cube(int id, glm::vec3 pos, float h, float w, float x1, float x2, float y, float z1, float z2);
         virtual ~Cube();
         Intersection* getIntersection(const Ray* const ray) const;
     protected:
 
 
     private:
+        int id;
         Wall* ceilWall;
         Wall* floorWall;
         Wall* northWall;
