@@ -148,6 +148,7 @@ Intersection* Room::findIntersection(Ray* ray){
         AreaLight* lightObj = dynamic_cast<AreaLight*>(light_container.at(intersection->getIdObject()));
         intersection->setIsLightsource(true);
         intersection->setLe(lightObj->getLe());
+        ray->setIntersection(intersection);
         //std::cout << "findIntersection: FOUND A LIGHT SOURCE!!!!!111!!!11!!!one!!!\n";
         return intersection;
     } // else, check for intersection with walls.
@@ -155,6 +156,8 @@ Intersection* Room::findIntersection(Ray* ray){
 
     //std::cout << "FAIL!\n looking through walls...";
     intersection = findIntersection(ray, object_container);
+    ray->setIntersection(intersection);
+
     if(!intersection->getIsIntersecting()) {
         //std::cout << "We have a wall which we can't see... buggy indeed!\n";
 

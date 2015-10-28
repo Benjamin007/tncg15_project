@@ -18,6 +18,9 @@ class Ray
         glm::vec3 getColor();   // recursive function that will calculate total color, whop whop!
         glm::vec3 setColor(glm::vec3 color);
 
+        Intersection* getIntersection();
+        void setIntersection(Intersection* intersection);
+
         float getMin_t() const;
         void setMin_t(float t);
         int getId_IntersectedObject() const;

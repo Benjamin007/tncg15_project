@@ -47,3 +47,10 @@ glm::vec3 Ray::setColor(glm::vec3 color) {
     this->color = color;
 };
 
+Intersection* Ray::getIntersection() {
+    return this->intersection;
+}
+void Ray::setIntersection(Intersection* intersection) {
+    this->intersection = intersection;
+}
+
