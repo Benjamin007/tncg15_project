@@ -45,6 +45,11 @@ Screen::Screen()
 Screen::~Screen()
 {
     //dtor
+    for(int i = 0; i < HEIGHT; i++){
+        for(int j = 0; j < HEIGHT; j++ ){
+            delete screen[i][j];
+        }
+    }
 }
 
 int Screen::getHeight() const {

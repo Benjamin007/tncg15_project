@@ -32,8 +32,8 @@ RayTracer::RayTracer()
 RayTracer::~RayTracer()
 {
     //dtor
-//    delete screen;
-//    delete room;
+    delete screen;
+    delete room;
 }
 
 glm::vec3 calculateLight(Intersection* result,Ray* ray);

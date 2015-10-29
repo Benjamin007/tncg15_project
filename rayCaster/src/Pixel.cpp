@@ -42,6 +42,7 @@ Pixel::Pixel(glm::vec3 pos, float height, float width)
 Pixel::~Pixel()
 {
     //dtor
+    delete ray;
 }
 
 // orientation access functions
@@ -107,6 +108,7 @@ Ray* Pixel::getRay() {
 }
 
 void Pixel::setRay(Ray *ray) {
+    delete this->ray;
     this->ray = ray;
 }
 
