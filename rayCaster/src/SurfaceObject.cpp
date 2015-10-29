@@ -81,6 +81,7 @@ Intersection* SurfaceObject::getIntersection(const Ray* const ray) const{
        || (newPoint.z < (z1-EPSILON) || newPoint.z > (z2 +EPSILON))) {
         t = 0;
         inter->setIsIntersecting(false);
+        return inter;
     }
 
     inter->set_t(t);
@@ -88,6 +89,8 @@ Intersection* SurfaceObject::getIntersection(const Ray* const ray) const{
     inter->setColor(this->color);
     inter->setPoint(newPoint);
     inter->setNormal(this->normal);
+    inter->setIsIntersecting(true);
+    inter->setIdObject(this->getId());
     return inter;
 
     //glm::vec3 intersection = o + t * dir;

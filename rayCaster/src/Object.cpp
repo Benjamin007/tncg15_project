@@ -30,5 +30,13 @@ void Object::setColor(glm::vec3 color) {
     this->color = color;
 }
 
+glm::vec3 Object::getPos() const{
+    return pos;
+}
+
+int Object::getId() const{
+    return id;
+}
+
 
 // WARNING! This will return null if not an intersection

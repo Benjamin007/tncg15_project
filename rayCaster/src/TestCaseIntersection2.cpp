@@ -1,5 +1,5 @@
 #include "TestCaseIntersection2.h"
-#include <iostream>
+
 
 TestCaseIntersection2::TestCaseIntersection2()
 {
@@ -31,7 +31,7 @@ void TestCaseIntersection2::run() {
 
     for(int x = 0; x < 1; x++) {
         for (int y = 0;y < 1;y++) {
-            std::cout << "currntly x, y is: " << x << ", " << y << "\n";
+            std::cout << "currently x, y is: " << x << ", " << y << "\n";
 
             glm::vec3 origin = glm::vec3(0.0,0.0,0.0);
             //glm::vec3 direction = glm::vec3(((2-x),(2-y),-1.0);

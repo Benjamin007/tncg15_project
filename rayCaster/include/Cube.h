@@ -17,6 +17,8 @@ class Cube : public Object
         virtual ~Cube();
 
         Intersection* getIntersection(const Ray* const ray) const;
+
+        void printCube();
     protected:
 
 

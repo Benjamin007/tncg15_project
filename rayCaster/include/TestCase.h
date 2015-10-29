@@ -3,7 +3,7 @@
 #include "Room.h"
 #include "Screen.h"
 #include "RayTracer.h"
-
+#include <iostream>
 
 class TestCase
 {

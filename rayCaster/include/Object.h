@@ -3,7 +3,7 @@
 
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
-
+#include <iostream>
 
 class Object
 {
@@ -16,6 +16,8 @@ class Object
         const float getBRDF();
         glm::vec3 const getColor();
         void setColor(glm::vec3 color);
+        glm::vec3 getPos() const;
+        int getId() const;
 
     protected:
         int id;

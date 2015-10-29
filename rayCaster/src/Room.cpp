@@ -110,8 +110,19 @@ Room::Room() {
 
     this->light_container.push_back(light);
 
-
-
+    // add a cube inside the room
+//    int idCube = 20; // careful, the next id (idCube + 6) are taken!
+//    glm::vec3 posCube = glm::vec3(roomXMid, roomYMid, roomZMid);
+//    float hCube = 10;
+//    float wCube = hCube;
+//    float x1Cube = posCube.x - wCube/2;
+//    float x2Cube = posCube.x + wCube/2;
+//    float yCube = posCube.y;
+//    float z1Cube = posCube.z - wCube/2;
+//    float z2Cube = posCube.z + wCube/2;
+//    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+//    cube->printCube();
+//    this->cube_container.push_back(cube);
 }
 
 Room::~Room()
@@ -136,7 +147,11 @@ Intersection* Room::findIntersection(Ray* ray){
     // we consider every object in the scene
 
     // Later, check for cubes first.
-
+    intersection = findIntersection(ray, cube_container);
+    if(intersection->getIsIntersecting()) {
+        ray->setIntersection(intersection);
+        return intersection;
+    }
     // first check for lights.
 
     //std::cout << "finding intersection...";
@@ -185,12 +200,11 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
             // the ray collides with this object
             if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
                 // the object we are colliding with is nearer that the others one, or it is the first
-                *intersection = *tmpInter;  // or *intersection = *tmpInter?
+                intersection = tmpInter;  // or *intersection = *tmpInter?
             }
         }
     }
     return intersection;
-
 }
 
 

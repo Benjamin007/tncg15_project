@@ -2,7 +2,7 @@
 #include "AreaLight.h"
 #include "glm/glm/glm.hpp"
 //#include "glm/glm/glm.hpp"
-#include <iostream>
+
 
 TestCaseRayShadowRay::TestCaseRayShadowRay()
 {

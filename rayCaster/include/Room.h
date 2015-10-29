@@ -8,6 +8,8 @@
 #include "Ray.h"
 #include "Intersection.h"
 #include <stddef.h>
+#include "Room.h"
+#include "Cube.h"
 
 class Room
 {
