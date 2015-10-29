@@ -1,0 +1,136 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsfonts, amsmath, amssymb, amstext, latexsym}
+\usepackage{graphicx, epsfig}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[margin=1.0in]{geometry}
+\usepackage{exscale}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amssymb}
+%\usepackage{listings}
+%\usepackage{textcomp}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\noi}{\noindent}
+\newcommand{\dsp}{\displaystyle}
+\newcommand{\iieme}{i^{\footnotesize \mbox{ème}}}
+\newcommand{\jieme}{j^{\footnotesize \mbox{ème}}}
+\newcommand{\jmunieme}{(j-1)^{\footnotesize \mbox{ème}}}
+\newcommand{\dsum}[2]{\sum\limits_{#1}^{#2}}
+\newcommand{\dprod}[2]{\prod\limits_{#1}^{#2}}
+
+\def\ligne#1{\leaders\hrule height #1\linethickness \hfill}
+% utilisation :
+% \ligne{5}
+
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\numberwithin{equation}{section}
+
+
+\textheight 25cm
+\textwidth 16cm
+\oddsidemargin 0cm
+\evensidemargin 0cm
+\topmargin 0cm
+\hoffset -0mm
+\voffset -20mm
+
+\pagestyle{plain}
+
+\title{{Report TNCG15 }\\}
+
+\author{Benjamin Palisse \\ Ikshu Dutta}
+%\date{\today\\\currenttime}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Abstract}
+This paper presents a global illumination method, whom the aim is to add light in a 3D scene to obtain a realistic effect. All the results are presented in a room which is rendered by using a Monte Carlo Ray Tracer. Rays are launched from the camera towards every pixel on the screen. We compute the radiance at every intersection point between a ray and an object in the scene along with the global rendering equation. The rays bounces in random direction. The Russian Roulette is used to limit the recursion of the rays. All the objects of the room are Lambertian reflectors: the five walls (the room is not closed on the side of the camera) and the 3 cubes too. The walls of the room have different colors, and two area lights  are lighting up the room.
+
+\section{Introduction}
+
+To compute the light inside a 3D scene, we need to compute the distribution of light energy in the scene. To do so, we will consider the radiance, because this quantity reveals the appearance of the objects [Advanced Global Illumination]. Ray tracing is mainly used to compute the radiance in the scene, but it is very time consuming. Different kind of ray tracer exists, for instance the Whitted ray tracer or the Monte Carlo ray tracer. Their difference resides in the way they compute the indirect illumination term of the global rendering equation. Once a ray hit a surface, the radiance of the objects around is supposed to be taken into account. So, we need to send other rays from the intersection point towards the rest of the scene.\\
+\\
+In the Whitted ray tracer, 2 new ray are created: one in the specular reflection (see $figure 1$) and the other one in the refracted direction (see $figure 2$). Both of these directions are computed by the Snell-Descarte laws. This is well adapted for perfect specular and transparent objects.
+In the Monte-Carlo ray tracer, one or more rays are sent in a random direction toward the scene. This is adapted to Lambertian reflectors, which send a perfect diffus light (see $figure 3$). To finish the recursion of rays created when a ray hit a surface, the russian roulette is an efficient method: after every hit, a ray has a probability$\alpha$ to kill itself and so to not create more rays. However, it gives noisy results. A way to improve the results is to use a two pass rendering method[article presentation].\\
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.6]{425px-ray_optics_diagram_incidence_reflection_and_refraction_svg_wide.png}
+    \caption{a ray is reflected in the specular direction after hitting a mirror}
+    \label{fig:1}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.3]{RefractionModelisation.png}
+    \caption{a ray is refracted, and a smaller part is reflected}
+    \label{fig:2}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=2.0]{diffus.png}
+    \caption{diffus light: it seems the same regardless of the observer's angle of view }
+    \label{fig:3}
+  \end{center}
+\end{figure}
+
+In a two pass rendering method, two photon maps are computed during the first pass: photons are emitted from the lights sources and are stored in these photon maps when they hit a surface. Then, during the second pass, the ray caster one, we already have a rough representation of light within the model. With this information, optimized sampling directions can be generated one a ray hit a surface (the directions where the photon map indicate a lot of photons). Moreover, the number of shadow ray inside the programm can be greatly reduced by using the shadow photons. Furthermore, one of the two photon maps allows to render caustic effect, which is normally very hard to render with a "normal" Monte Carlo ray tracer.\\
+
+
+A use of a ray caster can be the detection of iso-surface[article]. Rays are cast from the camera toward every pixel and then go across the scene. We follow every ray with a step $dt$ and at every step, we compute the value of the data we are interested in. The aim is to find at which moment we will reach the isovalue. However, since we discretize the values along the ray, it is possible and even very probable that the values computed on the ray will never be exactly equal to the isosurface, even if the ray cross it. One solution is to reduced the step $dt$, but even so the isovalue could still be between two discret values of the ray, and the more $dt$ is little, the more the calculation take time. So it is better to consider the difference $valueComputed - isovalue$. When the sign of this difference changes (the value on ray become bigger or smaller than the isovalue), we know we just cross an isosurface. Then, we can find more precisely where the isovalue is taken, by using a dichotomic algorithm or a reverse linear interpolation.\\
+
+The first section is the introduction. In section 2, we will discuss the techniques like the Russian Roulette that we have implemented. The section 3 presents some results we obtained with our implementation. Then, in the section 4, we will explain how we can improve our renderer and the realism of our pictures. 
+
+\section{Background}
+
+\subsection{Intersection}
+To compute the intersection between a ray and the objects in our room, we compute the possible intersections the ray can collide with, and then we keep the nearest one. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like sphere or cube in our room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closer object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall or the sphere.\\
+
+\subsection{Reflected rays}
+Once a ray hits a surface, we chose if the ray stop there or bounce (Russian Roulette) with a probability $\alpha$. If we make it bounce, then we randomly create two angles $\theta$ and $\phi$ we create a fictif point which has the following spheric coordinates: $(r=1, \theta, \psi)$. We transform these coordinate in cartesian ones, and the new ray is directed toward this fictif point.
+
+\subsection{Intensities}
+
+\subsection{Shadow ray}
+
+Every time a ray hit a surface, we need to compute how much radiance there is on this surface. To do so, we divide the incoming radiance in two parts, the direct lightings and the indirect lightings. For the direct part, we need to know if the intersection point receive light from the surface lights. To know that, we sample $n$ random points on the surface area, and then we create $n$ "shadow rays". These rays have the intersection point as origin, and are directed towards the sampled points on the light (figure $4$). We check then the intersections of the shadow rays with the room: if there are on the light, then we have a direct illumination. If there are not on the light, then there is an obstacle on the way and there is no direct illumination. It is possible that some of the shadow rays find a light and other don't. That's why we weighted the light given by the light source to the intersection point: if only half of shadow rays find a light source, then the contribution of this light source will be only half of what it would have been if all the shadow rays found the light source. We do that for every light inside the room. The result change along with the number $n$ of shadow rays.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.5]{500px-Ray_trace_diagram.png}
+    \caption{once the ray hits the sphere, a shadow ray is sent toward the light source}
+    \label{fig:4}
+  \end{center}
+\end{figure}
+
+\section{Results and benchmarks}
+
+
+\section{Discussion}
+
+The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. We could add Oren-Nayor reflectors at our scene. The walls will stay Lambertian reflectors, but the sphere should become Oren-Nayor reflector. The object sphere has an attribut BRDF which is a float initialized in the
+constructor of sphere, we should make it a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. To increase the performance of our program, we could incorporate a better manager for the intersections: for now, we test the intersection between a ray and every object in the room, even if the ray miss them from a lot. We could put the objects of our scene in an octree for instance.[wikipédia Octree] 
+
+
+\section{Reference list}
+\noindent [1] Philip Dutr\'e, Philippe Bekaert, Kavita Bala: "Advanced Global Illumination", 2002\\
+$[2]$ Matt Pharr, Greg Humphreys: "Physically Based Rendering Second Edition" $2004$\\
+$[3]$ Henrik Wann Jensen, "Global Illumination using Photon Maps" \\
+$[4]$ Henrik Wann Jensen "A Practical Guide to Global Illumination using Photon Maps" Siggraph 2000 Course 8 Sunday, July 23, $2000$\\
+$[5]$ https://fr.wikipedia.org/wiki/Octree\\
+
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{biblio}
+\end{document}
