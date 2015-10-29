@@ -2,8 +2,9 @@
 #include <iostream>
 #include <limits.h>
 #include <math.h>
+#include <memory>
 
-#define NBSHADOWRAY 1
+#define NBSHADOWRAY 100
 #define EPSILON2 0.1
 #define RUSSIAN_P 0.5
 
@@ -29,12 +30,6 @@ Room::Room() {
     float roomXMin, roomXMid, roomXMax;
     float roomYMin, roomYMid, roomYMax;
     float roomZMin, roomZMid, roomZMax;
-
-    int* roomID1 = new int(1);
-    int* roomID2 = new int(2);
-    int* roomID3 = new int(3);
-    int* roomID4 = new int(4);
-    int* roomID5 = new int(5);
 
     // global room coordinates
     roomXMin = -200;
@@ -72,7 +67,7 @@ Room::Room() {
 
     roof    = new Wall(0, roofPos, roofNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMax, roomYMax,roomZMin, roomZMax);
-    roof->setColor(glm::vec3(0.0,0.6,0.0));
+    roof->setColor(glm::vec3(0.9,0.6,0.6));
     floor   = new Wall(1, floorPos, floorNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMin,roomZMin, roomZMax);
     floor->setColor(glm::vec3(0.6,0.6,0.6));
@@ -82,10 +77,10 @@ Room::Room() {
     north->setColor(glm::vec3(0.4,0.4,0.4));
     west    = new Wall(3, westPos, westNorm,
                        NULL, NULL, roomXMin, roomXMin, roomYMin, roomYMax,roomZMin, roomZMax);
-    west->setColor(glm::vec3(0.6,0,0));
+    west->setColor(glm::vec3(0.6,0.9,0.6));
     east    = new Wall(4, eastPos, eastNorm,
                        NULL, NULL, roomXMax, roomXMax, roomYMin, roomYMax,roomZMin, roomZMax);
-    east->setColor(glm::vec3(0,0,0.6));
+    east->setColor(glm::vec3(0.6,0.6,0.9));
 
     this->object_container.push_back(roof);
     this->object_container.push_back(floor);
@@ -112,18 +107,18 @@ Room::Room() {
     this->light_container.push_back(light);
 
     // add a cube inside the room
-//    int idCube = 20; // careful, the next id (idCube + 6) are taken!
-//    glm::vec3 posCube = glm::vec3(roomXMid, roomYMid, roomZMid);
-//    float hCube = 10;
-//    float wCube = hCube;
-//    float x1Cube = posCube.x - wCube/2;
-//    float x2Cube = posCube.x + wCube/2;
-//    float yCube = posCube.y;
-//    float z1Cube = posCube.z - wCube/2;
-//    float z2Cube = posCube.z + wCube/2;
-//    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
-//    cube->printCube();
-//    this->cube_container.push_back(cube);
+    int idCube = 20; // careful, the next id (idCube + 6) are taken!
+    glm::vec3 posCube = glm::vec3(roomXMid, roomYMin+10, roomZMid-50);
+    float hCube = 50;
+    float wCube = hCube;
+    float x1Cube = posCube.x - wCube/2;
+    float x2Cube = posCube.x + wCube/2;
+    float yCube = posCube.y;
+    float z1Cube = posCube.z - wCube/2;
+    float z2Cube = posCube.z + wCube/2;
+    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    cube->printCube();
+    this->cube_container.push_back(cube);
 }
 
 Room::~Room()
@@ -187,15 +182,15 @@ Intersection* Room::findIntersection(Ray* ray){
 
 Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> container) {
 
-    Intersection* intersection = new Intersection(false, 0, NULL, 0);
+    std::shared_ptr<Intersection> intersection(new Intersection(false, 0, NULL, 0));
     std::vector<Object*>::iterator itObject;
-    Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
+    std::shared_ptr<Intersection> tmpInter(new Intersection(false, 0, NULL, 0));
     // we consider every object in the scene
 
     //for(int i = 0; i < object_container.size(); i++){
     for(itObject = container.begin(); itObject != container.end(); ++itObject){
         //std::cerr << "Wall is:" << (*itObject)->getObjectID();
-        tmpInter = (*itObject)->getIntersection(ray);
+        tmpInter = std::make_shared<Intersection>((*itObject)->getIntersection(ray));
         //tmpInter = object_container.at(i)->getIntersection(ray);
         if (tmpInter->getIsIntersecting()){
             // the ray collides with this object
@@ -203,6 +198,8 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
                 // the object we are colliding with is nearer that the others one, or it is the first
 
                 intersection = tmpInter;
+            } else {
+                //delete tmpInter;
             }
         }
     }
@@ -277,6 +274,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
                     // don't get here for object parallel to the light source :(
                     //std::cout << "We sent a shadow ray, but it couldn't find anything :/\n";
                 }
+                delete shadowRay;
             }
             //std::cout << "radiance is: (" << radiance.x << "," << radiance.y << "," << radiance.z << ")\n";
             //radiance = radiance * (float) ((float)NBSHADOWRAY / ((float) counter)) * tmpLight->getLe();
@@ -320,7 +318,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
 
         float randomNum = (float) rand()/(float)RAND_MAX;
 
-        if(randomNum < RUSSIAN_P) {
+        if((randomNum < RUSSIAN_P && ray->getDepth() != 0) || ray->getDepth() > 4) {
             std::cout << "total depth is " << ray->getDepth() << "\n";
             return 0.9f * color;
         } else {
@@ -344,10 +342,12 @@ glm::vec3 Room::calculateColor(Ray* ray){
 
             this->findIntersection(outgoingRay);
 
+            delete ray;
+
             // create a random output direction, throw it into the new ray
 
             // recursivly do stuff, and weight the incoming and outcoming light (hard coded BRDF);
-            std::cout << "doing recursive stuff! depth " << ray->getDepth() << " and going!\n";
+            //std::cout << "doing recursive stuff! depth " << ray->getDepth() << " and going!\n";
             return 1.5f * color +  0.1f * cosOutgoingAngle * this->calculateColor(outgoingRay);
         }
 
