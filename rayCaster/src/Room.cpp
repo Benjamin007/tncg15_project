@@ -211,6 +211,8 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
 }
 
 
+
+
 bool comparePoints(glm::vec3 v1, glm::vec3 v2){
     //std::cout << "comparePoints: checking the diff..: ";
     float diff = glm::distance(v2, v1);
