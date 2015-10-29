@@ -18,15 +18,23 @@ class Ray
         glm::vec3 getColor();   // recursive function that will calculate total color, whop whop!
         glm::vec3 setColor(glm::vec3 color);
 
+        void setChild(Ray* ray);
+        Ray* getChild() const;
+
         Intersection* getIntersection();
         void setIntersection(Intersection* intersection);
 
         float getMin_t() const;
         void setMin_t(float t);
+
+        int getDepth() const;
+        void setDepth(int t);
+
         int getId_IntersectedObject() const;
         void setId_IntersectedObject(int i);
     protected:
 
+        int depth;
         int pixelX, pixelY;
         glm::vec3 origin;
         glm::vec3 direction; // must be normalized

@@ -3,6 +3,8 @@
 #include <iomanip> // for set precision
 #include <stdlib.h>
 
+#define SUPER_SAMPLING_NUMBER 1
+
 
 RayTracer::RayTracer(Screen* screen, Room* room)
 {
@@ -55,9 +57,14 @@ void RayTracer::calculateScreen() {
         for (int y = 0; y < height;y++) {
             // cast a ray into the scene
             pixel_pos = this->screen->getPixelPos(x,y);
-            //pixel_pos = glm::vec3(x,y,screen->getNear());
-            Ray* ray = new Ray(camera_pos, glm::normalize(pixel_pos-camera_pos));
-            this->screen->assignRay(x,y,ray);
+
+            for(int i = 0; i < SUPER_SAMPLING_NUMBER;i++) {
+                //pixel_pos = glm::vec3(x,y,screen->getNear());
+                Ray* ray = new Ray(camera_pos, glm::normalize(pixel_pos-camera_pos));
+                // UGLY HAX fake roulette!
+                ray->setChild(new Ray());
+                this->screen->assignRay(x,y,ray);
+            }
         }
     }
 
@@ -87,7 +94,7 @@ void RayTracer::calculateScreen() {
                 //TODO: THIS IS A DUMMY FUNCTION!!!
                 wallCounter[result->getIdObject()-1]++;
                 //glm::vec3 color = calculateLight(result, ray);
-                glm::vec3 color = this->room->calculateColor(result);
+                glm::vec3 color = this->room->calculateColor(ray);
                 // ugly hacks, if we can't find the light source, give us the fake room!
                 //std::cout << color. << " is length of color! \n\n\n";
                 float length = glm::distance(glm::vec3(0,0,0),color);

@@ -5,6 +5,7 @@
 
 #define NBSHADOWRAY 1
 #define EPSILON2 0.1
+#define RUSSIAN_P 0.5
 
 Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container, std::vector<Object*> cube_container)
 {
@@ -200,7 +201,8 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
             // the ray collides with this object
             if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
                 // the object we are colliding with is nearer that the others one, or it is the first
-                intersection = tmpInter;  // or *intersection = *tmpInter?
+
+                intersection = tmpInter;
             }
         }
     }
@@ -224,7 +226,8 @@ float calcGeometry(Intersection* pointInter, Intersection* shadowInter, Ray* sha
     return result;
 }
 
-glm::vec3 Room::calculateColor(Intersection* intersection){
+glm::vec3 Room::calculateColor(Ray* ray){
+    Intersection* intersection = ray->getIntersection();
     glm::vec3 pos = intersection->getPoint();
     glm::vec3 radiance = glm::vec3(0,0,0);
 
@@ -305,9 +308,54 @@ glm::vec3 Room::calculateColor(Intersection* intersection){
     color.y = sqrt(color.y * radiance.y);
     color.z = sqrt(color.z * radiance.z);
 
-    color *= 100.0f;
+    color *= 200.0f; // scaling factor... Can contain the P from the Russian Roulette.
 
-    return color;
+    // Monte Carlo Part...
+    // UGLY HAX instead of checking if a child is defined, use probability stuff
+
+    //if(!ray->getChild() == NULL) {
+
+
+        //std::cout << "Room::CalculateColor -- Generating random outgoing ray!\n";
+
+        float randomNum = (float) rand()/(float)RAND_MAX;
+
+        if(randomNum < RUSSIAN_P) {
+            std::cout << "total depth is " << ray->getDepth() << "\n";
+            return 0.9f * color;
+        } else {
+
+            float randPhi = rand() * 2.0*M_PI; // defined for whole azimoth.
+            float randTheta   = rand() * M_PI * (1 + RUSSIAN_P); // only defined for half the inclination.
+            float dirX = sin(randTheta) * cos(randPhi);
+            float dirY = sin(randTheta) * sin(randPhi);
+            float dirZ = cos(randTheta);
+            glm::vec3 outgoingDir = glm::vec3(dirX,dirY,dirZ);
+            outgoingDir = glm::normalize(outgoingDir + intersection->getNormal());
+            glm::mat3 Rtot, Rx,Ry,Rz = glm::mat3(1);
+
+            float cosOutgoingAngle = glm::dot(outgoingDir, intersection->getNormal());
+
+            // if the angle of the new ray and the normal of the surface is larger than pi/2 (negative)
+
+
+            Ray* outgoingRay = new Ray(intersection->getPoint(), outgoingDir);
+            outgoingRay->setDepth(ray->getDepth()+1);
+
+            this->findIntersection(outgoingRay);
+
+            // create a random output direction, throw it into the new ray
+
+            // recursivly do stuff, and weight the incoming and outcoming light (hard coded BRDF);
+            std::cout << "doing recursive stuff! depth " << ray->getDepth() << " and going!\n";
+            return 1.5f * color +  0.1f * cosOutgoingAngle * this->calculateColor(outgoingRay);
+        }
+
+    //} else {
+    //    return 0.9f * color; // indirect color is zero.
+    //}
+
+
 }
 
 
