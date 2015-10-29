@@ -28,6 +28,7 @@ Intersection::Intersection(const Intersection& inter){
     //idObject = new int;
     this->idObject = inter.idObject;
     this->BRDF = inter.BRDF;
+    this->normal = inter.normal;
 }
 
 Intersection::~Intersection()

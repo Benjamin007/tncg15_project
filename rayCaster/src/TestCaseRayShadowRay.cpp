@@ -70,7 +70,7 @@ void TestCaseRayShadowRay::testCase2() {
     lightIntersect = this->room->findIntersection(ray);
     //point = new glm::vec3(0,0,0);
 
-    glm::vec3 light = this->room->calculateColor(lightIntersect);
+    glm::vec3 light = this->room->calculateColor(ray);
     float length = glm::distance(light, glm::vec3(1,1,1));
     if( length > 0.01){
         std::cout << "failed..!\n";

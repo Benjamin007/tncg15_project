@@ -8,6 +8,7 @@ Ray::Ray()
     direction = glm::vec3(0.0f, 0.0f, 0.0f);
     intersection = new Intersection();
     child = NULL;
+    this->depth = 0;
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir){
@@ -15,6 +16,7 @@ Ray::Ray(glm::vec3 o, glm::vec3 dir){
     direction = normalize(dir);
     intersection  = new Intersection();
     child = NULL;
+    this->depth = 0;
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir, Intersection* inter){
@@ -46,6 +48,23 @@ glm::vec3 Ray::getColor() {   // recursive function that will calculate total co
 glm::vec3 Ray::setColor(glm::vec3 color) {
     this->color = color;
 };
+
+void Ray::setChild(Ray* ray) {
+    this->child = ray;
+}
+
+Ray* Ray::getChild() const {
+    return this->child;
+}
+
+void Ray::setDepth(int depth) {
+    this->depth = depth;
+}
+
+int Ray::getDepth() const {
+    return this->depth;
+}
+
 
 Intersection* Ray::getIntersection() {
     return this->intersection;
