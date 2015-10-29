@@ -1,6 +1,7 @@
 #ifndef INTERSECTION_H
 #define INTERSECTION_H
 
+#include <iostream>
 #include "glm/glm/glm.hpp"
 
 class Intersection
@@ -36,6 +37,8 @@ class Intersection
         void setPoint(glm::vec3 newPoint);
 
         Intersection& operator = (const Intersection& inter);
+
+        void printToFile(std::string c);
 
     protected:
         // true if the ray intersecting a surface

@@ -1,4 +1,6 @@
 #include "Ray.h"
+#include <iostream>
+#include <fstream>
 //#include <glm>
 Ray::Ray()
 {
@@ -12,6 +14,8 @@ Ray::Ray()
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir){
+    printToFile("1 ");
+    std::cout << "Creating a Ray!\n";
     origin = o;
     direction = normalize(dir);
     intersection  = new Intersection();
@@ -20,6 +24,8 @@ Ray::Ray(glm::vec3 o, glm::vec3 dir){
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir, Intersection* inter){
+    printToFile("1 ");
+    std::cout << "Creating a Ray!\n";
     origin = o;
     direction = normalize(dir);
     intersection  = inter;
@@ -28,8 +34,12 @@ Ray::Ray(glm::vec3 o, glm::vec3 dir, Intersection* inter){
 
 Ray::~Ray()
 {
+    std::cout << "Ray::Deleting myself! T.T\n";
+    printToFile("-1 ");
     //dtor
     delete intersection;
+    //std::cout << "Ray::Deleting child!\n";
+    delete child;
 }
 
 glm::vec3 Ray::getOrigin() const{
@@ -71,5 +81,11 @@ Intersection* Ray::getIntersection() {
 }
 void Ray::setIntersection(Intersection* intersection) {
     this->intersection = intersection;
+}
+
+void Ray::printToFile(std::string c) {
+    std::ofstream myFile;
+    myFile.open("ray_mem.txt", std::fstream::app);
+    myFile << c;
 }
 

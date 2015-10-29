@@ -19,6 +19,8 @@ class Pixel
         glm::vec3 getPos();
         void setPos(glm::vec3 pos);
         float getHeight();
+
+
         void setHeight(float height);
         float getWidth();
         void setWidth(float width);

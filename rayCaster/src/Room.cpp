@@ -4,9 +4,13 @@
 #include <math.h>
 #include <memory>
 
-#define NBSHADOWRAY 100
+#define NBSHADOWRAY 20
 #define EPSILON2 0.1
 #define RUSSIAN_P 0.5
+
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
 
 Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container, std::vector<Object*> cube_container)
 {
@@ -116,9 +120,9 @@ Room::Room() {
     float yCube = posCube.y;
     float z1Cube = posCube.z - wCube/2;
     float z2Cube = posCube.z + wCube/2;
-    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
-    cube->printCube();
-    this->cube_container.push_back(cube);
+    //Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    //cube->printCube();
+    //this->cube_container.push_back(cube);
 }
 
 Room::~Room()
@@ -182,15 +186,15 @@ Intersection* Room::findIntersection(Ray* ray){
 
 Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> container) {
 
-    std::shared_ptr<Intersection> intersection(new Intersection(false, 0, NULL, 0));
+    Intersection* intersection = new Intersection(false, 0, NULL, 0);
     std::vector<Object*>::iterator itObject;
-    std::shared_ptr<Intersection> tmpInter(new Intersection(false, 0, NULL, 0));
+    Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
     // we consider every object in the scene
 
     //for(int i = 0; i < object_container.size(); i++){
     for(itObject = container.begin(); itObject != container.end(); ++itObject){
         //std::cerr << "Wall is:" << (*itObject)->getObjectID();
-        tmpInter = std::make_shared<Intersection>((*itObject)->getIntersection(ray));
+        tmpInter = ((*itObject)->getIntersection(ray));
         //tmpInter = object_container.at(i)->getIntersection(ray);
         if (tmpInter->getIsIntersecting()){
             // the ray collides with this object
@@ -319,7 +323,8 @@ glm::vec3 Room::calculateColor(Ray* ray){
         float randomNum = (float) rand()/(float)RAND_MAX;
 
         if((randomNum < RUSSIAN_P && ray->getDepth() != 0) || ray->getDepth() > 4) {
-            std::cout << "total depth is " << ray->getDepth() << "\n";
+            //std::cout << "total depth is " << ray->getDepth() << "\n";
+            //delete ray;
             return 0.9f * color;
         } else {
 
@@ -341,8 +346,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
             outgoingRay->setDepth(ray->getDepth()+1);
 
             this->findIntersection(outgoingRay);
-
-            delete ray;
+            ray->setChild(outgoingRay);
 
             // create a random output direction, throw it into the new ray
 

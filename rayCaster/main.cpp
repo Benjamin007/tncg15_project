@@ -5,6 +5,7 @@
 #include "TestCaseRayShadowRay.h"
 #include "TestCasePrintToFile.h"
 #include "TestCaseCube.h"
+#include <fstream>
 
 #define NEAR 20
 
@@ -13,6 +14,16 @@
 
 int main()
 {
+
+    std::ofstream myFile;
+    myFile.open("inter_mem.txt", std::fstream::in);
+    myFile << "";
+
+    myFile.open("ray_mem.txt", std::fstream::in);
+    myFile << "";
+
+
+
 
     TestCase *intersectionTest = new TestCaseIntersection();
     TestCase *intersectionTest2 = new TestCaseIntersection2();
