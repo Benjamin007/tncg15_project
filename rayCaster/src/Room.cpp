@@ -143,11 +143,10 @@ void Room::addObject(Object* object){
 }
 
 Intersection* Room::findIntersection(Ray* ray){
-    Intersection* intersection = new Intersection(false, 0, NULL, 0);
     // we consider every object in the scene
 
     // Later, check for cubes first.
-    intersection = findIntersection(ray, cube_container);
+    Intersection* intersection = findIntersection(ray, cube_container);
     if(intersection->getIsIntersecting()) {
         ray->setIntersection(intersection);
         return intersection;
@@ -157,6 +156,7 @@ Intersection* Room::findIntersection(Ray* ray){
     //std::cout << "finding intersection...";
 
     //std::cout << "looking through light sources...\n";
+    delete intersection;
     intersection = findIntersection(ray, light_container);
     // if we found light, return the point (it can't intersect with a wall in front of the light)
     if(intersection->getIsIntersecting()) {
@@ -170,6 +170,7 @@ Intersection* Room::findIntersection(Ray* ray){
 
 
     //std::cout << "FAIL!\n looking through walls...";
+    delete intersection;
     intersection = findIntersection(ray, object_container);
     ray->setIntersection(intersection);
 
@@ -188,25 +189,24 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
 
     Intersection* intersection = new Intersection(false, 0, NULL, 0);
     std::vector<Object*>::iterator itObject;
-    Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
+    //Intersection* tmpInter = new Intersection(false, 0, NULL, 0);
     // we consider every object in the scene
 
     //for(int i = 0; i < object_container.size(); i++){
     for(itObject = container.begin(); itObject != container.end(); ++itObject){
         //std::cerr << "Wall is:" << (*itObject)->getObjectID();
-        tmpInter = ((*itObject)->getIntersection(ray));
+
+        Intersection* tmpInter = ((*itObject)->getIntersection(ray));
         //tmpInter = object_container.at(i)->getIntersection(ray);
         if (tmpInter->getIsIntersecting()){
             // the ray collides with this object
             if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
                 // the object we are colliding with is nearer that the others one, or it is the first
                 *intersection = *tmpInter;
-            } else {
-                //delete tmpInter;
             }
         }
+        delete tmpInter;
     }
-    delete tmpInter;
     return intersection;
 }
 

@@ -14,7 +14,7 @@ Ray::Ray()
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir){
-    printToFile("+1 ");
+    //printToFile("+1 ");
     //std::cout << "Creating a Ray!\n";
     origin = o;
     direction = normalize(dir);
@@ -24,7 +24,7 @@ Ray::Ray(glm::vec3 o, glm::vec3 dir){
 }
 
 Ray::Ray(glm::vec3 o, glm::vec3 dir, Intersection* inter){
-    printToFile("+1 ");
+    //printToFile("+1 ");
     //std::cout << "Creating a Ray!\n";
     origin = o;
     direction = normalize(dir);
@@ -35,7 +35,7 @@ Ray::Ray(glm::vec3 o, glm::vec3 dir, Intersection* inter){
 Ray::~Ray()
 {
     //std::cout << "Ray::Deleting myself! T.T\n";
-    printToFile("-1 ");
+    //printToFile("-1 ");
     //dtor
     delete intersection;
     //std::cout << "Ray::Deleting child!\n";
@@ -80,6 +80,7 @@ Intersection* Ray::getIntersection() {
     return this->intersection;
 }
 void Ray::setIntersection(Intersection* intersection) {
+    delete this->intersection;
     this->intersection = intersection;
 }
 

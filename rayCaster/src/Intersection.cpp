@@ -14,7 +14,7 @@ Intersection::Intersection()
 
 
 Intersection::Intersection(bool isInter, float _t, int id, float brdf){ // should we add Color?
-    printToFile("+1 ");
+    //printToFile("+1 ");
     this->isIntersecting = isInter;
     this->isLightSource = false;
     this->t = _t;
@@ -25,7 +25,7 @@ Intersection::Intersection(bool isInter, float _t, int id, float brdf){ // shoul
 }
 
 Intersection::Intersection(const Intersection& inter){
-    printToFile("+1 ");
+    //printToFile("+1 ");
     this->isIntersecting = inter.isIntersecting;
     this->t = inter.t;
     //idObject = new int;
@@ -36,7 +36,7 @@ Intersection::Intersection(const Intersection& inter){
 
 Intersection::~Intersection()
 {
-    printToFile("-1 ");
+    //printToFile("-1 ");
     //dtor
 }
 

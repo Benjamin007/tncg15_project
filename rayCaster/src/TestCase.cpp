@@ -10,6 +10,9 @@ TestCase::TestCase()
 TestCase::~TestCase()
 {
     //dtor
+//    delete screen;
+//    delete room;
+//    delete tracer;
 }
 
 void TestCase::init() {
