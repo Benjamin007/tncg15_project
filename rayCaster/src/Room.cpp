@@ -200,13 +200,13 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
             // the ray collides with this object
             if((tmpInter->get_t() > 0.0 && tmpInter->get_t() < intersection->get_t()) || (tmpInter->get_t() > 0.0 && intersection->get_t() == 0.0)){
                 // the object we are colliding with is nearer that the others one, or it is the first
-
-                intersection = tmpInter;
+                *intersection = *tmpInter;
             } else {
                 //delete tmpInter;
             }
         }
     }
+    delete tmpInter;
     return intersection;
 }
 
