@@ -23,8 +23,8 @@ int main()
     //intersectionTest->run();
     //intersectionTest2->run();
     //raytracerTest->run();
-    shadowRayTest->run();
-    //cubeTest->run();
+    //shadowRayTest->run();
+    cubeTest->run();
     //printTest.run();
     return 0;
 

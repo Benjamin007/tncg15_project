@@ -43,7 +43,7 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
             intersection = tmpIntersection;
-            std::cout << "Potential intersection with the ceilWall\n";
+            //std::cout << "Potential intersection with the ceilWall\n";
         }
     }
 
@@ -52,7 +52,7 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
             intersection = tmpIntersection;
-            std::cout << "Potential intersection with the floorWall\n";
+            //std::cout << "Potential intersection with the floorWall\n";
         }
     }
 
@@ -61,7 +61,7 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
             intersection = tmpIntersection;
-            std::cout << "Potential intersection with the northWall\n";
+            //std::cout << "Potential intersection with the northWall\n";
         }
     }
 
@@ -70,7 +70,7 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
             intersection = tmpIntersection;
-            std::cout << "Potential intersection with the westWall\n";
+            //std::cout << "Potential intersection with the westWall\n";
         }
     }
 
@@ -79,7 +79,7 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
             intersection = tmpIntersection;
-            std::cout << "Potential intersection with the southWall\n";
+            //std::cout << "Potential intersection with the southWall\n";
         }
     }
 
@@ -88,7 +88,7 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
             intersection = tmpIntersection;
-            std::cout << "Potential intersection with the eastWall\n";
+            //std::cout << "Potential intersection with the eastWall\n";
         }
     }
 
