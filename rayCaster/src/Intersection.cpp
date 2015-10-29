@@ -108,6 +108,7 @@ Intersection& Intersection::operator = (const Intersection& inter){
     this->isLightSource = inter.isLightSource;
     this->point = inter.getPoint();
     this->color = inter.getColor();
+    this->normal = inter.normal;
 
     return *this;
 }
