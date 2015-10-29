@@ -27,7 +27,7 @@ class Intersection
         glm::vec3 getColor() const;
         void setColor(glm::vec3 color);
         // normal
-        glm::vec3 getNormal();
+        glm::vec3 getNormal() const;
         void setNormal(glm::vec3 normal);
 
         float getLe() const;

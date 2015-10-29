@@ -16,11 +16,12 @@ int main()
 {
 
     std::ofstream myFile;
-    myFile.open("inter_mem.txt", std::fstream::in);
+    myFile.open("inter_mem.txt", std::fstream::trunc);
     myFile << "";
-
-    myFile.open("ray_mem.txt", std::fstream::in);
+    myFile.close();
+    myFile.open("ray_mem.txt", std::fstream::trunc);
     myFile << "";
+    myFile.close();
 
 
 

@@ -89,7 +89,7 @@ void Intersection::setColor(glm::vec3 color){
 }
 
 // normal
-glm::vec3 Intersection::getNormal() {
+glm::vec3 Intersection::getNormal() const {
     return normal;
 }
 void Intersection::setNormal(glm::vec3 normal){
@@ -105,6 +105,7 @@ void Intersection::setLe(float Le){
 }
 
 Intersection& Intersection::operator = (const Intersection& inter){
+    //std::cout << "Intersection = is called!\n";
     this->idObject = inter.idObject;
     this->isIntersecting = inter.getIsIntersecting();
     this->t = inter.get_t();
@@ -113,6 +114,7 @@ Intersection& Intersection::operator = (const Intersection& inter){
     this->isLightSource = inter.isLightSource;
     this->point = inter.getPoint();
     this->color = inter.getColor();
+    this->normal = inter.getNormal();
 
     return *this;
 }
