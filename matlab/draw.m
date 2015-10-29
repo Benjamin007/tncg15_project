@@ -45,6 +45,7 @@ A{1}(index);
 index = ((x-1) + (y-1)*screenDimension(2))*3+3
 A{1}(index);
 
+screen_max = max(screen)
 
 image(screen)
 

@@ -3,7 +3,8 @@
 #include <iomanip> // for set precision
 #include <stdlib.h>
 
-#define SUPER_SAMPLING_NUMBER 1
+
+#define SUPER_SAMPLING_NUMBER 6
 
 
 RayTracer::RayTracer(Screen* screen, Room* room)
@@ -37,6 +38,12 @@ glm::vec3 calculateLight(Intersection* result,Ray* ray);
 
 void RayTracer::calculateScreen() {
 
+    int* wallCounter = new int[5];
+
+    for (int i = 0; i < 5;i++){
+        wallCounter[i] = 0;
+    }
+
     std::cout << "RayTracer::calculateScreen running...\n";
 
     int width = this->screen->getWidth(); // the width shouldn't be uneven! ;)
@@ -58,15 +65,42 @@ void RayTracer::calculateScreen() {
             // cast a ray into the scene
             pixel_pos = this->screen->getPixelPos(x,y);
 
+            glm::vec3 pixelColor;
+
             for(int i = 0; i < SUPER_SAMPLING_NUMBER;i++) {
                 //pixel_pos = glm::vec3(x,y,screen->getNear());
                 Ray* ray = new Ray(camera_pos, glm::normalize(pixel_pos-camera_pos));
+
+                this->room->findIntersection(ray);
+
+                glm::vec3 color = this->room->calculateColor(ray);
+                color.x *= (float) (1.0/((float) SUPER_SAMPLING_NUMBER));
+                color.y *= (float) (1.0/((float) SUPER_SAMPLING_NUMBER));
+                color.z *= (float) (1.0/((float) SUPER_SAMPLING_NUMBER));
+                pixelColor += color;
                 // UGLY HAX fake roulette!
-                ray->setChild(new Ray());
-                this->screen->assignRay(x,y,ray);
+                //ray->setChild(new Ray());
+                //this->screen->assignRay(x,y,ray);
+
+                delete ray;
+
+
             }
+
+            this->screen->assignColor(x,y,pixelColor);
         }
     }
+
+
+
+    std::cout << "we calculated with the walls this much:\n";
+    std::cout << "Wall 1:" << wallCounter[0] << "\n";
+    std::cout << "Wall 2:" << wallCounter[1] << "\n";
+    std::cout << "Wall 3:" << wallCounter[2] << "\n";
+    std::cout << "Wall 4:" << wallCounter[3] << "\n";
+    std::cout << "Wall 5:" << wallCounter[4] << "\n";
+
+    /*
 
     int* wallCounter = new int[5];
 
@@ -104,7 +138,7 @@ void RayTracer::calculateScreen() {
                     //color = calculateLight(result, ray);
                 }
 
-                this->screen->assignColor(x,y,color);
+                //this->screen->assignColor(x,y,color);
 
             } else {
                 std::cout << "WE DIDN'T GET A HIT! WERID AF!\n";
@@ -129,12 +163,7 @@ void RayTracer::calculateScreen() {
         }
     }
 
-    std::cout << "we calculated with the walls this much:\n";
-    std::cout << "Wall 1:" << wallCounter[0] << "\n";
-    std::cout << "Wall 2:" << wallCounter[1] << "\n";
-    std::cout << "Wall 3:" << wallCounter[2] << "\n";
-    std::cout << "Wall 4:" << wallCounter[3] << "\n";
-    std::cout << "Wall 5:" << wallCounter[4] << "\n";
+    */
 
 }
 

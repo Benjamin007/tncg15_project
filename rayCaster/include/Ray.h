@@ -1,5 +1,6 @@
 #ifndef RAY_H
 #define RAY_H
+#include <iostream>
 
 #include "glm/glm/vec3.hpp"
 #include "Intersection.h"
@@ -29,6 +30,8 @@ class Ray
 
         int getDepth() const;
         void setDepth(int t);
+
+        void printToFile(std::string c);
 
         int getId_IntersectedObject() const;
         void setId_IntersectedObject(int i);

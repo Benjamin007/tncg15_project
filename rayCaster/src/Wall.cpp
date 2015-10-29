@@ -2,6 +2,11 @@
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 
+
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 //Wall::Wall(){
 //
 //}
