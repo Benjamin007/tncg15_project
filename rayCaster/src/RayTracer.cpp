@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 
-#define SUPER_SAMPLING_NUMBER 6
 
 
 RayTracer::RayTracer(Screen* screen, Room* room)

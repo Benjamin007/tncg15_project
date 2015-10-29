@@ -7,6 +7,8 @@
 
 #define RAYTRACER_H
 
+
+
 class RayTracer
 {
     public:

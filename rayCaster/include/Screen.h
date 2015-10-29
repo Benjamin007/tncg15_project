@@ -2,16 +2,11 @@
 #include "Pixel.h"
 #define SCREEN_H
 
+#include "CONSTANTS.h"
 // pixels in screen:
-#define HEIGHT 10
-#define WIDTH 10
 
-// frustum variables:
-#define NEAR -100
-#define LEFT -100
-#define RIGHT 100
-#define TOP 100
-#define BOTTOM -100
+
+
 
 
 

@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include "Room.h"
 #include "Cube.h"
+#include "CONSTANTS.h"
 
 class Room
 {

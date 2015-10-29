@@ -4,7 +4,7 @@
 #include <math.h>
 #include <memory>
 
-#define NBSHADOWRAY 20
+
 #define EPSILON2 0.1
 #define RUSSIAN_P 0.5
 
@@ -324,7 +324,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
 
         float randomNum = (float) rand()/(float)RAND_MAX;
 
-        if((randomNum < RUSSIAN_P && ray->getDepth() != 0) || ray->getDepth() > 4) {
+        if((randomNum < RUSSIAN_P && ray->getDepth() != 0) || ray->getDepth() > MAXBOUNCES + 1) {
             //std::cout << "total depth is " << ray->getDepth() << "\n";
             //delete ray;
             return 0.9f * color;
@@ -337,7 +337,6 @@ glm::vec3 Room::calculateColor(Ray* ray){
             float dirZ = cos(randTheta);
             glm::vec3 outgoingDir = glm::vec3(dirX,dirY,dirZ);
             outgoingDir = glm::normalize(outgoingDir + intersection->getNormal());
-            glm::mat3 Rtot, Rx,Ry,Rz = glm::mat3(1);
 
             float cosOutgoingAngle = glm::dot(outgoingDir, intersection->getNormal());
 
