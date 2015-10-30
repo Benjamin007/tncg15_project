@@ -31,66 +31,76 @@ Cube::Cube(int id, glm::vec3 pos, float h, float w, float x1, float x2, float y,
 Cube::~Cube()
 {
     //dtor
+    delete ceilWall;
+    delete southWall;
+    delete northWall;
+    delete westWall;
+    delete eastWall;
 }
 
 Intersection* Cube::getIntersection(Ray const* ray) const{
     Intersection* intersection = new Intersection();
-    Intersection* tmpIntersection = new Intersection();
 
     // consider the 6 faces, and find the first one our ray is going to intersect
-    tmpIntersection = ceilWall->getIntersection(ray);
+    Intersection* tmpIntersection = ceilWall->getIntersection(ray);
     if(tmpIntersection->getIsIntersecting()){
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
-            intersection = tmpIntersection;
+            *intersection = *tmpIntersection;
             //std::cout << "Potential intersection with the ceilWall\n";
         }
     }
+    delete tmpIntersection;
 
     tmpIntersection = floorWall->getIntersection(ray);
     if(tmpIntersection->getIsIntersecting()){
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
-            intersection = tmpIntersection;
+            *intersection = *tmpIntersection;
             //std::cout << "Potential intersection with the floorWall\n";
         }
     }
+    delete tmpIntersection;
 
     tmpIntersection = northWall->getIntersection(ray);
     if(tmpIntersection->getIsIntersecting()){
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
-            intersection = tmpIntersection;
+            *intersection = *tmpIntersection;
             //std::cout << "Potential intersection with the northWall\n";
         }
     }
+    delete tmpIntersection;
 
     tmpIntersection = westWall->getIntersection(ray);
     if(tmpIntersection->getIsIntersecting()){
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
-            intersection = tmpIntersection;
+            *intersection = *tmpIntersection;
             //std::cout << "Potential intersection with the westWall\n";
         }
     }
+    delete tmpIntersection;
 
     tmpIntersection = southWall->getIntersection(ray);
     if(tmpIntersection->getIsIntersecting()){
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
-            intersection = tmpIntersection;
+            *intersection = *tmpIntersection;
             //std::cout << "Potential intersection with the southWall\n";
         }
     }
+    delete tmpIntersection;
 
     tmpIntersection = eastWall->getIntersection(ray);
     if(tmpIntersection->getIsIntersecting()){
         if((tmpIntersection->get_t() > 0.0 && tmpIntersection->get_t() < intersection->get_t())
             || (tmpIntersection->get_t() > 0.0 && intersection->get_t() == 0.0)){
-            intersection = tmpIntersection;
+            *intersection = *tmpIntersection;
             //std::cout << "Potential intersection with the eastWall\n";
         }
     }
+    delete tmpIntersection;
 
     return intersection;
 }
