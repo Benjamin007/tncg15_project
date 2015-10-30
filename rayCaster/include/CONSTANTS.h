@@ -16,10 +16,10 @@
 
 // frustum variables:
 #define NEAR -100
-#define LEFT -100
-#define RIGHT 100
-#define TOP 100
-#define BOTTOM -100
+#define LEFT -200
+#define RIGHT 200
+#define TOP 200
+#define BOTTOM -200
 
 #define MIN_T 0.00001
 #define EPSILON 0.1f
