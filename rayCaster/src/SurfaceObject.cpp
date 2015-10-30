@@ -1,5 +1,5 @@
 #include "SurfaceObject.h"
-
+#include <math.h>
 #define EPSILON 0.1
 
 
@@ -68,8 +68,12 @@ Intersection* SurfaceObject::getIntersection(const Ray* const ray) const{
     float t = 0;
     glm::vec3 o = ray->getOrigin();
     glm::vec3 dir = ray->getDirection();
-    t = (-d - normal.x * o.x - normal.y * o.y - normal.z * o.z ) / (normal.x * dir.x + normal.y * dir.y + normal.z * dir.z);
-
+    if(std::abs(normal.x * dir.x + normal.y * dir.y + normal.z * dir.z) < 0.01 ) {
+        //std::cout << "BUGGY MODE!\n ";
+        t = 0;
+    } else {
+        t = (-d - normal.x * o.x - normal.y * o.y - normal.z * o.z ) / (normal.x * dir.x + normal.y * dir.y + normal.z * dir.z);
+    }
     // if the value is negative, the ray will intersect with a plane behind its origin, so we put t = 0 and we will not use this value
     if (t <= 0){
     t = 0;

@@ -20,7 +20,9 @@ class Cube : public Object
 
         void printCube();
     protected:
-
+        bool isPointInside(glm::vec3 point) const;
+        float width;
+        float height;
 
     private:
         int id;
