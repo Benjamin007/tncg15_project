@@ -1,18 +1,18 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define NBSHADOWRAY 1
+#define NBSHADOWRAY 4
 #define SUPER_SAMPLING_NUMBER 8
 
-#define HEIGHT 200
-#define WIDTH 200
+#define HEIGHT 500
+#define WIDTH 500
 
 #define MAXBOUNCES 3
 #define RUSSIAN_P 0.4
 
-#define BRDF_CONSTANT 200.0
-#define DIRECT_CONSTANT 0.8f
-#define INDIRECT_CONSTANT 0.2f
+#define BRDF_CONSTANT 150.0
+#define DIRECT_CONSTANT 0.9f
+#define INDIRECT_CONSTANT 0.1f
 
 // frustum variables:
 #define NEAR -100
