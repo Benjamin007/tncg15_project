@@ -3,8 +3,8 @@
 
 #define NBSHADOWRAY 1
 #define SUPER_SAMPLING_NUMBER 16
-#define HEIGHT 1000
-#define WIDTH 1000
+#define HEIGHT 10
+#define WIDTH 10
 #define MAXBOUNCES 4
 
 // frustum variables:
