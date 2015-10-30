@@ -93,7 +93,7 @@ glm::vec3 Intersection::getNormal() const {
     return normal;
 }
 void Intersection::setNormal(glm::vec3 normal){
-    this->normal = normal;
+    this->normal = normalize(normal);
 }
 
 float Intersection::getLe() const{
