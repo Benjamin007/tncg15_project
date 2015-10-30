@@ -98,7 +98,8 @@ The first section is the introduction. In section 2, we will discuss the techniq
 
 \subsection{Intersection}
 
-To compute the intersection between a ray and the objects in our room, the possible intersections the ray can collide with are computed, and the nearest one is determined[2]. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like spheres or cubes in the room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closest object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall.\\
+
+To compute the intersection between a ray and the objects in our room, the possible intersections the ray can collide with are computed, and the nearest one is determined. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like spheres or cubes in the room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closest object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall.
 
 
 \subsection{Reflected rays}
@@ -107,6 +108,15 @@ Once a ray hits a surface, Russian Roulette is used to determine if the ray is t
 \subsection{Shadow ray}
 
 Every time a ray hit a surface, we need to compute how much radiance there is on this surface. To do so, we divide the incoming radiance in two parts, the direct lightings and the indirect lightings. For the direct part, we need to know if the intersection point receive light from the surface lights. To know that, we sample $n$ random points on the surface area, and then we create $n$ "shadow rays". These rays have the intersection point as origin, and are directed towards the sampled points on the light (figure $4$). We then check the intersections of the shadow rays with the room: if they intersect with a light source only, we have a direct illumination. If there are obsticles in the way, there is no direct illumination. It is possible for intersection points to be in partial shadow; some rays intersect with light sources, and some with obsticles. When this happens, the illumination from the light source is then weighted based on the number of shadow rays that do intersect with the light source: if only half of the shadow rays find a light source, then the contribution of this light source will be only half of what it would have been if all the shadow rays found the light source. We do this for every light inside the room. The result change along with the number $n$ of shadow rays. [Advanced Global Illumination]
+
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.5]{500px-Ray_trace_diagram.png}
+    \caption{once the ray hits the sphere, a shadow ray is sent toward the light source}
+    \label{fig:shadowray}
+  \end{center}
+\end{figure}
 
 \subsection{Intensities}
 To calculate light intensity, a recursive function is used on each pixel. We take all the rays that goes through a pixel, and find the intersection points in the scene. For a given point, we split up the outgoing light into two parts, the direct illumination part, and the indirect illumination part. Some simplifications were made from the theoretical equations in our project, as each surface is based on a lambartian reflector, and we used a fixed intensity of the light sources, so we combined a lot of constant terms into one big constant.\\
@@ -117,15 +127,22 @@ The indirect illumination [Advanced Global Illumination] is then gathered by sen
 
 For the sake of optimization, we estimate the scene by using a single indirect illumination ray, as discussed during lectures. By selecting a random angle, combined with the super sampling discussed below, gives us a decent approximation of the scene. This is because we want to enable more rays where they contribute the most for the photorealism, that being the camera point. This, and the russian roulette are compensated by weighting the contribution of the single ray, and to compensate for terminated rays.
 
+
 \subsection{Super sampling}
+
+When you sample a signal with descrete values, you can potentially loose a lot of information, especially when you use low sample frequencies, and you can get aliasing, see figure. The image created of the scene has a limited amount of pixels, which can lead to said aliasing, and to counter balance this, we use Super Sampling. This is done by sampling at a higher frequency than the actual output frequency, and then averaging out the result.\\ 
+
+The effects of the super sampling on this project are multiple; because we over sample the pixels, aliasing is reduced, but we also start each new ray in a random pixel position. This reduces structured faults of the image. Moreover, since each ray will also add a new ray launch path, we get a higher concentration of high importance rays, as well as several more random approximator rays for the monte carlo process. This gives us a much better integral approximation of the rendering equation.
 
 \begin{figure}
   \begin{center}
-    \includegraphics[scale=0.5]{500px-Ray_trace_diagram.png}
-    \caption{once the ray hits the sphere, a shadow ray is sent toward the light source}
-    \label{fig:4}
+    \includegraphics[scale=0.6]{/../result/supersampling.png}
+    \caption{Using a too low sampling frequency leads to loss of information, and reconstructing results in aliasing}
+    \label{fig:aliasing}
   \end{center}
 \end{figure}
+
+
 
 \section{Results and benchmarks}
 Here are a serie of computations where we change one parameter at a time. The defaults parameters are the followings:
@@ -197,6 +214,21 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
 
 Since the rendering of the room contains randomness, the execution time of two executions can vary a lot even if the parameters like the number of shadow rays stay unchanged. Indeed, sometimes, the number of bounced ray can be close to zero if every ray arbitrarily kill itself because of the Russian Roulette, while other times, every ray will bounce $NBMAXBOUNCES$ which is 4 in the basic configuration of the projects. It is because of this randomness that it is not easy to deduce the time complexity of the number of shadow rays by seeing the results of the experience. However, a linear complexity can be seen: when there are twice more shadow rays, the program needs twice more time to finish.  
 
+
+ 
+ Finally, we have a picture to show how the shadow rays are affecting the shadows that are affected by objects closer to the light source that cast a greater shadow. This picture is more zoomed out to show a better view of the larger shadow.
+ 
+ 
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.5]{../result/Shadow Ray/shadowrayszoom.png}
+    \caption{A zoomed out image of the scene. Here we can see the extended shadow cast by the cube from the two light sources}
+    \label{fig:shadowrayzoom}
+  \end{center}
+\end{figure}
+ 
+ 
+ 
 \subsection{Resolution}
 
 The figure ? presents the differents results obtained with a varying resolution.
@@ -356,11 +388,18 @@ We are going to modify the probability that a ray kills itself instead of bounci
 \hline
    0.1 & 266 \\
 \hline 
- \end{tabular} 
+ \end{tabular}
+ 
+ As we can see, the number of bounces hardly change much in the images, while still increasing the computation time. This part of the algorithm is a bit hard to evaluate, since the number of bounces change each run time. However, since we have such large amount of points, statistically the number of bounces should be very linear. The increased time however shows that the amount of computation for the bounces does indeed increase. \\
+ 
+As for the lack of change in the images, there can be multiple reasons. As we can see, the roof of our room is very dark throughout our tests, which could mean that our indirect lighting is wrongly calibrated, or have some bug in it. We do have indirect lighting in the scene, as we can see hints of color bleed in the different images, however this isn't improved much by the number of bounces that are made.
+ 
 
 \section{Discussion}
 
-The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. One of the main things to do is to resolved the problem of the ceil which does not bright enough, the indirect term of illumination of the rendering equation must be modified and improved. Oren-Nayor reflectors could be added at the scene. The walls will stay Lambertian reflectors, but the cubes should become Oren-Nayor reflectors. The object cube has an attribut BRDF which is a float initialized in its constructor. It should become a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. \\	To increase the performance of the renderer, a better manager could be incorporated for the intersections: for now, the intersection between a ray and every object in the room is tested, even if the ray miss them from a lot. The problem could be resolved by putting the objects in an octree for instance.[5]. Another way to improve the renderer could be to change the implementation of the camera so we could move it in a easier way.
+
+The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. One of the main things to do is to resolved the problem of the ceil which does not get bright enough, the indirect term of illumination of the rendering equation must be modified and improved. Oren-Nayor reflectors could be added at the scene. The walls will stay Lambertian reflectors, but the cubes should become Oren-Nayor reflectors. The object cube has an attribut BRDF which is a float initialized in its constructor. It should become a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. \\	To increase the performance of the renderer, a better manager could be incorporated for the intersections: for now, the intersection between a ray and every object in the room is tested, even if the ray miss them from a lot. The problem could be resolved by putting the objects in an octree for instance.[wikipédia Octree]. Another way to improve the renderer could be to change the implementation of the camera so we could move it in a easier way.
+
 
 
 \section{Reference list}
