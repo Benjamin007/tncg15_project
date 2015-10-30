@@ -12,6 +12,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{url}
 %\usepackage{listings}
 %\usepackage{textcomp}
 
@@ -53,19 +54,19 @@
 \maketitle
 
 \section{Abstract}
-This paper presents a global illumination method, where the aim is to add light in a 3D scene to obtain a photo realistic effect. All the results are presented in a room which is rendered by using a Monte Carlo Ray Tracer. Rays are launched from the camera towards every pixel on the screen, and we compute the radiance at every intersection point between a ray and an object in the scene along with the global rendering equation. Russian Roulette is used to limit the recursion of the rays. The room is an open room that has 5 walls and 3 cubes, and all the objects in the scene are Lambertian reflectors. The room is lit up by using two area lights in the roof. This paper was produced for the course TNGC15, Global Illumination and Rendering, given by Mark E. Dieckman during the autumn of 2015.
+This paper presents a global illumination method, where the aim is to add light in a 3D scene to obtain a photo realistic effect. All the results are presented in a room which is rendered by using a Monte Carlo Ray Tracer. Rays are launched from the camera towards every pixel on the screen, and we compute the radiance at every intersection point between a ray and an object in the scene along with the global rendering equation. Russian Roulette is used to limit the recursion of the rays. The room is an open room that has 5 walls and 3 cubes, and all the objects in the scene are Lambertian reflectors. The room is lit up by using two area lights in the roof. In order to reduce aliasing, super sampling has been used. This paper was produced for the course TNGC15, Global Illumination and Rendering, given by Mark E. Dieckman during the autumn of 2015.
 
 \section{Introduction}
 
-To compute the light inside a 3D scene, we need to compute the distribution of light energy within the scene. To do so, we will consider the radiance, because this quantity reveals the appearance of the objects [Advanced Global Illumination]. Ray tracing is mainly used to compute the radiance in the scene, but it is very time consuming. Different kind of ray tracers exist, for instance the Whitted ray tracer and the Monte Carlo ray tracer. Their differences lies in the way they compute the indirect illumination term of the global rendering equation. Once a ray hits a surface, the combined radiance of the objects around the surface is taken into account. To do this, more rays are sent from the intersection point towards the rest of the scene.\\
+To compute the light inside a 3D scene, we need to compute the distribution of light energy within the scene. To do so, we will consider the radiance, because this quantity reveals the appearance of the objects [1]. Ray tracing is mainly used to compute the radiance in the scene, but it is very time consuming. Different kind of ray tracers exist, for instance the Whitted ray tracer and the Monte Carlo ray tracer. Their differences lies in the way they compute the indirect illumination term of the global rendering equation. Once a ray hits a surface, the combined radiance of the objects around the surface is taken into account. To do this, more rays are sent from the intersection point towards the rest of the scene.\\
 \\
 In the Whitted ray tracer, 2 new rays are created: one in the specular reflection (see $figure 1$) and the other one in the refracted direction (see $figure 2$). Both of these directions are computed by the Snell-Descarte laws. This is well adapted for perfect specular and transparent objects. If the object is a diffuse object, the refracted ray is absorbed.
-In the Monte-Carlo ray tracer, one or more rays are sent in a random direction toward the scene. This technique is good with Lambertian reflectors, which sends a perfect diffus light (see $figure 3$). To finish the recursion of rays created when a ray hit a surface, russian roulette is an efficient method: after every hit, a ray has a probability$\alpha$ to kill itself and so to not create more rays [russian roulette]. The use of a random depth gives a better approximation of the rendering equation, however, Monte Carlo Ray Tracing also gives noisy results. Ways to combat noise (and improve the approximation) is to use super sampling. A way to improve the results is to use a two pass rendering method, like photon mapping[article presentation].\\
+In the Monte-Carlo ray tracer, one or more rays are sent in a random direction toward the scene. This technique is good with Lambertian reflectors, which sends a perfect diffus light (see $figure 3$). To finish the recursion of rays created when a ray hit a surface, russian roulette is an efficient method: after every hit, a ray has a probability$\alpha$ to kill itself and so to not create more rays [russian roulette]. The use of a random depth gives a better approximation of the rendering equation, however, Monte Carlo Ray Tracing also gives noisy results. Ways to combat noise (and improve the approximation) is to use super sampling. A way to improve the results is to use a two pass rendering method, like photon mapping[3, 4].\\
 
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.6]{425px-ray_optics_diagram_incidence_reflection_and_refraction_svg_wide.png}
-    \caption{a ray is reflected in the specular direction after hitting a mirror}
+    \caption{a ray is reflected in the specular direction after hitting a mirror\\http://study.com/academy/lesson/specular-reflection-definition-examples-quiz.html}
     \label{fig:1}
   \end{center}
 \end{figure}
@@ -73,7 +74,7 @@ In the Monte-Carlo ray tracer, one or more rays are sent in a random direction t
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.3]{RefractionModelisation.png}
-    \caption{a ray is refracted, and a smaller part is reflected}
+    \caption{a ray is refracted, and a smaller part is reflected\\\url{wikipedia.org}}
     \label{fig:2}
   \end{center}
 \end{figure}
@@ -81,7 +82,7 @@ In the Monte-Carlo ray tracer, one or more rays are sent in a random direction t
 \begin{figure}
   \begin{center}
     \includegraphics[scale=2.0]{diffus.png}
-    \caption{diffus light: it seems the same regardless of the observer's angle of view }
+    \caption{diffus light: it seems the same regardless of the observer's angle of view\\\url{http://img.tfd.com/architecture/f0311-03.png} }
     \label{fig:3}
   \end{center}
 \end{figure}
@@ -89,7 +90,7 @@ In the Monte-Carlo ray tracer, one or more rays are sent in a random direction t
 In a two pass rendering method, two photon maps are computed during the first pass: photons are emitted from the lights sources and are stored in these photon maps when they hit a surface. With this information, in the second pass, optimized sampling directions can be generated by ray tracing the scene. When a ray hits a surface, the photon map is used to give the information of the lighting of the scene. Moreover, the number of shadow rays inside the program can be greatly reduced by using the shadow photons, as they can be used to simulate shadows. Furthermore, one of the two photon maps allows to render caustic effect, which is normally very hard to render with a "normal" Monte Carlo ray tracer.\\
 
 
-A use of a ray caster can be the detection of iso-surface[article]. Rays are cast from the camera toward every pixel and then go across the scene. We follow every ray with a step $dt$ and at every step, we compute the value of the data we are interested in. The aim is to find at which moment we will reach the isovalue. However, since we discretize the values along the ray, it is possible and even very probable that the values computed on the ray will never be exactly equal to the isosurface, even if the ray cross it. One solution is to reduced the step $dt$, but even so the isovalue could still be between two discret values of the ray, and the smaller $dt$ is, the more time the calculation takes. So it is better to consider the difference $valueComputed - isovalue$. When the sign of this difference changes (the value on ray become bigger or smaller than the isovalue), we know we just cross an isosurface. Then, we can find more precisely where the isovalue is taken, by using a dichotomic algorithm or a reverse linear interpolation.\\
+A use of a ray caster can be the detection of iso-surface[6]. Rays are cast from the camera toward every pixel and then go across the scene. We follow every ray with a step $dt$ and at every step, we compute the value of the data we are interested in. The aim is to find at which moment we will reach the isovalue. However, since we discretize the values along the ray, it is possible and even very probable that the values computed on the ray will never be exactly equal to the isosurface, even if the ray cross it. One solution is to reduced the step $dt$, but even so the isovalue could still be between two discret values of the ray, and the smaller $dt$ is, the more time the calculation takes. So it is better to consider the difference $valueComputed - isovalue$. When the sign of this difference changes (the value on ray become bigger or smaller than the isovalue), we know we just cross an isosurface. Then, we can find more precisely where the isovalue is taken, by using a dichotomic algorithm or a reverse linear interpolation.\\
 
 The first section is the introduction. In section 2, we will discuss the techniques like the Russian Roulette that we have implemented. The section 3 presents some results we obtained with our implementation. Then, in the section 4, we will explain how we can improve our renderer and the realism of our pictures. 
 
@@ -97,7 +98,7 @@ The first section is the introduction. In section 2, we will discuss the techniq
 
 \subsection{Intersection}
 
-To compute the intersection between a ray and the objects in our room, the possible intersections the ray can collide with are computed, and the nearest one is determined. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like spheres or cubes in the room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closest object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall.\\
+To compute the intersection between a ray and the objects in our room, the possible intersections the ray can collide with are computed, and the nearest one is determined[2]. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like spheres or cubes in the room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closest object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall.\\
 
 
 \subsection{Reflected rays}
@@ -135,6 +136,8 @@ Here are a serie of computations where we change one parameter at a time. The de
 \item Bounce Limit: 3
 
 \end{itemize}
+
+The program writes the color value of the pixels and then matlab print them: all the following pictures are reversed: the ceil is at the bottom and the floor is at the top. 
 \subsection{Shadow rays}
 
 The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The figure ? presents the differents results obtained with a varying number of shadow rays.\\
@@ -143,7 +146,7 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
         \centering
         \begin{subfigure}[b]{0.475\textwidth}
             \centering
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/ShadowRay/SHADOW_1.png}
             \caption[Network2]%
             {{\small 1 shadow ray}}    
             \label{fig:mean and std of net14}
@@ -151,7 +154,7 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
         \hfill
         \begin{subfigure}[b]{0.475\textwidth}  
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/ShadowRay/SHADOW_4.png}
             \caption[]%
             {{\small 4 shadow rays}}    
             \label{fig:mean and std of net24}
@@ -159,7 +162,7 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
         \vskip\baselineskip
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/ShadowRay/SHADOW_16.png}
             \caption[]%
             {{\small 20 shadow rays}}    
             \label{fig:mean and std of net34}
@@ -167,7 +170,7 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
         \quad
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/ShadowRay/SHADOW_32.png}
             \caption[]%
             {{\small 50 shadow rays}}    
             \label{fig:mean and std of net44}
@@ -192,6 +195,8 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
 \hline
  \end{tabular} 
 
+Since the rendering of the room contains randomness, the execution time of two executions can vary a lot even if the parameters like the number of shadow rays stay unchanged. Indeed, sometimes, the number of bounced ray can be close to zero if every ray arbitrarily kill itself because of the Russian Roulette, while other times, every ray will bounce $NBMAXBOUNCES$ which is 4 in the basic configuration of the projects. It is because of this randomness that it is not easy to deduce the time complexity of the number of shadow rays by seeing the results of the experience. However, a linear complexity can be seen: when there are twice more shadow rays, the program needs twice more time to finish.  
+
 \subsection{Resolution}
 
 The figure ? presents the differents results obtained with a varying resolution.
@@ -200,15 +205,15 @@ The figure ? presents the differents results obtained with a varying resolution.
         \centering
         \begin{subfigure}[b]{0.475\textwidth}
             \centering
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/Resolution/RESOLUTION_150.png}
             \caption[Resolution of 150 $\times$ 150]%
-            {{\small Resolution of x $\times$ x}}    
+            {{\small Resolution of 150 $\times$ 150}}    
             \label{fig:mean and std of net14}
         \end{subfigure}
         \hfill
         \begin{subfigure}[b]{0.475\textwidth}  
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/ShadowRay/SHADOW_4.png}
             \caption[]%
             {{\small Resolution of 300 $\times$ 300}}    
             \label{fig:mean and std of net24}
@@ -216,7 +221,7 @@ The figure ? presents the differents results obtained with a varying resolution.
         \vskip\baselineskip
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/Resolution/RESOLUTION_600.png}
             \caption[]%
             {{\small Resolution of 600 $\times$ 600}}    
             \label{fig:mean and std of net34}
@@ -224,7 +229,7 @@ The figure ? presents the differents results obtained with a varying resolution.
         \quad
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/Resolution/RESOLUTION_1200.png}
             \caption[]%
             {{\small Resolution of 1200 $\times$ 1200}}    
             \label{fig:mean and std of net44}
@@ -248,6 +253,8 @@ The figure ? presents the differents results obtained with a varying resolution.
 \hline
  \end{tabular} 
 
+From one line to another, the number of pixel is multiplied by $4$, like the time to generate the image. It is linear.
+
 \subsection{Sampling Rate}
 
 It corresponds to the number of ray the camera sends to every pixel. The figure ? presents the differents results obtained with a varying sampling rate.
@@ -256,7 +263,7 @@ It corresponds to the number of ray the camera sends to every pixel. The figure 
         \centering
         \begin{subfigure}[b]{0.475\textwidth}
             \centering
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/SampleRate/SAMPLE_1.png}
             \caption[Network2]%
             {{\small Sampling rate: 1}}    
             \label{fig:mean and std of net14}
@@ -264,7 +271,7 @@ It corresponds to the number of ray the camera sends to every pixel. The figure 
         \hfill
         \begin{subfigure}[b]{0.475\textwidth}  
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/ShadowRay/SHADOW_4.png}
             \caption[]%
             {{\small Sampling rate: 8}}    
             \label{fig:mean and std of net24}
@@ -272,7 +279,7 @@ It corresponds to the number of ray the camera sends to every pixel. The figure 
         \vskip\baselineskip
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/SampleRate/SAMPLE_16.png}
             \caption[]%
             {{\small Sampling rate: 16}}    
             \label{fig:mean and std of net34}
@@ -280,7 +287,7 @@ It corresponds to the number of ray the camera sends to every pixel. The figure 
         \quad
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/SampleRate/SAMPLE_32.png}
             \caption[]%
             {{\small Sampling rate: 32}}    
             \label{fig:mean and std of net44}
@@ -304,13 +311,15 @@ It corresponds to the number of ray the camera sends to every pixel. The figure 
 \hline
  \end{tabular} 
 
+When $16$ rays are launched for one pixel instead of $8$, for the time complexity, it is as if the number of pixel in the image was multiplied by 2. So it is linear also. 
+
 \subsection{Russian Roulette Probability}
 We are going to modify the probability that a ray kills itself instead of bouncing. To have a better understanding of the impact of the modification of this value, we increase the maximum number of bounces that a ray can do: in this part, a ray can do until 20 bounces.  The figure ? presents the differents results obtained with a varying probability.
     \begin{figure*}
         \centering
         \begin{subfigure}[b]{0.475\textwidth}
             \centering
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/Probability/PROBABILITY_09.png}
             \caption[Network2]%
             {{\small proba = 0.9}}    
             \label{fig:mean and std of net14}
@@ -318,7 +327,7 @@ We are going to modify the probability that a ray kills itself instead of bounci
         \hfill
         \begin{subfigure}[b]{0.475\textwidth}  
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/Probability/PROBABILITY_05.png}
             \caption[]%
             {{\small proba = 0.5}}    
             \label{fig:mean and std of net24}
@@ -326,7 +335,7 @@ We are going to modify the probability that a ray kills itself instead of bounci
         \vskip\baselineskip
         \begin{subfigure}[b]{0.475\textwidth}   
             \centering 
-            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \includegraphics[width=\textwidth]{../result/Probability/PROBABILITY_01.png}
             \caption[]%
             {{\small proba = 0.1}}    
             \label{fig:mean and std of net34}
@@ -351,7 +360,7 @@ We are going to modify the probability that a ray kills itself instead of bounci
 
 \section{Discussion}
 
-The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. One of the main things to do is to resolved the problem of the ceil which does not bright enough, the indirect term of illumination of the rendering equation must be modified and improved. Oren-Nayor reflectors could be added at the scene. The walls will stay Lambertian reflectors, but the cubes should become Oren-Nayor reflectors. The object cube has an attribut BRDF which is a float initialized in its constructor. It should become a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. \\	To increase the performance of the renderer, a better manager could be incorporated for the intersections: for now, the intersection between a ray and every object in the room is tested, even if the ray miss them from a lot. The problem could be resolved by putting the objects in an octree for instance.[wikipédia Octree]. Another way to improve the renderer could be to change the implementation of the camera so we could move it in a easier way.
+The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. One of the main things to do is to resolved the problem of the ceil which does not bright enough, the indirect term of illumination of the rendering equation must be modified and improved. Oren-Nayor reflectors could be added at the scene. The walls will stay Lambertian reflectors, but the cubes should become Oren-Nayor reflectors. The object cube has an attribut BRDF which is a float initialized in its constructor. It should become a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. \\	To increase the performance of the renderer, a better manager could be incorporated for the intersections: for now, the intersection between a ray and every object in the room is tested, even if the ray miss them from a lot. The problem could be resolved by putting the objects in an octree for instance.[5]. Another way to improve the renderer could be to change the implementation of the camera so we could move it in a easier way.
 
 
 \section{Reference list}
@@ -360,6 +369,7 @@ $[2]$ Matt Pharr, Greg Humphreys: "Physically Based Rendering Second Edition" $2
 $[3]$ Henrik Wann Jensen, "Global Illumination using Photon Maps" \\
 $[4]$ Henrik Wann Jensen "A Practical Guide to Global Illumination using Photon Maps" Siggraph 2000 Course 8 Sunday, July 23, $2000$\\
 $[5]$ https://fr.wikipedia.org/wiki/Octree\\
+$[6]$  Will Schroeder (Auteur), Ken Martin (Auteur), Bill Lorensen: "The visualization toolkit : an object-oriented approach to 3D graphics", December 2006\\
 
 
 
