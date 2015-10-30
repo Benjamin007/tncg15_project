@@ -105,6 +105,14 @@ To compute the intersection between a ray and the objects in our room, the possi
 \subsection{Reflected rays}
 Once a ray hits a surface, Russian Roulette is used to determine if the ray is terminated, or if it is reflected onto other surfaces. The rays have a probability of $\alpha$ to survive, and $1-\alpha$ to be terminated. If it bounces, then two angles are randomly created, $\theta$ and $\phi$. A fictive point is then created, which has the following spheric coordinates: $(r=1, \theta, \psi)$. We transform these coordinate into cartesian ones, and the new ray is directed toward this fictive point.
 
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.6]{../result/russianroulette.png}
+    \caption{}
+    \label{fig:1}
+  \end{center}
+\end{figure}
+
 \subsection{Shadow ray}
 
 Every time a ray hit a surface, we need to compute how much radiance there is on this surface. To do so, we divide the incoming radiance in two parts, the direct lightings and the indirect lightings. For the direct part, we need to know if the intersection point receive light from the surface lights. To know that, we sample $n$ random points on the surface area, and then we create $n$ "shadow rays". These rays have the intersection point as origin, and are directed towards the sampled points on the light (figure $4$). We then check the intersections of the shadow rays with the room: if they intersect with a light source only, we have a direct illumination. If there are obsticles in the way, there is no direct illumination. It is possible for intersection points to be in partial shadow; some rays intersect with light sources, and some with obsticles. When this happens, the illumination from the light source is then weighted based on the number of shadow rays that do intersect with the light source: if only half of the shadow rays find a light source, then the contribution of this light source will be only half of what it would have been if all the shadow rays found the light source. We do this for every light inside the room. The result change along with the number $n$ of shadow rays. [Advanced Global Illumination]
@@ -123,7 +131,7 @@ To calculate light intensity, a recursive function is used on each pixel. We tak
 
 The direct illumination[Advanced Global Illumination] depends on a visibility term, a geometry term and the light intensity from the light sources of the scene. In our project the visibility term and the light intensity part is gotten directly from the shadow rays, while the geometry term is calculated by multiplying the dot products of the shadow ray direction with the normal of the intersection point and light source respectivly. Because we have identical light sources, the Area and light intensity portions of the equation are combined into our big constant together with the BRDF. To get a more realistic looking light we also square root the intensity.\\
 
-The indirect illumination [Advanced Global Illumination] is then gathered by sending rays throughout the scene and recursivly calculating the direct illumination of these points and recursivly adding them to the indirect lighting term of the intersection point. At this point we use Russian Roulette to cut off these ray paths to both improve the performance of the program, but also to get a more realistic effect by adding randomness and removing systimatical errors.\\
+The indirect illumination [1] is then gathered by sending rays throughout the scene and recursivly calculating the direct illumination of these points and recursivly adding them to the indirect lighting term of the intersection point. At this point we use Russian Roulette to cut off these ray paths to both improve the performance of the program, but also to get a more realistic effect by adding randomness and removing systimatical errors.\\
 
 For the sake of optimization, we estimate the scene by using a single indirect illumination ray, as discussed during lectures. By selecting a random angle, combined with the super sampling discussed below, gives us a decent approximation of the scene. This is because we want to enable more rays where they contribute the most for the photorealism, that being the camera point. This, and the russian roulette are compensated by weighting the contribution of the single ray, and to compensate for terminated rays.
 
@@ -136,7 +144,7 @@ The effects of the super sampling on this project are multiple; because we over 
 
 \begin{figure}
   \begin{center}
-    \includegraphics[scale=0.6]{/../result/supersampling.png}
+    \includegraphics[scale=0.6]{../result/supersampling.png}
     \caption{Using a too low sampling frequency leads to loss of information, and reconstructing results in aliasing}
     \label{fig:aliasing}
   \end{center}
@@ -221,7 +229,7 @@ Since the rendering of the room contains randomness, the execution time of two e
  
 \begin{figure}
   \begin{center}
-    \includegraphics[scale=0.5]{../result/Shadow Ray/shadowrayszoom.png}
+    \includegraphics[scale=0.5]{../result/ShadowRay/shadowrayszoom.png}
     \caption{A zoomed out image of the scene. Here we can see the extended shadow cast by the cube from the two light sources}
     \label{fig:shadowrayzoom}
   \end{center}
