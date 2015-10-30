@@ -3,6 +3,7 @@
 
 #include <Object.h>
 #include <Wall.h>
+#include "CONSTANTS.h"
 
 
 class Cube : public Object

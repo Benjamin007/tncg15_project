@@ -3,8 +3,8 @@
 
 #define NBSHADOWRAY 5
 #define SUPER_SAMPLING_NUMBER 16
-#define HEIGHT 100
-#define WIDTH 100
+#define HEIGHT 10
+#define WIDTH 10
 
 #define MAXBOUNCES 5
 #define RUSSIAN_P 0.2
@@ -21,6 +21,7 @@
 #define BOTTOM -100
 
 #define MIN_T 0.00001
+#define EPSILON 0.1f
 
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)

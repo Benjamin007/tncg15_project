@@ -1,6 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+
 #include "Ray.h"
 #include "glm/glm/glm.hpp"
 #include <iostream>

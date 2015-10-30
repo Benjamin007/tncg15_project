@@ -54,6 +54,7 @@ class Intersection
         float Le;
 
         glm::vec3 point;
+
         glm::vec3 color;
         glm::vec3 normal;
 

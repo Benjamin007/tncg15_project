@@ -116,17 +116,16 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         std::cout << "point.y < pos.y + height/2.0 = " << interPoint.y <<  "<" << pos.y + height/2.0 << "\n";
         std::cout << "point.z > pos.z - width/2.0 = " << interPoint.z <<  ">" << pos.z - width/2.0 << "\n";
         std::cout << "point.z < pos.z + width/2.0 = " << interPoint.z <<  "<" << pos.z + width/2.0 << "\n";
-
+        // we move the point toward the normal
+        intersection->setPoint(intersection->getPoint() + EPSILON*intersection->getNormal());
     }
-
     return intersection;
-
 }
 
 bool Cube::isPointInside(glm::vec3 point) const {
 
     if((point.x > pos.x - width/2.0 && point.x < pos.x + width/2.0) &&
-       (point.y > pos.y - height/2.0 && point.y < pos.y + height/2.0) &&
+       (point.y > pos.y && point.y < pos.y + height) &&
        (point.z > pos.z - width/2.0 && point.z < pos.z + width/2.0)) {
            return true;
        }

@@ -1,6 +1,7 @@
 #ifndef SURFACEOBJECT_H
 #define SURFACEOBJECT_H
 
+#include "CONSTANTS.h"
 #include <Object.h>
 
 

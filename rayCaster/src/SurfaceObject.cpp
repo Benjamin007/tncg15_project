@@ -1,6 +1,6 @@
 #include "SurfaceObject.h"
 #include <math.h>
-#define EPSILON 0.1
+
 
 
 SurfaceObject::SurfaceObject() : SurfaceObject(0, glm::vec3(0,0,0),glm::vec3(0,0,0),0,0,0,0,0,0,0,0)
