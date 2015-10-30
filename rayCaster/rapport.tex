@@ -337,7 +337,7 @@ It corresponds to the number of ray the camera sends to every pixel. The figure 
         \label{fig:supersamplingmulti}
     \end{figure*}
     
-    We clearly see the effects of the super sampling when we compare the first image with the second image of \ref{supersamplingmulti}.
+    We see the effects of the super sampling when we compare the first image with the second image of the super sampling. The effects of higher sampling rates also improve with higher resolutions. The primary advantages of higher super samplings that we can see from the images are that they act as a filter and reduces a lot of the noise in the illumination. They also improve the shadows by a lot for the very same reason, in effect acting as more shadow rays sent per pixel to light source. This also means that one could easily decrease the number of shadow rays in favor of increasing the sampling rate, at the cost of a bit of computation time. Again, this would increase the most important rays in the scene, the ones entering the camera.
 
 \begin{tabular}{| l | r |}
 \hline
