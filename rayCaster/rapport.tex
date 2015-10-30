@@ -10,6 +10,8 @@
 \usepackage{amsopn}
 \usepackage{fancyhdr}
 \usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
 %\usepackage{listings}
 %\usepackage{textcomp}
 
@@ -94,7 +96,7 @@ The first section is the introduction. In section 2, we will discuss the techniq
 \section{Background}
 
 \subsection{Intersection}
-To compute the intersection between a ray and the objects in our room, we compute the possible intersections the ray can collide with, and then we keep the nearest one. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like sphere or cube in our room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closer object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall or the sphere.\\
+To compute the intersection between a ray and the objects in our room, we compute the possible intersections the ray can collide with, and then we keep the nearest one. We proceed in a particular order when we check the obstacles in the room. First, we see if the ray intersects the object like sphere or cube in our room. Then, we check for the light sources, and finally for the wall. It's because in the way the room is built, it is not possible that a source light is positioned between a ray and a sphere/cube. So if there is an intersection between a ray and a sphere, we know that the sphere is the closer object the ray will intersect with. To find the intersection between a ray and a wall or a sphere, we inject the parametric equation of the ray inside the implicit equation of the wall or the sphere. Because of numerical error, we can find the intersection point inside a cube and not on the surface of it. If the intersection point is inside the cube, we move it a bit in direction of the normal so it is on the surface.\\
 
 \subsection{Reflected rays}
 Once a ray hits a surface, we chose if the ray stop there or bounce (Russian Roulette) with a probability $\alpha$. If we make it bounce, then we randomly create two angles $\theta$ and $\phi$ we create a fictif point which has the following spheric coordinates: $(r=1, \theta, \psi)$. We transform these coordinate in cartesian ones, and the new ray is directed toward this fictif point.
@@ -114,12 +116,231 @@ Every time a ray hit a surface, we need to compute how much radiance there is on
 \end{figure}
 
 \section{Results and benchmarks}
+Here are a serie of computations where we change one parameter at a time. The defaults parameters are the followings:
+\begin{itemize}
+\item Resolution: $500 \times 500$
+\item Shadow Rays: 1
+\item Sampling Rate: 8
+\item Bounce Limit: 3
 
+\end{itemize}
+\subsection{Shadow rays}
+
+The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The figure ? presents the differents results obtained with a varying number of shadow rays.\\
+
+    \begin{figure*}
+        \centering
+        \begin{subfigure}[b]{0.475\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[Network2]%
+            {{\small 1 shadow ray}}    
+            \label{fig:mean and std of net14}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.475\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small 4 shadow rays}}    
+            \label{fig:mean and std of net24}
+        \end{subfigure}
+        \vskip\baselineskip
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small 20 shadow rays}}    
+            \label{fig:mean and std of net34}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small 50 shadow rays}}    
+            \label{fig:mean and std of net44}
+        \end{subfigure}
+        \caption[  ]
+        {\small Computation of the room by using a different number of shadow rays} 
+        \label{fig:mean and std of nets}
+    \end{figure*}
+
+
+\begin{tabular}{| l | r |}
+\hline
+   number Shadow Ray & Time(s) \\
+\hline
+   1 & 61 \\
+\hline
+   4 & 164 \\
+\hline
+   16 & 556 \\
+\hline   
+   32 & 1024\\
+\hline
+ \end{tabular} 
+
+\subsection{Resolution}
+
+The figure ? presents the differents results obtained with a varying resolution.
+
+    \begin{figure*}
+        \centering
+        \begin{subfigure}[b]{0.475\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[Resolution of 150 $\times$ 150]%
+            {{\small Resolution of x $\times$ x}}    
+            \label{fig:mean and std of net14}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.475\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small Resolution of 300 $\times$ 300}}    
+            \label{fig:mean and std of net24}
+        \end{subfigure}
+        \vskip\baselineskip
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small Resolution of 600 $\times$ 600}}    
+            \label{fig:mean and std of net34}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small Resolution of 1200 $\times$ 1200}}    
+            \label{fig:mean and std of net44}
+        \end{subfigure}
+        \caption[ The average and standard deviation of critical parameters ]
+        {\small Computation of the room with differents resolution} 
+        \label{fig:mean and std of nets}
+    \end{figure*}
+
+\begin{tabular}{| l | r |}
+\hline
+   Resolution & Time (s)\\
+\hline
+   150 $\times$ 150 & 44 \\
+\hline
+   300 $\times$ 300 & 173 \\
+\hline
+   600 $\times$ 600 & 704 \\
+\hline   
+   1200 $\times$ 1200 & 2796\\
+\hline
+ \end{tabular} 
+
+\subsection{Sampling Rate}
+
+It corresponds to the number of ray the camera sends to every pixel. The figure ? presents the differents results obtained with a varying sampling rate.
+
+    \begin{figure*}
+        \centering
+        \begin{subfigure}[b]{0.475\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[Network2]%
+            {{\small Sampling rate: 1}}    
+            \label{fig:mean and std of net14}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.475\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small Sampling rate: 8}}    
+            \label{fig:mean and std of net24}
+        \end{subfigure}
+        \vskip\baselineskip
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small Sampling rate: 16}}    
+            \label{fig:mean and std of net34}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small Sampling rate: 32}}    
+            \label{fig:mean and std of net44}
+        \end{subfigure}
+        \caption[ The average and standard deviation of critical parameters ]
+        {\small Computation of the room with different values for the sampling rate} 
+        \label{fig:mean and std of nets}
+    \end{figure*}
+
+\begin{tabular}{| l | r |}
+\hline
+   Sampling Rate & Time \\
+\hline
+   1 & 23 \\
+\hline
+   8 & 164 \\
+\hline
+   16 & 324 \\
+\hline   
+   32 & 639\\
+\hline
+ \end{tabular} 
+
+\subsection{Russian Roulette Probability}
+We are going to modify the probability that a ray kills itself instead of bouncing. To have a better understanding of the impact of the modification of this value, we increase the maximum number of bounces that a ray can do: in this part, a ray can do until 20 bounces.  The figure ? presents the differents results obtained with a varying probability.
+    \begin{figure*}
+        \centering
+        \begin{subfigure}[b]{0.475\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[Network2]%
+            {{\small proba = 0.9}}    
+            \label{fig:mean and std of net14}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.475\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small proba = 0.5}}    
+            \label{fig:mean and std of net24}
+        \end{subfigure}
+        \vskip\baselineskip
+        \begin{subfigure}[b]{0.475\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{placeHolder.jpg}
+            \caption[]%
+            {{\small proba = 0.1}}    
+            \label{fig:mean and std of net34}
+        \end{subfigure}
+        \quad
+        \caption[ The average and standard deviation of critical parameters ]
+        {\small Computation of the room with differents number of bounces} 
+        \label{fig:mean and std of nets}
+    \end{figure*}
+
+\begin{tabular}{| l | r |}
+\hline
+   proba & Time \\
+\hline
+   0.9 & 134 \\
+\hline
+   0.5 & 164 \\
+\hline
+   0.1 & 266 \\
+\hline 
+ \end{tabular} 
 
 \section{Discussion}
 
-The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. We could add Oren-Nayor reflectors at our scene. The walls will stay Lambertian reflectors, but the sphere should become Oren-Nayor reflector. The object sphere has an attribut BRDF which is a float initialized in the
-constructor of sphere, we should make it a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. To increase the performance of our program, we could incorporate a better manager for the intersections: for now, we test the intersection between a ray and every object in the room, even if the ray miss them from a lot. We could put the objects of our scene in an octree for instance.[wikipédia Octree] 
+The program is a basic functional version of a Monte Carlo ray tracer, and a lot of features can be added to improve the realism. Oren-Nayor reflectors could be added at the scene. The walls will stay Lambertian reflectors, but the cubes should become Oren-Nayor reflectors. The object cube has an attribut BRDF which is a float initialized in its constructor. It should become a function of $(w_i, w_{out})$. Other features could be added, like the transparence of object, the photon maps. To increase the performance of our program, a better manager could be incorporated for the intersections: for now, the intersection between a ray and every object in the room is tested, even if the ray miss them from a lot. The problem could be resolved by putting the objects in an octree for instance.[wikipédia Octree] 
 
 
 \section{Reference list}
@@ -128,6 +349,7 @@ $[2]$ Matt Pharr, Greg Humphreys: "Physically Based Rendering Second Edition" $2
 $[3]$ Henrik Wann Jensen, "Global Illumination using Photon Maps" \\
 $[4]$ Henrik Wann Jensen "A Practical Guide to Global Illumination using Photon Maps" Siggraph 2000 Course 8 Sunday, July 23, $2000$\\
 $[5]$ https://fr.wikipedia.org/wiki/Octree\\
+
 
 
 \nocite{*}
