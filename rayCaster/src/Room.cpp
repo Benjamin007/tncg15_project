@@ -6,11 +6,6 @@
 
 
 #define EPSILON2 0.1
-#define RUSSIAN_P 0.5
-
-#ifndef M_PI
-#define M_PI (3.14159265358979323846)
-#endif
 
 Room::Room(std::vector<Object*> light_container, std::vector<Object*> object_container, std::vector<Object*> cube_container)
 {
@@ -112,7 +107,7 @@ Room::Room() {
 
     // add a cube inside the room
     int idCube = 20; // careful, the next id (idCube + 6) are taken!
-    glm::vec3 posCube = glm::vec3(roomXMid, roomYMin+10, roomZMid-50);
+    glm::vec3 posCube = glm::vec3(roomXMid, roomYMin+100, roomZMin + 50);
     float hCube = 50;
     float wCube = hCube;
     float x1Cube = posCube.x - wCube/2;
@@ -120,9 +115,9 @@ Room::Room() {
     float yCube = posCube.y;
     float z1Cube = posCube.z - wCube/2;
     float z2Cube = posCube.z + wCube/2;
-    //Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
     //cube->printCube();
-    //this->cube_container.push_back(cube);
+    this->cube_container.push_back(cube);
 }
 
 Room::~Room()
@@ -312,7 +307,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
     color.y = sqrt(color.y * radiance.y);
     color.z = sqrt(color.z * radiance.z);
 
-    color *= 200.0f; // scaling factor... Can contain the P from the Russian Roulette.
+    color *= BRDF_CONSTANT; // scaling factor... Can contain the P from the Russian Roulette.
 
     // Monte Carlo Part...
     // UGLY HAX instead of checking if a child is defined, use probability stuff
@@ -353,7 +348,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
 
             // recursivly do stuff, and weight the incoming and outcoming light (hard coded BRDF);
             //std::cout << "doing recursive stuff! depth " << ray->getDepth() << " and going!\n";
-            return 1.5f * color +  0.1f * cosOutgoingAngle * this->calculateColor(outgoingRay);
+            return DIRECT_CONSTANT * color +  INDIRECT_CONSTANT * cosOutgoingAngle * this->calculateColor(outgoingRay);
         }
 
     //} else {
