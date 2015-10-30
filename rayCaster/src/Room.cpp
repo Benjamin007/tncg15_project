@@ -37,9 +37,9 @@ Room::Room() {
     roomYMin = -200;
     roomYMid = 0;
     roomYMax = 200;
-    roomZMin = -500;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -250;
-    roomZMax = 0;
+    roomZMin = -600;       //, defined as closest to screen NEAR plane defined as z = -20;
+    roomZMid = -350;
+    roomZMax = -100;
 
     // wall positions
 
@@ -94,7 +94,7 @@ Room::Room() {
 //        float const y1, y2;
 //        float const z1, z2;
 
-    glm::vec3 lightPos = glm::vec3(roofPos.x,roofPos.y-0.003,roofPos.z);
+    glm::vec3 lightPos = glm::vec3(roofPos.x,roofPos.y,roofPos.z);
     lightPos = roofPos;
     lightPos.x = roofPos.x - 100;
 
@@ -113,9 +113,9 @@ Room::Room() {
 
     // add a cube inside the room
     int idCube = 20; // careful, the next id (idCube + 6) are taken!
-    glm::vec3 posCube = glm::vec3(roomXMid, roomYMin+100, roomZMin + 50);
-    float hCube = 50;
+    float hCube = 100;
     float wCube = hCube;
+    glm::vec3 posCube = glm::vec3(roomXMid, roomYMin+100, roomZMin + wCube/2);
     float x1Cube = posCube.x - wCube/2;
     float x2Cube = posCube.x + wCube/2;
     float yCube = posCube.y;
@@ -124,11 +124,29 @@ Room::Room() {
 
     Cube* cube1 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
 
-    posCube = glm::vec3(roomXMid, roomYMin+100, roomZMid);
-    Cube* cube2 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
 
-    posCube = glm::vec3(roomXMin+hCube*2, roomYMin+100, roomZMid);
-    Cube* cube3 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+
+    posCube = glm::vec3(roomXMid+wCube, roomYMid, roomZMid);
+    x1Cube = posCube.x - wCube/2;
+    x2Cube = posCube.x + wCube/2;
+    yCube = posCube.y;
+    z1Cube = posCube.z - wCube/2;
+    z2Cube = posCube.z + wCube/2;
+
+
+    Cube* cube2 = new Cube(30, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+
+
+
+    posCube = glm::vec3(roomXMid-wCube*2, roomYMin, roomZMid);
+    x1Cube = posCube.x - wCube/2;
+    x2Cube = posCube.x + wCube/2;
+    yCube = posCube.y;
+    z1Cube = posCube.z - wCube/2;
+    z2Cube = posCube.z + wCube/2;
+
+
+    Cube* cube3 = new Cube(40, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
     //cube->printCube();
     this->cube_container.push_back(cube1);
     this->cube_container.push_back(cube2);
