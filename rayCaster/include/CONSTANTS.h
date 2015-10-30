@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 #define NBSHADOWRAY 5
-#define SUPER_SAMPLING_NUMBER 8
+#define SUPER_SAMPLING_NUMBER 32
 #define HEIGHT 100
 #define WIDTH 100
 

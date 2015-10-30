@@ -322,7 +322,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
         if((randomNum < RUSSIAN_P && ray->getDepth() != 0) || ray->getDepth() > MAXBOUNCES + 1) {
             //std::cout << "total depth is " << ray->getDepth() << "\n";
             //delete ray;
-            return 0.9f * color;
+            return DIRECT_CONSTANT * color;
         } else {
 
             float randPhi = rand() * 2.0*M_PI; // defined for whole azimoth.
@@ -348,7 +348,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
 
             // recursivly do stuff, and weight the incoming and outcoming light (hard coded BRDF);
             //std::cout << "doing recursive stuff! depth " << ray->getDepth() << " and going!\n";
-            return DIRECT_CONSTANT * color +  INDIRECT_CONSTANT * cosOutgoingAngle * this->calculateColor(outgoingRay);
+            return DIRECT_CONSTANT * color ;//+  INDIRECT_CONSTANT * cosOutgoingAngle * this->calculateColor(outgoingRay);
         }
 
     //} else {
