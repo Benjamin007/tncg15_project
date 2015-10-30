@@ -165,7 +165,7 @@ Here are a serie of computations where we change one parameter at a time. The de
 The program writes the color value of the pixels and then matlab print them: all the following pictures are reversed: the ceil is at the bottom and the floor is at the top. 
 \subsection{Shadow rays}
 
-The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The figure ? presents the differents results obtained with a varying number of shadow rays.\\
+The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The figure \ref{fig:shadowraysmulti} presents the different results obtained with a varying number of shadow rays. Here we can see that increasing the number of shadow rays does indeed increase the quality of the shadows. Having a low number of shadow rays gives more crisp shadows, and unfortunetly very pixly shadows, but increasing the shadow rays does create better casted shadows. Some interesting artifacts in these figures are how the shadows are cast by the cube furthest in the back, as we can clearly see how the two light sources cast different angles of shadows, and also how the shadows are casted around the wall corner. The conclusion we can draw is that more shadows increase the quality of the shadows, at the expense of computation time. \\
 
     \begin{figure*}
         \centering
@@ -202,7 +202,7 @@ The following pictures are generated with $1$, $4$, $20$, $50$ shadow rays. The 
         \end{subfigure}
         \caption[  ]
         {\small Computation of the room by using a different number of shadow rays} 
-        \label{fig:mean and std of nets}
+        \label{fig:shadowraysmulti}
     \end{figure*}
 
 
@@ -224,13 +224,13 @@ Since the rendering of the room contains randomness, the execution time of two e
 
 
  
- Finally, we have a picture to show how the shadow rays are affecting the shadows that are affected by objects closer to the light source that cast a greater shadow. This picture is more zoomed out to show a better view of the larger shadow.
+ Finally, we have a figure (\ref{fig:shadowrayzoom}) to show how the shadow rays are affecting the shadows that are affected by objects closer to the light source that cast a greater shadow. This picture is more zoomed out to show a better view of the larger shadow. As we can see in this figure, the shadows are cast in a realistic way. From the other results, the shadows would improve if we added more shadow rays, and super sampled the image to give it a more filtered shadow that is less crisp.
  
  
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.5]{../result/ShadowRay/shadowrayszoom.png}
-    \caption{A zoomed out image of the scene. Here we can see the extended shadow cast by the cube from the two light sources}
+    \caption{A zoomed out image of the scene to show the shadow casted by object. 4 shadow rays were used.}
     \label{fig:shadowrayzoom}
   \end{center}
 \end{figure}
@@ -239,7 +239,7 @@ Since the rendering of the room contains randomness, the execution time of two e
  
 \subsection{Resolution}
 
-The figure ? presents the differents results obtained with a varying resolution.
+The figure ? presents the differents results obtained with a varying resolution. We can clearly see that increasing the resolution gives better images, both in terms of how light is percieved, as it decreases noise and tearing/aliasing of the objects in the scene. Primarily it gives better images due to the higher sampling rate, but the increase in computational time is very taxing. We realise that the resolution would not be the first thing one would increase/decrease, but it is interesting nevertheless to see the effects of the higher sampling rate in conjunction with the random functions.
 
     \begin{figure*}
         \centering
