@@ -37,8 +37,8 @@ Room::Room() {
     roomYMin = -200;
     roomYMid = 0;
     roomYMax = 200;
-    roomZMin = -600;       //, defined as closest to screen NEAR plane defined as z = -20;
-    roomZMid = -350;
+    roomZMin = -500;       //, defined as closest to screen NEAR plane defined as z = -20;
+    roomZMid = -300;
     roomZMax = -100;
 
     // wall positions
@@ -98,11 +98,11 @@ Room::Room() {
     lightPos = roofPos;
     lightPos.x = roofPos.x - 100;
 
-    AreaLight *light1 = new AreaLight(0,lightPos,1.0f, roofNorm,50,50,
+    AreaLight *light1 = new AreaLight(0,lightPos,0.9f, roofNorm,50,50,
                         lightPos.x -25,lightPos.x+25,lightPos.y,lightPos.y,lightPos.z-25,lightPos.z+25);
 
     lightPos.x = roofPos.x + 100;
-    AreaLight *light2 = new AreaLight(0,lightPos,1.0f, roofNorm,50,50,
+    AreaLight *light2 = new AreaLight(0,lightPos,0.9f, roofNorm,50,50,
                         lightPos.x -25,lightPos.x+25,lightPos.y,lightPos.y,lightPos.z-25,lightPos.z+25);
     //AreaLight light = new AreaLight();
 
@@ -115,18 +115,19 @@ Room::Room() {
     int idCube = 20; // careful, the next id (idCube + 6) are taken!
     float hCube = 100;
     float wCube = hCube;
-    glm::vec3 posCube = glm::vec3(roomXMid, roomYMin+100, roomZMin + wCube/2);
+    glm::vec3 posCube = glm::vec3(roomXMid-hCube/1.2, roomYMin+100, roomZMin + wCube/2);
     float x1Cube = posCube.x - wCube/2;
     float x2Cube = posCube.x + wCube/2;
     float yCube = posCube.y;
     float z1Cube = posCube.z - wCube/2;
     float z2Cube = posCube.z + wCube/2;
 
-    Cube* cube1 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    Cube* wallCube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
 
 
-
-    posCube = glm::vec3(roomXMid+wCube, roomYMid, roomZMid);
+    hCube = 100;
+    wCube = hCube;
+    posCube = glm::vec3(roomXMid+wCube/1.2f, roomYMid-wCube*1.2f, roomZMid+wCube);
     x1Cube = posCube.x - wCube/2;
     x2Cube = posCube.x + wCube/2;
     yCube = posCube.y;
@@ -134,11 +135,13 @@ Room::Room() {
     z2Cube = posCube.z + wCube/2;
 
 
-    Cube* cube2 = new Cube(30, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    Cube* closeCube = new Cube(30, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
 
 
 
-    posCube = glm::vec3(roomXMid-wCube*2, roomYMin, roomZMid);
+    hCube = 30;
+    wCube = hCube;
+    posCube = glm::vec3(roomXMid-hCube*2    , roomYMin, roomZMid);
     x1Cube = posCube.x - wCube/2;
     x2Cube = posCube.x + wCube/2;
     yCube = posCube.y;
@@ -146,11 +149,11 @@ Room::Room() {
     z2Cube = posCube.z + wCube/2;
 
 
-    Cube* cube3 = new Cube(40, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    Cube* smallCube = new Cube(40, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
     //cube->printCube();
-    this->cube_container.push_back(cube1);
-    this->cube_container.push_back(cube2);
-    this->cube_container.push_back(cube3);
+    this->cube_container.push_back(wallCube);
+    this->cube_container.push_back(closeCube);
+    this->cube_container.push_back(smallCube);
 }
 
 Room::~Room()
