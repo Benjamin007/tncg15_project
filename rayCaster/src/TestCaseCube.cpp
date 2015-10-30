@@ -20,6 +20,7 @@ void TestCaseCube::run() {
     if(cubeIntersection->getIsIntersecting()){
         std::cout << "The point of intersection between the ray and the object " << cubeIntersection->getIdObject() << " is\n"
         << cubeIntersection->getPoint().x << " " << cubeIntersection->getPoint().y << " " << cubeIntersection->getPoint().z << std::endl;
+        std::cout << cubeIntersection->getColor().x << " " << cubeIntersection->getColor().y << " " << cubeIntersection->getColor().z << " \n";
     }
     else{
         std::cout << "No intersection between the cube and the ray :-/\n";

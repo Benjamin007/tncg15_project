@@ -101,7 +101,6 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         }
     }
     delete tmpIntersection;
-
     return intersection;
 }
 

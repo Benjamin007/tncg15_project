@@ -30,13 +30,13 @@ int main()
     TestCase *intersectionTest2 = new TestCaseIntersection2();
     TestCase *raytracerTest = new TestCaseRayTracer();
     TestCase* shadowRayTest = new TestCaseRayShadowRay();
-    //TestCase* cubeTest = new TestCaseCube();
+    TestCase* cubeTest = new TestCaseCube();
 //    TestCase* printTest = new TestCasePrintToFile();
     //intersectionTest->run();
     //intersectionTest2->run();
-    raytracerTest->run();
+    //raytracerTest->run();
     //shadowRayTest->run();
-    //cubeTest->run();
+    cubeTest->run();
     //printTest.run();
     delete intersectionTest;
     delete intersectionTest2;
