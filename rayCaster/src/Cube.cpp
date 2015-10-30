@@ -3,6 +3,8 @@
 Cube::Cube(int id, glm::vec3 pos, float h, float w, float x1, float x2, float y, float z1, float z2)
 {
     this->id = id;
+    this->width = w;
+    this->height = h;
     //ctor
     glm::vec3 normFloorWall = glm::vec3(0.0, -1.0, 0.0);
     floorWall = new Wall(id+1, pos, normFloorWall, h, w, x1, x2, y, y, z1, z2);
@@ -101,7 +103,37 @@ Intersection* Cube::getIntersection(Ray const* ray) const{
         }
     }
     delete tmpIntersection;
+
+    glm::vec3 interPoint = intersection->getPoint();
+
+    // we have axis aligned boxes!
+    if(isPointInside(interPoint) && intersection->getIsIntersecting()) {
+        std::cout << "WE GOT A POINT INSIDE CUBE! ";
+        std::cout << "point is: (" << interPoint.x << "," << interPoint.z << "," << interPoint.z << ")\n";
+        std::cout << "point.x > pos.x - width/2.0 = " << interPoint.x <<  ">" << (pos.x - width/2.0) << "\n";
+        std::cout << "point.x < pos.x + width/2.0 = " << interPoint.x <<  "<" << pos.x + width/2.0 << "\n";
+        std::cout << "point.y > pos.y - height/2.0 = " << interPoint.y <<  ">" << pos.y - height/2.0 << "\n";
+        std::cout << "point.y < pos.y + height/2.0 = " << interPoint.y <<  "<" << pos.y + height/2.0 << "\n";
+        std::cout << "point.z > pos.z - width/2.0 = " << interPoint.z <<  ">" << pos.z - width/2.0 << "\n";
+        std::cout << "point.z < pos.z + width/2.0 = " << interPoint.z <<  "<" << pos.z + width/2.0 << "\n";
+
+    }
+
     return intersection;
+
+}
+
+bool Cube::isPointInside(glm::vec3 point) const {
+
+    if((point.x > pos.x - width/2.0 && point.x < pos.x + width/2.0) &&
+       (point.y > pos.y - height/2.0 && point.y < pos.y + height/2.0) &&
+       (point.z > pos.z - width/2.0 && point.z < pos.z + width/2.0)) {
+           return true;
+       }
+
+       return false;
+
+
 }
 
 void Cube::printCube(){

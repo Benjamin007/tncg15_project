@@ -16,13 +16,14 @@ int main()
 {
 
     std::ofstream myFile;
+    /*
     myFile.open("inter_mem.txt", std::fstream::trunc);
     myFile << "";
     myFile.close();
     myFile.open("ray_mem.txt", std::fstream::trunc);
     myFile << "";
     myFile.close();
-
+    */
 
 
 
@@ -34,15 +35,20 @@ int main()
 //    TestCase* printTest = new TestCasePrintToFile();
     //intersectionTest->run();
     //intersectionTest2->run();
-    //raytracerTest->run();
+    raytracerTest->run();
     //shadowRayTest->run();
-    cubeTest->run();
+    //cubeTest->run();
     //printTest.run();
     delete intersectionTest;
     delete intersectionTest2;
     delete raytracerTest;
     delete shadowRayTest;
     //delete cubeTest;
+
+    // ugly hax to make program not close on completion.
+     std::cout << "Type a number and press enter to exit the program";
+     int r;
+     std::cin>>r;   // wait until a number is given and enter is pressed
 
     return 0;
 

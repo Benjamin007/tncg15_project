@@ -66,7 +66,7 @@ Room::Room() {
 
     roof    = new Wall(0, roofPos, roofNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMax, roomYMax,roomZMin, roomZMax);
-    roof->setColor(glm::vec3(0.9,0.6,0.6));
+    roof->setColor(glm::vec3(1.0,1.0,1.0));
     floor   = new Wall(1, floorPos, floorNorm,
                        NULL, NULL, roomXMin, roomXMax, roomYMin, roomYMin,roomZMin, roomZMax);
     floor->setColor(glm::vec3(0.6,0.6,0.6));
@@ -96,14 +96,20 @@ Room::Room() {
 
     glm::vec3 lightPos = glm::vec3(roofPos.x,roofPos.y-0.003,roofPos.z);
     lightPos = roofPos;
+    lightPos.x = roofPos.x - 100;
 
-    AreaLight *light = new AreaLight(0,lightPos,1.0f, roofNorm,100,100,
-                        -50,50,roomYMax,roomYMax,roomZMid-50,roomZMid+50);
+    AreaLight *light1 = new AreaLight(0,lightPos,1.0f, roofNorm,50,50,
+                        lightPos.x -25,lightPos.x+25,lightPos.y,lightPos.y,lightPos.z-25,lightPos.z+25);
+
+    lightPos.x = roofPos.x + 100;
+    AreaLight *light2 = new AreaLight(0,lightPos,1.0f, roofNorm,50,50,
+                        lightPos.x -25,lightPos.x+25,lightPos.y,lightPos.y,lightPos.z-25,lightPos.z+25);
     //AreaLight light = new AreaLight();
 
 
 
-    this->light_container.push_back(light);
+    this->light_container.push_back(light1);
+    this->light_container.push_back(light2);
 
     // add a cube inside the room
     int idCube = 20; // careful, the next id (idCube + 6) are taken!
@@ -115,9 +121,18 @@ Room::Room() {
     float yCube = posCube.y;
     float z1Cube = posCube.z - wCube/2;
     float z2Cube = posCube.z + wCube/2;
-    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+
+    Cube* cube1 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+
+    posCube = glm::vec3(roomXMid, roomYMin+100, roomZMid);
+    Cube* cube2 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+
+    posCube = glm::vec3(roomXMin+hCube*2, roomYMin+100, roomZMid);
+    Cube* cube3 = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
     //cube->printCube();
-    this->cube_container.push_back(cube);
+    this->cube_container.push_back(cube1);
+    this->cube_container.push_back(cube2);
+    this->cube_container.push_back(cube3);
 }
 
 Room::~Room()
@@ -221,6 +236,7 @@ float calcGeometry(Intersection* pointInter, Intersection* shadowInter, Ray* sha
     cosShadow = glm::dot(shadowInter->getNormal(), -(shadowRay->getDirection()));
     distance = glm::distance(pointInter->getPoint(), shadowInter->getPoint());
     result = (cosPoint * cosShadow) / (distance * distance);
+    // If one of the dot products is negative, we got a non intersecting object...?
     return result;
 }
 
@@ -228,6 +244,13 @@ glm::vec3 Room::calculateColor(Ray* ray){
     Intersection* intersection = ray->getIntersection();
     glm::vec3 pos = intersection->getPoint();
     glm::vec3 radiance = glm::vec3(0,0,0);
+
+    // if we don't collide with anything, return zero!
+
+    if(!(ray->getIntersection()->getIsIntersecting())) {
+        std::cout << "calculateColor started with an unbouncy ray!\n";
+        return radiance;
+    }
 
     // if the point light is a light, return the light!
     if(intersection->getIsLightsource()) {
@@ -264,9 +287,14 @@ glm::vec3 Room::calculateColor(Ray* ray){
                         //std::cout << "BUG CASE! we got roof, but still found a light!\n";
                     }
                     float geometry = calcGeometry(intersection, shadowInter, shadowRay);
+                    if(geometry < 0.0f) {
+                        //std::cout << "Geometry was negative! Setting it to zero! shadow ray " << i << "!\n";
+                        geometry = 0.0f;
+                    }
                     glm::vec3 rayRadiance = glm::vec3(1,1,1);
                     rayRadiance *= (tmpLight->getLe() / ((float) NBSHADOWRAY));
                     rayRadiance *= geometry;
+
                     radiance += rayRadiance;
                     //radiance += glm::vec3(1,1,1) * (tmpLight->getLe() / ((float) NBSHADOWRAY));
                     counter++;
@@ -303,6 +331,17 @@ glm::vec3 Room::calculateColor(Ray* ray){
     */
     glm::vec3 color = intersection->getColor();
     // sqrt to get colors to shape
+    if(radiance.x < 0 || radiance.y < 0 || radiance.z < 0 ) {
+        std::cout << " We got negative radiance in sqrt!\n";
+        std::cout << "radiance is: (" << radiance.x << ", " << radiance.y << "," << radiance.z << ")\n";
+    }
+
+    if(color.x < 0 || color.y < 0 || color.z < 0 ) {
+        std::cout << " We got negative color in sqrt!\n";
+        std::cout << "color is: (" << color.x << ", " << color.y << "," << color.z << ")\n";
+    }
+
+
     color.x = sqrt(color.x * radiance.x);
     color.y = sqrt(color.y * radiance.y);
     color.z = sqrt(color.z * radiance.z);
@@ -322,7 +361,7 @@ glm::vec3 Room::calculateColor(Ray* ray){
         if((randomNum < RUSSIAN_P && ray->getDepth() != 0) || ray->getDepth() > MAXBOUNCES + 1) {
             //std::cout << "total depth is " << ray->getDepth() << "\n";
             //delete ray;
-            return DIRECT_CONSTANT * color;
+            return color;
         } else {
 
             float randPhi = rand() * 2.0*M_PI; // defined for whole azimoth.
@@ -334,6 +373,9 @@ glm::vec3 Room::calculateColor(Ray* ray){
             outgoingDir = glm::normalize(outgoingDir + intersection->getNormal());
 
             float cosOutgoingAngle = glm::dot(outgoingDir, intersection->getNormal());
+            if(cosOutgoingAngle == NAN) {
+                std::cout << "WE GOT NAN!\n";
+            }
 
             // if the angle of the new ray and the normal of the surface is larger than pi/2 (negative)
 
@@ -348,7 +390,12 @@ glm::vec3 Room::calculateColor(Ray* ray){
 
             // recursivly do stuff, and weight the incoming and outcoming light (hard coded BRDF);
             //std::cout << "doing recursive stuff! depth " << ray->getDepth() << " and going!\n";
-            return DIRECT_CONSTANT * color ;//+  INDIRECT_CONSTANT * cosOutgoingAngle * this->calculateColor(outgoingRay);
+            if(outgoingRay->getIntersection()->getIsIntersecting()) {
+                return color * DIRECT_CONSTANT +  INDIRECT_CONSTANT  * cosOutgoingAngle * this->calculateColor(outgoingRay);
+            } else {
+                //std::cout << "We have an outgoing ray that doesn't collide with anything!\n";
+                return color * DIRECT_CONSTANT; //+  INDIRECT_CONSTANT  * cosOutgoingAngle * this->calculateColor(outgoingRay);
+            }
         }
 
     //} else {
