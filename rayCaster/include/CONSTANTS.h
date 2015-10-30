@@ -20,6 +20,7 @@
 #define TOP 100
 #define BOTTOM -100
 
+#define MIN_T 0.00001
 
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
