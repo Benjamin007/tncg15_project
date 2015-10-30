@@ -4,8 +4,8 @@
 #define NBSHADOWRAY 4
 #define SUPER_SAMPLING_NUMBER 8
 
-#define HEIGHT 500
-#define WIDTH 500
+#define HEIGHT 300
+#define WIDTH 300
 
 #define MAXBOUNCES 3
 #define RUSSIAN_P 0.4
