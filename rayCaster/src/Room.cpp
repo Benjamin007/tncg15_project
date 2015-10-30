@@ -176,6 +176,9 @@ Intersection* Room::findIntersection(Ray* ray){
 
     //std::cout << "returning function...\n";
     // return this regardless!
+        if(intersection->getPoint().x != intersection->getPoint().x){
+    std::cout << "we have a nan in Room::findIntersection\n";
+    }
     return intersection;
 }
 
@@ -201,6 +204,9 @@ Intersection* Room::findIntersection(const Ray* ray, std::vector<Object*> contai
             }
         }
         delete tmpInter;
+    }
+    if(intersection->getPoint().x != intersection->getPoint().x){
+    std::cout << "we have a nan in Room::findIntersection\n";
     }
     return intersection;
 }

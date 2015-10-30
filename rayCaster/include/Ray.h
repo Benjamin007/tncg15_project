@@ -22,7 +22,7 @@ class Ray
         void setChild(Ray* ray);
         Ray* getChild() const;
 
-        Intersection* getIntersection();
+        Intersection* getIntersection() const;
         void setIntersection(Intersection* intersection);
 
         float getMin_t() const;

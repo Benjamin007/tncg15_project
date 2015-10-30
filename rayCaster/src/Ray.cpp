@@ -76,7 +76,7 @@ int Ray::getDepth() const {
 }
 
 
-Intersection* Ray::getIntersection() {
+Intersection* Ray::getIntersection() const {
     return this->intersection;
 }
 void Ray::setIntersection(Intersection* intersection) {

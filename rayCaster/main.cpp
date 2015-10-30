@@ -34,9 +34,9 @@ int main()
 //    TestCase* printTest = new TestCasePrintToFile();
     //intersectionTest->run();
     //intersectionTest2->run();
-    //raytracerTest->run();
+    raytracerTest->run();
     //shadowRayTest->run();
-    cubeTest->run();
+    //cubeTest->run();
     //printTest.run();
     delete intersectionTest;
     delete intersectionTest2;
