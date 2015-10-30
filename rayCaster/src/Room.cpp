@@ -120,9 +120,9 @@ Room::Room() {
     float yCube = posCube.y;
     float z1Cube = posCube.z - wCube/2;
     float z2Cube = posCube.z + wCube/2;
-    //Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
+    Cube* cube = new Cube(idCube, posCube, hCube, wCube, x1Cube, x2Cube, yCube, z1Cube, z2Cube);
     //cube->printCube();
-    //this->cube_container.push_back(cube);
+    this->cube_container.push_back(cube);
 }
 
 Room::~Room()
